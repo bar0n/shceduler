@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ScheduleService} from "./shared/schedule.service";
-import {Schedule} from "./shared/model/schedule.model";
+import {ScheduleService} from './shared/schedule.service';
+import {Schedule} from './shared/model/schedule.model';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scheduleService.getAllSchedules().subscribe(x => this.schedules = x)
+    this.scheduleService.getAllSchedules().subscribe(x => this.schedules = x);
   }
 }

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import {ScheduleService} from "./shared/schedule.service";
+import {ScheduleService} from './shared/schedule.service';
 import {HttpClientModule} from '@angular/common/http';
 
 
