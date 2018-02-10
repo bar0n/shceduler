@@ -30,8 +30,7 @@ public class RepositoryIntegrationTests {
     @Rollback(false)
     public void findsFirstPageOf() {
 
-        Page<ScheduleLog> scheduleLogs = this.scheduleLogRestResource.findAll(PageRequest.of(0, 10));
-        assertThat(scheduleLogs.getTotalElements()).isEqualTo(0L);
+
 
         Page<Schedule> schedules = this.scheduleRestResource.findAll(PageRequest.of(0, 10));
         assertThat(schedules.getTotalElements()).isEqualTo(0L);
@@ -42,6 +41,11 @@ public class RepositoryIntegrationTests {
         scheduleLogRestResource.save(scheduleLog);
         Assert.assertNotNull(schedule.getId());
         Assert.assertNotNull(scheduleLog.getId());
+
+
+        Page<ScheduleLog> scheduleLogs = this.scheduleLogRestResource.findAll(PageRequest.of(0, 10));
+        assertThat(scheduleLogs.getTotalElements()).isEqualTo(1L);
+
         System.out.println(scheduleLog);
 
     }

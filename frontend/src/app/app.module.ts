@@ -1,21 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-
-import { AppComponent } from './app.component';
-import {ScheduleService} from './shared/schedule.service';
+import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
+import {SchedulerEntityModule} from "./entities/entity.module";
+import {AppRoutingModule} from "./app-routing.module";
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    CommonModule,
+    HttpClientModule,
+    SchedulerEntityModule.forRoot(),
+    AppRoutingModule,
+
   ],
-  providers: [ScheduleService],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -15,6 +15,15 @@
 	<name>Scheduler</name>
 	<description>Напоминатель</description>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<liquibase.version>3.5.3</liquibase.version>
+		<spring-boot.version>2.0.0.RC1</spring-boot.version>
+		<liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
+	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -22,11 +31,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
+
 	<repositories>
 		<repository>
 			<id>spring-snapshots</id>

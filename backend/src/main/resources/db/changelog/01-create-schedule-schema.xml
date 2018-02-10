@@ -23,10 +23,18 @@
             <column name="start" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+            <column name="stop" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
 
             <column name="next" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
         </createTable>
 
         <createTable tableName="schedule_log"

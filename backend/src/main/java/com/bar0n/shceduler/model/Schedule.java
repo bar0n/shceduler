@@ -22,6 +22,10 @@ public class Schedule  implements Serializable {
     private ZonedDateTime start;
     @Column
     private ZonedDateTime next;
+    @Column
+    private ZonedDateTime stop;
+    @Column
+    private Boolean active = true;
 
     public Schedule() {
     }
@@ -79,6 +83,22 @@ public class Schedule  implements Serializable {
 
     public void setNext(ZonedDateTime next) {
         this.next = next;
+    }
+
+    public ZonedDateTime getStop() {
+        return stop;
+    }
+
+    public void setStop(ZonedDateTime stop) {
+        this.stop = stop;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override

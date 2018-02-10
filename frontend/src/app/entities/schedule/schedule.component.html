@@ -1,0 +1,135 @@
+<div>
+  <h2>
+    <span>Schedules</span>
+  </h2>
+  <notifications></notifications>
+  <div class="row">
+  </div>
+  <br/>
+
+  <p-table [value]="schedules"
+           [resizableColumns]="true"
+           selectionMode="single" [(selection)]="selectedSchedule" (onRowSelect)="onRowSelect($event)"
+           dataKey="id"
+           [rows]="10"
+           [paginator]="true"
+           [rowsPerPageOptions]="[10,20,30]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id"><span>ID</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+        <th pSortableColumn="name"><span>Name</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+        <th pSortableColumn="cron"><span>Cron</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+        <th pSortableColumn="start"><span>Start</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+        <th pSortableColumn="next"><span>Next</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+        <th pSortableColumn="stop"><span>Stop</span>
+          <p-sortIcon field="dockCode"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-schedule>
+      <tr [pSelectableRow]="schedule">
+        <td>{{schedule.id}}</td>
+        <td>{{schedule.name}}</td>
+        <td>{{schedule.cron}}</td>
+        <td>{{schedule.start | date:'medium'}}</td>
+        <td>{{schedule.next | date:'medium'}}</td>
+        <td>{{schedule.stop | date:'medium'}}</td>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align:left">
+        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+      </div>
+    </ng-template>
+
+  </p-table>
+
+  <p-dialog header="Schedule Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+         [width]="300"   >
+    <div class="ui-g ui-fluid" *ngIf="schedule" style="margin-top: 20px">
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <label for="active">Active</label>
+        </div>
+        <div class="ui-g-10">
+          <p-checkbox id="active" [(ngModel)]="schedule.active" binary="true"></p-checkbox>
+        </div>
+      </div>
+      <div class="ui-g ui-fluid" *ngIf="schedule" style="margin-top: 20px">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="name">Name</label>
+          </div>
+          <div class="ui-g-10">
+            <input pInputText id="name" [(ngModel)]="schedule.name"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="cron">Cron</label>
+          </div>
+          <div class="ui-g-10">
+            <input pInputText id="cron" [(ngModel)]="schedule.cron"/>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="start">Start</label>
+          </div>
+          <div class="ui-g-10  ui-fluid" >
+            <p-calendar id="start" [(ngModel)]="schedule.start" name="start"  showTime="true" hourFormat="24"
+                        [showIcon]="true" showButtonBar="true">
+            </p-calendar>
+          </div>
+
+
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="start">Next</label>
+          </div>
+          <div class="ui-g-10 ui-fluid">
+            <p-calendar id="next" [(ngModel)]="schedule.next" name="next"   showTime="true" hourFormat="24"
+                        [showIcon]="true" showButtonBar="true">
+            </p-calendar>
+          </div>
+
+
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="start">Stop</label>
+          </div>
+          <div class="ui-g-10 ui-fluid">
+            <p-calendar id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
+                        [showIcon]="true" showButtonBar="true">
+            </p-calendar>
+          </div>
+
+
+        </div>
+
+      </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+          <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
+      </p-footer>
+  </p-dialog>
+</div>

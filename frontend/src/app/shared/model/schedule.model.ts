@@ -12,5 +12,9 @@ export class Schedule {
   public id?: number;
   public name?: string;
   public cron?: string;
+  public start?: Date;
+  public stop?: Date;
+  public next?: Date;
+  public active?: boolean;
 
 }
