@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ScheduleService} from './schedule.service';
 import {Schedule} from "../../shared/model/schedule.model";
 import {NotificationsService} from "../notifications/notifications.service";
+import {Observable} from "rxjs/Observable";
 
 
 @Component({
@@ -375,23 +376,42 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       schedules[this.schedules.indexOf(this.selectedSchedule)] = this.schedule;
 
     this.schedules = schedules;*/
-
-    if (this.schedule && this.schedule.id) {
-      this.scheduleService.update(this.schedule);
+    if (this.schedule.id !== undefined) {
+      this.subscribeToSaveResponse(
+        this.scheduleService.update(this.schedule));
     } else {
-      this.scheduleService.create(this.schedule);
+      this.subscribeToSaveResponse(
+        this.scheduleService.create(this.schedule));
     }
-    this.loadAll();
-    this.schedule = new Schedule();
     this.displayDialog = false;
   }
 
+  private subscribeToSaveResponse(result: Observable<HttpResponse<Schedule>>) {
+    result.subscribe((res: HttpResponse<Schedule>) =>
+      this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError(res));
+  }
+
+  private onSaveSuccess(result: Schedule) {
+    this.notificationsService.notify('success', "", " saved");
+    this.schedule = result;
+    this.loadAll();
+  }
+
+  private onSaveError(error) {
+    this.notificationsService.notify('error', error, error.message);
+  }
+
   delete() {
-/*    let index = this.schedules.indexOf(this.selectedSchedule);
-    this.schedules = this.schedules.filter((val, i) => i != index);*/
+    /*    let index = this.schedules.indexOf(this.selectedSchedule);
+        this.schedules = this.schedules.filter((val, i) => i != index);*/
     if (this.schedule && this.schedule.id) {
-      this.scheduleService.delete(this.schedule.id);
-      this.loadAll();
+      this.scheduleService.delete(this.schedule.id).subscribe(x => {
+          this.notificationsService.notify('success', "", " deleted ");
+          this.loadAll();
+          this.schedule = new Schedule();
+        }
+      );
+
     }
 
     this.schedule = new Schedule();

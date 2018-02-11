@@ -17,24 +17,24 @@
             </column>
 
             <column name="cron" type="varchar(100)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
             <column name="start" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="stop" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
             <column name="next" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="NOW()">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="active" type="boolean"  valueBoolean="true">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="description" type="varchar(500)">
                 <constraints nullable="true"/>
@@ -57,10 +57,10 @@
         <createTable tableName="schedule_log"
                      remarks="A table to contain all the authors">
             <column name="id" type="bigint">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="true" primaryKey="true"/>
             </column>
             <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="schedule_id" type="bigint">
                 <constraints nullable="true" />
