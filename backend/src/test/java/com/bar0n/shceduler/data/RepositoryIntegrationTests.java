@@ -13,8 +13,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Created by dbaron
  */
@@ -39,15 +41,31 @@ public class RepositoryIntegrationTests {
 
         ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
         scheduleLogRepository.save(scheduleLog);
+        ScheduleLog scheduleLog2 = new ScheduleLog(ZonedDateTime.now(), schedule);
+        scheduleLogRepository.save(scheduleLog2);
         Assert.assertNotNull(schedule.getId());
         Assert.assertNotNull(scheduleLog.getId());
 
 
         Page<ScheduleLog> scheduleLogs = this.scheduleLogRepository.findAll(PageRequest.of(0, 10));
-        assertThat(scheduleLogs.getTotalElements()).isEqualTo(1L);
+        assertThat(scheduleLogs.getTotalElements()).isEqualTo(2L);
 
         System.out.println(scheduleLog);
 
+
+    }
+
+    @Test
+    @Rollback(true)
+    public void findAllByNextLessThan() {
+        ZonedDateTime now = ZonedDateTime.now().minusDays(1);
+        Schedule schedule1 = new Schedule("name1", "cron1", now, now);
+        scheduleRepository.save(schedule1);
+        ZonedDateTime zonedDateTime = now.plusDays(7);
+        Schedule schedule2 = new Schedule("name2", "cron2", zonedDateTime, zonedDateTime);
+        scheduleRepository.save(schedule2);
+        List<Schedule> allByNextLessThan = scheduleRepository.findAllByNextLessThan(ZonedDateTime.now());
+        System.out.println(allByNextLessThan);
     }
 
    /* @scheduleLog

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Notification</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+    </head>
+    <body>
+        <p th:text="${schedule.person}">
+            Dear
+        </p>
+        <p th:text="${schedule.name}">
+
+        </p>
+        <p th:text="${schedule.description}">
+
+        </p>
+        <p>
+            <br/>
+        </p>
+    </body>
+</html>

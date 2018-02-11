@@ -48,8 +48,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     ];
 
     this.periods = [
-      {
-        code: '* * * ? * *',
+      /*{
+       code: '* * * ? * *',
         name: 'Every second'
       },
       {
@@ -57,7 +57,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every minute'
       },
       {
-        code: '0 */2 * ? * *',
+        code: '0 *!/2 * ? * *',
         name: 'Every even minute'
       },
       {
@@ -65,31 +65,28 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every uneven minute'
       },
       {
-        code: '0 */2 * ? * *',
+        code: '0 *!/2 * ? * *',
         name: 'Every 2 minutes'
       },
       {
-        code: '0 */3 * ? * *',
+        code: '0 *!/3 * ? * *',
         name: 'Every 3 minutes'
       },
       {
-        code: '0 */4 * ? * *',
+        code: '0 *!/4 * ? * *',
         name: 'Every 4 minutes'
       },
       {
-        code: '0 */5 * ? * *',
+        code: '0 *!/5 * ? * *',
         name: 'Every 5 minutes'
       },
+
       {
-        code: '0 */10 * ? * *',
-        name: 'Every 10 minutes'
-      },
-      {
-        code: '0 */15 * ? * *',
+        code: '0 *!/15 * ? * *',
         name: 'Every 15 minutes'
       },
       {
-        code: '0 */30 * ? * *',
+        code: '0 *!/30 * ? * *',
         name: 'Every 30 minutes'
       },
       {
@@ -101,7 +98,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every hour'
       },
       {
-        code: '0 0 */2 ? * *',
+        code: '0 0 *!/2 ? * *',
         name: 'Every hour'
       },
       {
@@ -113,20 +110,24 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every uneven hour'
       },
       {
-        code: '0 0 */3 ? * *',
+        code: '0 0 *!/3 ? * *',
         name: 'Every three hours'
       },
       {
-        code: '0 0 */4 ? * *',
+        code: '0 0 *!/4 ? * *',
         name: 'Every four hours'
       },
       {
-        code: '0 0 */6 ? * *',
+        code: '0 0 *!/6 ? * *',
         name: 'Every six hours'
       },
       {
-        code: '0 0 */8 ? * *',
+        code: '0 0 *!/8 ? * *',
         name: 'Every eight hours'
+      },*/
+      {
+        code: '0 *!/10 * ? * *',
+        name: 'Every 10 minutes'
       },
       {
         code: '0 0 */12 ? * *',
@@ -145,47 +146,47 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every day at 6am'
       },
       {
-        code: '0 0 12 * * ?',
+        code: '0 0 12 ? * ?',
         name: 'Every day at noon - 12pm'
       },
       {
-        code: '0 0 12 * * ?',
+        code: '0 0 12 ? * ?',
         name: 'Every day at noon - 12pm'
       },
       {
-        code: '0 0 12 * * SUN',
+        code: '0 0 12 ? * SUN', //0 0 12 ? * SUN
         name: 'Every Sunday at noon'
       },
       {
-        code: '0 0 12 * * MON',
+        code: '0 0 12 ? * MON',
         name: 'Every Monday at noon'
       },
       {
-        code: '0 0 12 * * TUE',
+        code: '0 0 12 ? * TUE',
         name: 'Every Tuesday at noon'
       },
       {
-        code: '0 0 12 * * WED',
+        code: '0 0 12 ? * WED',
         name: 'Every Wednesday at noon'
       },
       {
-        code: '0 0 12 * * THU',
+        code: '0 0 12 ? * THU',
         name: 'Every Thursday at noon'
       },
       {
-        code: '0 0 12 * * FRI',
+        code: '0 0 12 ? * FRI',
         name: 'Every Friday at noon'
       },
       {
-        code: '0 0 12 * * SAT',
+        code: '0 0 12 ? * SAT',
         name: 'Every Saturday at noon'
       },
       {
-        code: '0 0 12 * * MON-FRI',
+        code: '0 0 12 ? * MON-FRI',
         name: 'Every Weekday at noon'
       },
       {
-        code: '0 0 12 * * SUN,SAT',
+        code: '0 0 12 ? * SUN,SAT',
         name: 'Every Saturday and Sunday at noon'
       },
       {
@@ -285,6 +286,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every day at noon between September and December'
       }
     ];
+
   }
 
   loadAll() {

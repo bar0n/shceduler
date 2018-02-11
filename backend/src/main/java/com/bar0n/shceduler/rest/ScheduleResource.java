@@ -7,6 +7,7 @@ import com.bar0n.shceduler.rest.errors.BadRequestAlertException;
 import com.bar0n.shceduler.rest.util.HeaderUtil;
 import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
+import com.bar0n.shceduler.services.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +32,11 @@ public class ScheduleResource {
     private static final String ENTITY_NAME = "schedule";
 
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleService scheduleService;
 
-    public ScheduleResource(ScheduleRepository scheduleRepository) {
+    public ScheduleResource(ScheduleRepository scheduleRepository, ScheduleService scheduleService) {
         this.scheduleRepository = scheduleRepository;
+        this.scheduleService = scheduleService;
     }
 
     /**
@@ -49,6 +53,9 @@ public class ScheduleResource {
         if (schedule.getId() != null) {
             throw new BadRequestAlertException("A new schedule cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
+        schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -71,6 +78,9 @@ public class ScheduleResource {
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }
+
+        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
+        schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, schedule.getId().toString()))
