@@ -17,34 +17,32 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="id"><span>ID</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
+        <th pSortableColumn="id" style="width: 30px" ><span>ID</span>
+          <p-sortIcon field="id"></p-sortIcon>
         </th>
         <th pSortableColumn="name"><span>Name</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="person"><span>Person</span>
+          <p-sortIcon field="person"></p-sortIcon>
+        </th>
+
+        <th pSortableColumn="next"><span>Next</span>
+          <p-sortIcon field="next"></p-sortIcon>
         </th>
         <th pSortableColumn="cron"><span>Cron</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
+          <p-sortIcon field="cron"></p-sortIcon>
         </th>
-        <th pSortableColumn="start"><span>Start</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
-        </th>
-        <th pSortableColumn="next"><span>Next</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
-        </th>
-        <th pSortableColumn="stop"><span>Stop</span>
-          <p-sortIcon field="dockCode"></p-sortIcon>
-        </th>
+
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-schedule>
-      <tr [pSelectableRow]="schedule">
+      <tr [pSelectableRow]="schedule" style="height: 20px">
         <td>{{schedule.id}}</td>
         <td>{{schedule.name}}</td>
-        <td>{{schedule.cron}}</td>
-        <td>{{schedule.start | date:'medium'}}</td>
+        <td>{{schedule.person}}</td>
         <td>{{schedule.next | date:'medium'}}</td>
-        <td>{{schedule.stop | date:'medium'}}</td>
+        <td>{{schedule.cron}}</td>
 
       </tr>
     </ng-template>
@@ -57,17 +55,18 @@
   </p-table>
 
   <p-dialog header="Schedule Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-         [width]="300"   >
-    <div class="ui-g ui-fluid" *ngIf="schedule" style="margin-top: 20px">
+         [width]="500"   >
+    {{schedule | json}}
+    <div class="ui-g ui-fluid" *ngIf="schedule">
       <div class="ui-g-12">
         <div class="ui-g-2">
           <label for="active">Active</label>
         </div>
         <div class="ui-g-10">
-          <p-checkbox id="active" [(ngModel)]="schedule.active" binary="true"></p-checkbox>
+          <input id="active" type="checkbox" [(ngModel)]="schedule.active">
         </div>
       </div>
-      <div class="ui-g ui-fluid" *ngIf="schedule" style="margin-top: 20px">
+      <div class="ui-g ui-fluid" >
         <div class="ui-g-12">
           <div class="ui-g-2">
             <label for="name">Name</label>
@@ -78,13 +77,69 @@
         </div>
 
         <div class="ui-g-12">
+          <div class="ui-g-1">
+            <label for="Period">Period</label>
+          </div>
+          <div class="ui-g-11">
+            <select id="Period"   [(ngModel)]="schedule.cron" >
+              <option *ngFor="let name of periods " [value]="name.code">{{name.name}}</option>
+            </select>
+           <!-- <p-dropdown  id ="period"
+                         [style]="{'width':'300px'}" editable="true"
+                         (onChange)="periodChange($event)"
+                         [options]="periods"
+                         dataKey="code"
+                         [(ngModel)]="periodTxt"
+                         optionLabel="name"></p-dropdown>-->
+          </div>
+        </div>
+        <!---->
+
+        <div class="ui-g-12">
+          <cron-jobs  [(ngModel)]="schedule.cron"  [ngModelOptions]="{standalone: true}" ></cron-jobs>
+        </div>
+        <div class="ui-g-12">
           <div class="ui-g-2">
             <label for="cron">Cron</label>
           </div>
           <div class="ui-g-10">
             <input pInputText id="cron" [(ngModel)]="schedule.cron"/>
+            {{periodTxt}}
           </div>
         </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="person">Person</label>
+          </div>
+          <div class="ui-g-10">
+
+            <select id="person"  [(ngModel)]="schedule.person">
+              <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
+            </select>
+        <!--    <p-dropdown  id ="person" [options]="us"
+                         [(ngModel)]="selectedPeson"
+                         dataKey="code"
+                         (onchange)="personChange($event)"
+                         optionLabel="name"></p-dropdown>-->
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="email">Email</label>
+          </div>
+          <div class="ui-g-10">
+            <input pInputText id="email" [(ngModel)]="schedule.email"/>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <label for="desc">Description</label>
+          </div>
+          <div class="ui-g-9">
+            <textarea id ="desc" pInputTextarea [(ngModel)]="schedule.description" [rows]="5"></textarea>
+          </div>
+        </div>
+
         <div class="ui-g-12">
           <div class="ui-g-2">
             <label for="start">Start</label>
@@ -99,7 +154,7 @@
         </div>
         <div class="ui-g-12">
           <div class="ui-g-2">
-            <label for="start">Next</label>
+            <label for="next">Next</label>
           </div>
           <div class="ui-g-10 ui-fluid">
             <p-calendar id="next" [(ngModel)]="schedule.next" name="next"   showTime="true" hourFormat="24"

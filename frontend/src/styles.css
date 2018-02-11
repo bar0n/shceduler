@@ -1,3 +1,11 @@
+.ui-widget {
+  font: 12px Tahoma, Arial, Helvetica, sans-serif !important;
+  line-height: 14px !important;
+}
+
+.ui-datepicker {
+  width: auto !important;
+}
 /*
 * {
   margin: 0;
@@ -437,10 +445,7 @@ p.session-bar-txt-2 {
   !*background: #F3F4F4 !important;*!
 }
 
-.ui-widget {
-  font: 12px Tahoma, Arial, Helvetica, sans-serif !important;
-  line-height: 14px !important;
-}
+
 
 .ui-panel.ui-widget {
   margin-bottom: 10px;
@@ -494,9 +499,7 @@ p.session-bar-txt-2 {
   width: 24px;
 }
 
-.ui-datepicker {
-  width: auto !important;
-}
+
 
 .ui-button {
   height: 28px !important;

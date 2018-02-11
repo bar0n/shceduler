@@ -13,16 +13,17 @@ export type EntityResponseType = HttpResponse<Schedule>;
 @Injectable()
 export class ScheduleService {
 
-  private resourceUrl =  SERVER_API_URL + 'api/schedule';
+  private resourceUrl =  SERVER_API_URL + 'api/schedules';
   private dateUtils: DateUtils = new DateUtils();
 
   constructor(private http: HttpClient ) { }
 
   getAllSchedules(): Observable<Schedule[]> {
-    return this.http.get<Schedule[]>('api/schedule/');
+    return this.http.get<Schedule[]>(this.resourceUrl);
   }
 
   create(schedule: Schedule): Observable<EntityResponseType> {
+    console.log("create",JSON.stringify(schedule));
     const copy = this.convert(schedule);
     let observable = this.http.post<Schedule>(this.resourceUrl, copy, { observe: 'response' });
     return observable.map((res: EntityResponseType) => this.convertResponse(res));
@@ -72,6 +73,8 @@ export class ScheduleService {
       .convertDateTimeFromServer(schedule.start);
     copy.next = this.dateUtils
       .convertDateTimeFromServer(schedule.next);
+    copy.stop = this.dateUtils
+      .convertDateTimeFromServer(schedule.stop);
     return copy;
   }
 
@@ -81,9 +84,11 @@ export class ScheduleService {
   private convert(schedule: Schedule): Schedule {
     const copy: Schedule = Object.assign({}, schedule);
 
-    copy.start = this.dateUtils.toDate(schedule.start);
+    /*copy.start = this.dateUtils.toDate(schedule.start);
 
     copy.next = this.dateUtils.toDate(schedule.next);
+
+    copy.stop = this.dateUtils.toDate(schedule.stop);*/
     return copy;
   }
 }

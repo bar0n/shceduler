@@ -13,6 +13,10 @@ import {FormsModule} from "@angular/forms";
 import {CalendarModule, DropdownModule, InputTextModule} from "primeng/primeng";
 import {ButtonModule} from "primeng/button";
 import {CheckboxModule} from 'primeng/checkbox';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import { CronJobsModule } from 'ngx-cron-jobs';
+
+import {InputTextareaModule} from 'primeng/inputtextarea';
 @NgModule({
   imports: [NotificationsModule,
     CommonModule,
@@ -20,7 +24,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     RouterModule,
     BrowserAnimationsModule,
     DialogModule,
-
+    InputSwitchModule,
     CheckboxModule,
     BrowserModule,
     FormsModule,
@@ -29,7 +33,9 @@ import {CheckboxModule} from 'primeng/checkbox';
     DialogModule,
     CommonModule,
     CalendarModule,
-    DropdownModule
+    InputTextareaModule,
+    DropdownModule,
+    CronJobsModule,
 
   ],
   declarations: [

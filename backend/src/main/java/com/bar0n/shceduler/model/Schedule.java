@@ -18,12 +18,25 @@ public class Schedule  implements Serializable {
     private String name;
     @Column
     private String cron;
+
+    @Column
+    private String periodTxt;
+    @Column
+    private String email;
+    @Column
+    private String description;
+    @Column
+    private String author;
+    @Column
+    private String person;
     @Column
     private ZonedDateTime start;
     @Column
     private ZonedDateTime next;
     @Column
     private ZonedDateTime stop;
+    @Column
+    private ZonedDateTime createdDate;
     @Column
     private Boolean active = true;
 
@@ -126,5 +139,53 @@ public class Schedule  implements Serializable {
                 ", start=" + start +
                 ", next=" + next +
                 '}';
+    }
+
+    public String getPeriodTxt() {
+        return periodTxt;
+    }
+
+    public void setPeriodTxt(String periodTxt) {
+        this.periodTxt = periodTxt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }

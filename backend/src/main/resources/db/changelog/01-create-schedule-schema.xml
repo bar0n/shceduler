@@ -30,9 +30,26 @@
             <column name="next" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="active" type="boolean">
+            <column name="created_date" type="timestamp" defaultValueDate="NOW()">
                 <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean"  valueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="author" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="person" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="period_txt" type="varchar(50)">
+                <constraints nullable="true"/>
             </column>
 
         </createTable>

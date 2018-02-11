@@ -22,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class RepositoryIntegrationTests {
     @Autowired
-    ScheduleRestResource scheduleRestResource;
+    ScheduleRepository scheduleRepository;
     @Autowired
-    ScheduleLogRestResource scheduleLogRestResource;
+    ScheduleLogRepository scheduleLogRepository;
 
     @Test
     @Rollback(false)
@@ -32,18 +32,18 @@ public class RepositoryIntegrationTests {
 
 
 
-        Page<Schedule> schedules = this.scheduleRestResource.findAll(PageRequest.of(0, 10));
+        Page<Schedule> schedules = this.scheduleRepository.findAll(PageRequest.of(0, 10));
         assertThat(schedules.getTotalElements()).isEqualTo(0L);
         Schedule schedule = new Schedule("name", "cron", ZonedDateTime.now(), ZonedDateTime.now());
-        scheduleRestResource.save(schedule);
+        scheduleRepository.save(schedule);
 
         ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
-        scheduleLogRestResource.save(scheduleLog);
+        scheduleLogRepository.save(scheduleLog);
         Assert.assertNotNull(schedule.getId());
         Assert.assertNotNull(scheduleLog.getId());
 
 
-        Page<ScheduleLog> scheduleLogs = this.scheduleLogRestResource.findAll(PageRequest.of(0, 10));
+        Page<ScheduleLog> scheduleLogs = this.scheduleLogRepository.findAll(PageRequest.of(0, 10));
         assertThat(scheduleLogs.getTotalElements()).isEqualTo(1L);
 
         System.out.println(scheduleLog);
