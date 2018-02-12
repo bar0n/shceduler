@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {APP_LOCAL_DATETIME_FORMAT} from "../../app.constants";
+import {APP_LOCAL_DATETIME_FORMAT} from '../../app.constants';
 import {DatePipe} from '@angular/common';
 
 
@@ -67,9 +67,9 @@ export default class DateUtils {
     if (date === undefined || date === null) {
       return null;
     }
-    console.log("todate",date);
+    console.log('todate',date);
     var dateParts = date.toString().split(/\D+/);
-    console.log("todate",dateParts);
+    console.log('todate',dateParts);
     if (dateParts.length === 7) {
       return new Date(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4], dateParts[5], dateParts[6]);
     }

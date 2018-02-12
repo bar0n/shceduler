@@ -5,9 +5,9 @@ import 'rxjs/add/operator/map'
 
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Schedule} from '../../shared/model/schedule.model';
-import DateUtils from "../../shared/util/date-utils";
-import {SERVER_API_URL} from "../../app.constants";
-import {createRequestOption} from "../../shared/model/request-util";
+import DateUtils from '../../shared/util/date-utils';
+import {SERVER_API_URL} from '../../app.constants';
+import {createRequestOption} from '../../shared/model/request-util';
 
 export type EntityResponseType = HttpResponse<Schedule>;
 @Injectable()
@@ -23,7 +23,7 @@ export class ScheduleService {
   }
 
   create(schedule: Schedule): Observable<EntityResponseType> {
-    console.log("create",JSON.stringify(schedule));
+    console.log('create',JSON.stringify(schedule));
     const copy = this.convert(schedule);
     let observable = this.http.post<Schedule>(this.resourceUrl, copy, { observe: 'response' });
     return observable.map((res: EntityResponseType) => this.convertResponse(res));

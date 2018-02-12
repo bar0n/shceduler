@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ScheduleComponent} from './entities/schedule/schedule.component';
-import {ScheduleLogComponent} from "./entities/schedule-log";
+import {ScheduleLogComponent} from './entities/schedule-log';
 
 const routes: Routes = [
   {path : '', pathMatch: 'full' , redirectTo: '/schedule'},

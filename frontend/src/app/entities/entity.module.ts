@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 
 import {ScheduleModule} from 'primeng/schedule';
-import {SchedulerScheduleModule} from "./schedule/schedule.module";
-import {NotificationsService} from "./notifications/notifications.service";
-import {NotificationsModule} from "./notifications/notification.module";
-import {CommonModule} from "@angular/common";
-import {SchedulerScheduleLogModule} from "./schedule-log/schedule-log.module";
+import {SchedulerScheduleModule} from './schedule/schedule.module';
+import {NotificationsService} from './notifications/notifications.service';
+import {NotificationsModule} from './notifications/notification.module';
+import {CommonModule} from '@angular/common';
+import {SchedulerScheduleLogModule} from './schedule-log/schedule-log.module';
 
 
 @NgModule({

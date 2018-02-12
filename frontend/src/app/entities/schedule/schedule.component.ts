@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScheduleService} from './schedule.service';
-import {Schedule} from "../../shared/model/schedule.model";
-import {NotificationsService} from "../notifications/notifications.service";
-import {Observable} from "rxjs/Observable";
+import {Schedule} from '../../shared/model/schedule.model';
+import {NotificationsService} from '../notifications/notifications.service';
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -394,7 +394,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   private onSaveSuccess(result: Schedule) {
-    this.notificationsService.notify('success', "", " saved");
+    this.notificationsService.notify('success', '', ' saved');
     this.schedule = result;
     this.loadAll();
   }
@@ -408,7 +408,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         this.schedules = this.schedules.filter((val, i) => i != index);*/
     if (this.schedule && this.schedule.id) {
       this.scheduleService.delete(this.schedule.id).subscribe(x => {
-          this.notificationsService.notify('success', "", " deleted ");
+          this.notificationsService.notify('success', '', ' deleted ');
           this.loadAll();
           this.schedule = new Schedule();
         }

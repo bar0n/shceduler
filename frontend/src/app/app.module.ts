@@ -4,8 +4,8 @@ import {CommonModule} from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
-import {SchedulerEntityModule} from "./entities/entity.module";
-import {AppRoutingModule} from "./app-routing.module";
+import {SchedulerEntityModule} from './entities/entity.module';
+import {AppRoutingModule} from './app-routing.module';
 
 
 @NgModule({

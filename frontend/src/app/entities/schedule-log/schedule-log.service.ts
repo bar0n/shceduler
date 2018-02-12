@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {SERVER_API_URL} from '../../app.constants';
-import {ScheduleLog} from "../../shared/model/schedule-log.model";
-import DateUtils from "../../shared/util/date-utils";
-import {createRequestOption} from "../../shared/model/request-util";
+import {ScheduleLog} from '../../shared/model/schedule-log.model';
+import DateUtils from '../../shared/util/date-utils';
+import {createRequestOption} from '../../shared/model/request-util';
 
 
 export type EntityResponseType = HttpResponse<ScheduleLog>;
