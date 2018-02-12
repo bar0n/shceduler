@@ -27,6 +27,13 @@
     <logger name="com.bar0n.shceduler.rest.ScheduleResource" additivity="false" level="INFO">
         <appender-ref ref="CONSOLE" />
     </logger>
+    <logger name="com.bar0n.shceduler.services.ScheduleService" additivity="false" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="com.bar0n.shceduler.ScheduleJob" additivity="false" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
 
     <!-- put your root here -->
     <root level="warn">

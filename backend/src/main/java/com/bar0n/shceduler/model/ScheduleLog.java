@@ -1,5 +1,7 @@
 package com.bar0n.shceduler.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -20,6 +22,8 @@ public class ScheduleLog {
 
     @ManyToOne(optional = false)
     @NaturalId
+    @JsonManagedReference
+    //@JoinColumn(name = "schedule_id", insertable = false, updatable = false)
     private Schedule schedule;
     @Column
     private Boolean completed = false;

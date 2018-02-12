@@ -33,7 +33,6 @@ public class RepositoryIntegrationTests {
     public void findsFirstPageOf() {
 
 
-
         Page<Schedule> schedules = this.scheduleRepository.findAll(PageRequest.of(0, 10));
         assertThat(schedules.getTotalElements()).isEqualTo(0L);
         Schedule schedule = new Schedule("name", "cron", ZonedDateTime.now(), ZonedDateTime.now());
@@ -63,24 +62,29 @@ public class RepositoryIntegrationTests {
         scheduleRepository.save(schedule1);
         ZonedDateTime zonedDateTime = now.plusDays(7);
         Schedule schedule2 = new Schedule("name2", "cron2", zonedDateTime, zonedDateTime);
-        scheduleRepository.save(schedule2);
+
+
         List<Schedule> allByNextLessThan = scheduleRepository.findAllByNextLessThan(ZonedDateTime.now());
         System.out.println(allByNextLessThan);
     }
 
-   /* @scheduleLog
-    public void findByNameAndCountry() {
-        Schedule city = this.scheduleRestResource.findByNameAndCountryAllIgnoringCase("Melbourne",
-                "Australia");
-        assertThat(city).isNotNull();
-        assertThat(city.getName()).isEqualTo("Melbourne");
+    @Test
+    @Rollback(true)
+    public void manyToOneTest() {
+        ZonedDateTime now = ZonedDateTime.now().minusDays(1);
+        Schedule schedule = new Schedule("name1", "cron1", now, now);
+        scheduleRepository.save(schedule);
+        ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
+        scheduleLog.setCompleted(true);
+        scheduleLogRepository.save(scheduleLog);
+        ScheduleLog scheduleLog2 = new ScheduleLog(ZonedDateTime.now(), schedule);
+        scheduleLogRepository.save(scheduleLog2);
+
+        Schedule one = scheduleRepository.getOne(schedule.getId());
+
+        int size = one.getScheduleLogs().size();
+        int i = 1;
+        Assert.assertEquals(size, i);
     }
 
-    @Test
-    public void findContaining() {
-        Page<Schedule> cities = this.scheduleRestResource
-                .findByNameContainingAndCountryContainingAllIgnoringCase("", "UK",
-                        PageRequest.of(0, 10));
-        assertThat(cities.getTotalElements()).isEqualTo(3L);
-    }*/
 }

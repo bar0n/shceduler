@@ -1,72 +1,70 @@
 <div>
-    <h2>
-        <span>Schedule Logs</span>
-        <!--<button class="btn btn-primary float-right jh-create-entity create-schedule-log" [routerLink]="['/', { outlets: { popup: ['schedule-log-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span >
-            Create new Schedule Log
-            </span>
-        </button>-->
-    </h2>
- <!--   <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
-    <br/>
-    <div class="table-responsive" *ngIf="scheduleLogs">
-        <table class="table table-striped">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="created"><span>Created</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="schedule.id"><span>Schedule</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let scheduleLog of scheduleLogs ;trackBy: trackId">
-                <td><a [routerLink]="['../schedule-log', scheduleLog.id ]">{{scheduleLog.id}}</a></td>
-                <td>{{scheduleLog.created | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="scheduleLog.schedule">
-                        <a [routerLink]="['../schedule', scheduleLog.schedule?.id ]" >{{scheduleLog.schedule?.id}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../schedule-log', scheduleLog.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'schedule-log/'+ scheduleLog.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'schedule-log/'+ scheduleLog.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div *ngIf="scheduleLogs && scheduleLogs.length">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
-    </div>-->
+  <h2>
+    <span>Schedule Logs</span>
+  </h2>
+
+
+  <notifications></notifications>
+
+  <p-table [value]="scheduleLogs"
+           [resizableColumns]="true"
+           dataKey="id"
+           [rows]="10"
+           [paginator]="true"
+           [rowsPerPageOptions]="[10,20,30]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width: 30px"><span>ID</span>
+          <p-sortIcon field="id"></p-sortIcon>
+        </th>
+        <th pSortableColumn="schedule.name"><span>Name</span>
+          <p-sortIcon field="schedule.name"></p-sortIcon>
+        </th>
+
+        <th pSortableColumn="completed"><span>completed</span>
+          <p-sortIcon field="completed"></p-sortIcon>
+        </th>
+        <th pSortableColumn="schedule.person"><span>Person</span>
+          <p-sortIcon field="schedule.person"></p-sortIcon>
+        </th>
+
+        <th pSortableColumn="created"><span>created</span>
+          <p-sortIcon field="created"></p-sortIcon>
+        </th>
+        <th pSortableColumn="schedule.next"><span>Next</span>
+          <p-sortIcon field="schedule.next"></p-sortIcon>
+        </th>
+        <th pSortableColumn="schedule.cron"><span>Cron</span>
+          <p-sortIcon field="schedule.cron"></p-sortIcon>
+        </th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr [pSelectableRow]="item" style="height: 20px">
+        <td>{{item.id}}</td>
+        <td>{{item.schedule.name}}</td>
+        <td>
+          <!--<p-cellEditor>
+           &lt;!&ndash; <input id="active" type="checkbox" [(ngModel)]="item.completed">&ndash;&gt;
+            <ng-template pTemplate="input">
+              <input id="active" type="checkbox" [(ngModel)]="item.completed">
+            </ng-template>
+            <ng-template pTemplate="output">
+              <p-tableCheckbox [value]="item"></p-tableCheckbox>
+            </ng-template>
+          </p-cellEditor>-->
+
+          <input id="active" type="checkbox" [(ngModel)]="item.completed" (change)="onChangeCompleted(item)">
+        </td>
+        <td>{{item.schedule.person}}</td>
+        <td>{{item.created | date:'dd/MMM/yyyy HH:mm'}}</td>
+        <td>{{item.schedule.next | date:'dd/MMM/yyyy HH:mm'}}</td>
+        <td>{{item.schedule.cron}}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+  {{y|json}}
 </div>

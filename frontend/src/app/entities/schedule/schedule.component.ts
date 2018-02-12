@@ -126,7 +126,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every eight hours'
       },*/
       {
-        code: '0 *!/10 * ? * *',
+        code: '0 */10 * ? * *',
         name: 'Every 10 minutes'
       },
       {

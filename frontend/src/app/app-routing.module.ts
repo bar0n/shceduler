@@ -4,6 +4,7 @@ import {ScheduleComponent} from './entities/schedule/schedule.component';
 import {ScheduleLogComponent} from "./entities/schedule-log";
 
 const routes: Routes = [
+  {path : '', pathMatch: 'full' , redirectTo: '/schedule'},
   {path: 'schedule', component: ScheduleComponent},
   {path: 'scheduleLog', component: ScheduleLogComponent}
 ];

@@ -1,5 +1,8 @@
 package com.bar0n.shceduler.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -13,7 +16,8 @@ import java.util.Objects;
  * Created by dbaron
  */
 @Entity
-public class Schedule  implements Serializable {
+@Proxy(lazy = false)
+public class Schedule implements Serializable {
     @Id
     @SequenceGenerator(name = "schedule_generator", sequenceName = "schedule_sequence", initialValue = 1)
     @GeneratedValue(generator = "schedule_generator")
@@ -44,9 +48,13 @@ public class Schedule  implements Serializable {
     private ZonedDateTime createdDate;
     @Column
     private Boolean active = true;
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="parent")
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = ScheduleLog.class
+            , mappedBy = "schedule") //
+    // @JoinColumn(name="schedule_id")
     @Where(clause = "completed = false")
-    private List<ScheduleLog> scheduleLogs= new ArrayList<>();
+    @JsonBackReference
+    private List<ScheduleLog> scheduleLogs = new ArrayList<>();
+
     public Schedule() {
     }
 
