@@ -1,8 +1,12 @@
 package com.bar0n.shceduler.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,7 +22,8 @@ public class Schedule  implements Serializable {
     private String name;
     @Column
     private String cron;
-
+    @Column
+    private String cronReminder;
     @Column
     private String periodTxt;
     @Column
@@ -39,7 +44,9 @@ public class Schedule  implements Serializable {
     private ZonedDateTime createdDate;
     @Column
     private Boolean active = true;
-
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="parent")
+    @Where(clause = "completed = false")
+    private List<ScheduleLog> scheduleLogs= new ArrayList<>();
     public Schedule() {
     }
 
@@ -177,6 +184,22 @@ public class Schedule  implements Serializable {
         return person;
     }
 
+    public List<ScheduleLog> getScheduleLogs() {
+        return scheduleLogs;
+    }
+
+    public String getCronReminder() {
+        return cronReminder;
+    }
+
+    public void setCronReminder(String cronReminder) {
+        this.cronReminder = cronReminder;
+    }
+
+    public void setScheduleLogs(List<ScheduleLog> scheduleLogs) {
+        this.scheduleLogs = scheduleLogs;
+    }
+
     public void setPerson(String person) {
         this.person = person;
     }
@@ -188,4 +211,7 @@ public class Schedule  implements Serializable {
     public void setCreatedDate(ZonedDateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+
 }
+

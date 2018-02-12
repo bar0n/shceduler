@@ -32,15 +32,13 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
 
-    private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
     public MailService( JavaMailSender javaMailSender,
-                       MessageSource messageSource, SpringTemplateEngine templateEngine) {
+                       SpringTemplateEngine templateEngine) {
 
         this.javaMailSender = javaMailSender;
-        this.messageSource = messageSource;
         this.templateEngine = templateEngine;
     }
 

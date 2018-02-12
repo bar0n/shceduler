@@ -5,11 +5,13 @@ import {SchedulerScheduleModule} from "./schedule/schedule.module";
 import {NotificationsService} from "./notifications/notifications.service";
 import {NotificationsModule} from "./notifications/notification.module";
 import {CommonModule} from "@angular/common";
+import {SchedulerScheduleLogModule} from "./schedule-log/schedule-log.module";
 
 
 @NgModule({
   imports: [
     SchedulerScheduleModule,
+    SchedulerScheduleLogModule,
     ScheduleModule,
     CommonModule,
     NotificationsModule
@@ -17,7 +19,10 @@ import {CommonModule} from "@angular/common";
   declarations: [],
   entryComponents: [],
   providers: [NotificationsService],
-  exports:[SchedulerScheduleModule]
+  exports: [
+    SchedulerScheduleModule,
+    SchedulerScheduleLogModule
+  ]
 })
 export class SchedulerEntityModule {
   static forRoot() {

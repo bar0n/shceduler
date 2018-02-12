@@ -4,6 +4,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * Created by dbaron
@@ -20,7 +21,8 @@ public class ScheduleLog {
     @ManyToOne(optional = false)
     @NaturalId
     private Schedule schedule;
-
+    @Column
+    private Boolean completed = false;
 
     public ScheduleLog(ZonedDateTime created, Schedule schedule) {
         this.created = created;
@@ -38,6 +40,14 @@ public class ScheduleLog {
         this.id = id;
     }
 
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
     public ZonedDateTime getCreated() {
         return created;
     }
@@ -52,5 +62,31 @@ public class ScheduleLog {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScheduleLog that = (ScheduleLog) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(created, that.created) &&
+                Objects.equals(schedule, that.schedule) &&
+                Objects.equals(completed, that.completed);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, created, schedule, completed);
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleLog{" +
+                "id=" + id +
+                ", created=" + created +
+                ", schedule=" + schedule +
+                '}';
     }
 }
