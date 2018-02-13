@@ -5,6 +5,7 @@ import {SERVER_API_URL} from '../../app.constants';
 import {ScheduleLog} from "../../shared/model/schedule-log.model";
 import DateUtils from "../../shared/util/date-utils";
 import {createRequestOption} from "../../shared/model/request-util";
+import {Schedule} from "../../shared/model/schedule.model";
 
 
 export type EntityResponseType = HttpResponse<ScheduleLog>;
@@ -25,7 +26,13 @@ export class ScheduleLogService {
   }
 
   update(scheduleLog: ScheduleLog): Observable<EntityResponseType> {
+ /*   console.log(JSON.stringify(scheduleLog));
+    let schedule = scheduleLog.schedule;
+    let schedule2 = new Schedule();
+    schedule2.id = schedule.id;
+    scheduleLog.schedule = null;*/
     const copy = this.convert(scheduleLog);
+    console.log('update',JSON.stringify(copy));
     return this.http.put<ScheduleLog>(this.resourceUrl, copy, {observe: 'response'})
       .map((res: EntityResponseType) => this.convertResponse(res));
   }
@@ -46,6 +53,7 @@ export class ScheduleLogService {
   }
 
   private convertResponse(res: EntityResponseType): EntityResponseType {
+    console.log(res.body);
     const body: ScheduleLog = this.convertItemFromServer(res.body);
     return res.clone({body});
   }

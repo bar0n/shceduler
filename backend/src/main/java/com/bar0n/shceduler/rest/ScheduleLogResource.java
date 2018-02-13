@@ -7,13 +7,12 @@ import com.bar0n.shceduler.rest.errors.BadRequestAlertException;
 import com.bar0n.shceduler.rest.util.HeaderUtil;
 import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -43,7 +42,6 @@ public class ScheduleLogResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/scheduleLogs")
-  
     public ResponseEntity<ScheduleLog> createScheduleLog(@RequestBody ScheduleLog scheduleLog) throws URISyntaxException {
         log.debug("REST request to save ScheduleLog : {}", scheduleLog);
         if (scheduleLog.getId() != null) {
@@ -65,8 +63,7 @@ public class ScheduleLogResource {
      * or with status 500 (Internal Server Error) if the scheduleLog couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/scheduleLogs")
-  
+    @PutMapping(value = "/scheduleLogs",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleLog> updateScheduleLog(@RequestBody ScheduleLog scheduleLog) throws URISyntaxException {
         log.debug("REST request to update ScheduleLog : {}", scheduleLog);
         if (scheduleLog.getId() == null) {
@@ -86,7 +83,6 @@ public class ScheduleLogResource {
      * @return the ResponseEntity with status 200 (OK) and the list of schedules in body
      */
     @GetMapping("/scheduleLogs")
-  
     public ResponseEntity<List<ScheduleLog>> getAllScheduleLogs(Pageable pageable) {
         log.debug("REST request to get a page of ScheduleLogs");
         Page<ScheduleLog> page = scheduleLogRepository.findAllByOrderByIdDesc(pageable);
@@ -101,7 +97,6 @@ public class ScheduleLogResource {
      * @return the ResponseEntity with status 200 (OK) and with body the scheduleLog, or with status 404 (Not Found)
      */
     @GetMapping("/scheduleLogs/{id}")
-  
     public ResponseEntity<ScheduleLog> getScheduleLog(@PathVariable Long id) {
         log.debug("REST request to get ScheduleLog : {}", id);
         Optional<ScheduleLog> byId = scheduleLogRepository.findById(id);
@@ -115,14 +110,10 @@ public class ScheduleLogResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/scheduleLogs/{id}")
-  
     public ResponseEntity<Void> deleteScheduleLog(@PathVariable Long id) {
         log.debug("REST request to delete ScheduleLog : {}", id);
         Optional<ScheduleLog> byId = scheduleLogRepository.findById(id);
         byId.ifPresent(scheduleLogRepository::delete);
-
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
- 
-
 }

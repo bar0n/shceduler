@@ -104,6 +104,7 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
     this.totalItems = headers.get('X-Total-Count');
     this.queryCount = this.totalItems;
     // this.page = pagingParams.page;
+    console.log('onSuccess',data);
     this.scheduleLogs = data;
   }
 
@@ -111,6 +112,7 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
     this.notificationsService.notify('error', error.message, null);
   }
   y:any;
+
   onChangeCompleted(log) {
     this.scheduleLogService.update(log).subscribe(x => this.notificationsService.notify('success', null, null),
       y => {

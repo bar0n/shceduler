@@ -1,7 +1,6 @@
 package com.bar0n.shceduler.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Where;
 
@@ -52,7 +51,7 @@ public class Schedule implements Serializable {
             , mappedBy = "schedule") //
     // @JoinColumn(name="schedule_id")
     @Where(clause = "completed = false")
-    @JsonBackReference
+    @JsonIgnore
     private List<ScheduleLog> scheduleLogs = new ArrayList<>();
 
     public Schedule() {

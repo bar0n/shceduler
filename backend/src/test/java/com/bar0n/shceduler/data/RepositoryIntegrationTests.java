@@ -2,6 +2,8 @@ package com.bar0n.shceduler.data;
 
 import com.bar0n.shceduler.model.Schedule;
 import com.bar0n.shceduler.model.ScheduleLog;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +32,7 @@ public class RepositoryIntegrationTests {
 
     @Test
     @Rollback(false)
-    public void findsFirstPageOf() {
+    public void findsFirstPageOf() throws JsonProcessingException {
 
 
         Page<Schedule> schedules = this.scheduleRepository.findAll(PageRequest.of(0, 10));
@@ -48,10 +50,15 @@ public class RepositoryIntegrationTests {
 
         Page<ScheduleLog> scheduleLogs = this.scheduleLogRepository.findAll(PageRequest.of(0, 10));
         assertThat(scheduleLogs.getTotalElements()).isEqualTo(2L);
-
+        schedule.getScheduleLogs().add(scheduleLog);
+        schedule.getScheduleLogs().add(scheduleLog2);
+        System.out.println(schedule);
         System.out.println(scheduleLog);
-
-
+        String result = new ObjectMapper().writeValueAsString(schedule);
+        System.out.println(result);
+        System.out.println("----------------------------------------------------------------");
+        System.out.println(new ObjectMapper().writeValueAsString(scheduleLog2));
+        System.out.println("----------------------------------------------------------------");
     }
 
     @Test

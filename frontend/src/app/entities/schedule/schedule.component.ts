@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScheduleService} from './schedule.service';
-import {Schedule} from "../../shared/model/schedule.model";
-import {NotificationsService} from "../notifications/notifications.service";
+import {Schedule} from '../../shared/model/schedule.model';
+import {NotificationsService} from '../notifications';
 import {Observable} from "rxjs/Observable";
 
 
@@ -36,7 +36,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   constructor(
     private scheduleService: ScheduleService,
-    // private parseLinks: JhiParseLinks,
     private notificationsService: NotificationsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -44,87 +43,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.itemsPerPage = 20;
     this.us = [
       {name: 'Dima', code: 'Dima'},
-      {name: 'Tania', code: 'Tania'},
     ];
 
     this.periods = [
-      /*{
-       code: '* * * ? * *',
-        name: 'Every second'
-      },
-      {
-        code: '0 * * ? * *',
-        name: 'Every minute'
-      },
-      {
-        code: '0 *!/2 * ? * *',
-        name: 'Every even minute'
-      },
-      {
-        code: '0 1/2 * ? * *',
-        name: 'Every uneven minute'
-      },
-      {
-        code: '0 *!/2 * ? * *',
-        name: 'Every 2 minutes'
-      },
-      {
-        code: '0 *!/3 * ? * *',
-        name: 'Every 3 minutes'
-      },
-      {
-        code: '0 *!/4 * ? * *',
-        name: 'Every 4 minutes'
-      },
-      {
-        code: '0 *!/5 * ? * *',
-        name: 'Every 5 minutes'
-      },
 
-      {
-        code: '0 *!/15 * ? * *',
-        name: 'Every 15 minutes'
-      },
-      {
-        code: '0 *!/30 * ? * *',
-        name: 'Every 30 minutes'
-      },
-      {
-        code: '0 15,30,45 * ? * *',
-        name: 'Every hour at minutes 15, 30 and 45'
-      },
-      {
-        code: '0 0 * ? * *',
-        name: 'Every hour'
-      },
-      {
-        code: '0 0 *!/2 ? * *',
-        name: 'Every hour'
-      },
-      {
-        code: '0 0 0/2 ? * *',
-        name: 'Every even hour'
-      },
-      {
-        code: '0 0 1/2 ? * *',
-        name: 'Every uneven hour'
-      },
-      {
-        code: '0 0 *!/3 ? * *',
-        name: 'Every three hours'
-      },
-      {
-        code: '0 0 *!/4 ? * *',
-        name: 'Every four hours'
-      },
-      {
-        code: '0 0 *!/6 ? * *',
-        name: 'Every six hours'
-      },
-      {
-        code: '0 0 *!/8 ? * *',
-        name: 'Every eight hours'
-      },*/
       {
         code: '0 */10 * ? * *',
         name: 'Every 10 minutes'
@@ -154,7 +76,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         name: 'Every day at noon - 12pm'
       },
       {
-        code: '0 0 12 ? * SUN', //0 0 12 ? * SUN
+        code: '0 0 12 ? * SUN',
         name: 'Every Sunday at noon'
       },
       {
@@ -330,22 +252,13 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadAll();
-    /*this.principal.identity().then((account) => {
-        this.currentAccount = account;
-    });*/
-    this.registerChangeInSchedules();
   }
 
   ngOnDestroy() {
-    //  this.eventManager.destroy(this.eventSubscriber);
   }
 
   trackId(index: number, item: Schedule) {
     return item.id;
-  }
-
-  registerChangeInSchedules() {
-    // this.eventSubscriber = this.eventManager.subscribe('scheduleListModification', (response) => this.loadAll());
   }
 
   sort() {
@@ -357,10 +270,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   private onSuccess(data, headers) {
-    //  this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = headers.get('X-Total-Count');
     this.queryCount = this.totalItems;
-    // this.page = pagingParams.page;
     this.schedules = data;
   }
 
@@ -370,14 +281,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
 
   save() {
-    // this.schedule.cron = this.periodTxt;
-    /*let schedules = [...this.schedules];
-    if (this.newSchedule)
-      schedules.push(this.schedule);
-    else
-      schedules[this.schedules.indexOf(this.selectedSchedule)] = this.schedule;
-
-    this.schedules = schedules;*/
     if (this.schedule.id !== undefined) {
       this.subscribeToSaveResponse(
         this.scheduleService.update(this.schedule));
@@ -404,10 +307,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    /*    let index = this.schedules.indexOf(this.selectedSchedule);
-        this.schedules = this.schedules.filter((val, i) => i != index);*/
     if (this.schedule && this.schedule.id) {
-      this.scheduleService.delete(this.schedule.id).subscribe(x => {
+      this.scheduleService.delete(this.schedule.id).subscribe(() => {
           this.notificationsService.notify('success', "", " deleted ");
           this.loadAll();
           this.schedule = new Schedule();
@@ -425,11 +326,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.schedule = this.cloneSchedule(event.data);
     this.displayDialog = true;
     const crone = this.schedule.cron;
-    // console.log(crone);
     setTimeout(() => {
       this.schedule.cron = crone;
-      // console.log(this.schedule.cron);
-      //this.freqSingleControl.setValue(this.freqSingle);
     }, 1000);
 
   }
