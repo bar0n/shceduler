@@ -52,7 +52,7 @@ public class MailServiceTest {
                 "  \"completed\": true\n" +
                 "}";
         ObjectMapper mapper = new ObjectMapper();
-        ScheduleLog scheduleLog = mapper.readValue(s, ScheduleLog.class);
-        System.out.println(scheduleLog);//
+     /*   ScheduleLog scheduleLog = mapper.readValue(s, ScheduleLog.class);
+        System.out.println(scheduleLog);//*/
     }
 }
