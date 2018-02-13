@@ -51,9 +51,16 @@ public class ScheduleService {
 
     @Transactional
     public void fireJob() {
-        List<Schedule> allByNextLessThan = scheduleRepository.findAllByNextLessThan(ZonedDateTime.now());
-        logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
-        allByNextLessThan.forEach(this::handle);
+        try {
+            List<Schedule> allByNextLessThan = scheduleRepository.findAllByNextLessThan(ZonedDateTime.now());
+            logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
+
+            allByNextLessThan.forEach(this::handle);
+
+        }
+        catch (Exception e){
+            logger.error("fire_job exception",e);
+        }
     }
 
     @Transactional

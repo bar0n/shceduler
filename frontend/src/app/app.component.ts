@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ScheduleService} from './entities/schedule/schedule.service';
+import {ScheduleService} from './entities/schedule';
 import {Schedule} from './shared/model/schedule.model';
 
 @Component({
