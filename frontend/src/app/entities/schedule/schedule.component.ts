@@ -3,8 +3,8 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScheduleService} from './schedule.service';
 import {Schedule} from '../../shared/model/schedule.model';
-import {NotificationsService} from '../notifications';
-import {Observable} from "rxjs/Observable";
+import {NotificationsService} from '../notifications/notifications.service';
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -36,6 +36,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   constructor(
     private scheduleService: ScheduleService,
+    // private parseLinks: JhiParseLinks,
     private notificationsService: NotificationsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -297,7 +298,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   private onSaveSuccess(result: Schedule) {
-    this.notificationsService.notify('success', "", " saved");
+    this.notificationsService.notify('success', '', ' saved');
     this.schedule = result;
     this.loadAll();
   }
@@ -309,7 +310,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   delete() {
     if (this.schedule && this.schedule.id) {
       this.scheduleService.delete(this.schedule.id).subscribe(() => {
-          this.notificationsService.notify('success', "", " deleted ");
+          this.notificationsService.notify('success', '', ' deleted ');
           this.loadAll();
           this.schedule = new Schedule();
         }

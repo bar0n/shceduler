@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 
 import {ScheduleLog} from '../../shared/model/schedule-log.model';
 import {ScheduleLogService} from './schedule-log.service';
-import {NotificationsService} from "../notifications";
+import {NotificationsService} from '../notifications';
 
 @Component({
   selector: 'jhi-schedule-log',

@@ -72,11 +72,12 @@
 	<profiles>
 		<profile>
 			<id>dev</id>
+
+		</profile>
+		<profile>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-		</profile>
-		<profile>
 			<id>prod</id>
 		</profile>
 	</profiles>

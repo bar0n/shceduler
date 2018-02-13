@@ -1,4 +1,4 @@
-import {Schedule} from "./schedule.model";
+import {Schedule} from './schedule.model';
 
 export class ScheduleLog  {
     constructor(
