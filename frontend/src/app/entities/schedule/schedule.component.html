@@ -4,7 +4,7 @@
   </h2>
   <notifications></notifications>
 
-  <p-table [value]="schedules"
+  <p-table [value]="schedules" [responsive]="true"
            [resizableColumns]="true"
            selectionMode="single" [(selection)]="selectedSchedule" (onRowSelect)="onRowSelect($event)"
            dataKey="id"
@@ -51,29 +51,30 @@
 
   </p-table>
 
-  <p-dialog header="Schedule Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-         [width]="500"   >
-    <div class="ui-g ui-fluid" *ngIf="schedule">
-      <div class="ui-g-12">
-        <div class="ui-g-2">
+  <p-dialog id="dialog" header="Schedule Details" [(visible)]="displayDialog"
+            [responsive]="true" showEffect="fade"
+            [modal]="true"
+         [width]="500"    >
+    <div class="ui-g  ui-sm ui-fluid" *ngIf="schedule">
+      <div class="ui-g-12 ui-sm-12 ">
+        <div class="ui-g-12 ui-sm-12">
           <label for="active">Active</label>
-        </div>
-        <div class="ui-g-10">
+
           <input id="active" type="checkbox" [(ngModel)]="schedule.active">
         </div>
       </div>
-      <div class="ui-g ui-fluid" >
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+      <div class="ui-g  ui-sm ui-fluid" >
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="name">Name</label>
           </div>
-          <div class="ui-g-10">
+          <div class="ui-g-10 ui-sm-12 ">
             <input pInputText id="name" [(ngModel)]="schedule.name"/>
           </div>
         </div>
 
-        <div class="ui-g-12">
-          <div class="ui-g-1">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-12 ui-sm-12 ">
             <label for="Period">Period</label>
           </div>
           <div class="ui-g-11">
@@ -91,23 +92,23 @@
         </div>
         <!---->
 
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-sm-12 ">
           <cron-jobs  [(ngModel)]="schedule.cron"  [ngModelOptions]="{standalone: true}" ></cron-jobs>
         </div>
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="cron">Cron</label>
           </div>
-          <div class="ui-g-10">
+          <div class="ui-g-10 ui-sm-12 ">
             <input pInputText id="cron" [(ngModel)]="schedule.cron"/>
             {{periodTxt}}
           </div>
         </div>
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="person">Person</label>
           </div>
-          <div class="ui-g-10">
+          <div class="ui-g-10 ui-sm-12 ">
 
             <select id="person"  [(ngModel)]="schedule.person">
               <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
@@ -119,15 +120,15 @@
                          optionLabel="name"></p-dropdown>-->
           </div>
         </div>
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="email">Email</label>
           </div>
-          <div class="ui-g-10">
+          <div class="ui-g-10 ui-sm-12 ">
             <input pInputText id="email" [(ngModel)]="schedule.email"/>
           </div>
         </div>
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-sm-12 ">
           <div class="ui-g-3">
             <label for="desc">Description</label>
           </div>
@@ -136,11 +137,11 @@
           </div>
         </div>
 
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="start">Start</label>
           </div>
-          <div class="ui-g-10  ui-fluid" >
+          <div class="ui-g-10 ui-sm-12   ui-fluid" >
             <p-calendar id="start" [(ngModel)]="schedule.start" name="start"  showTime="true" hourFormat="24"
                         [showIcon]="true" showButtonBar="true">
             </p-calendar>
@@ -148,11 +149,11 @@
 
 
         </div>
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="next">Next</label>
           </div>
-          <div class="ui-g-10 ui-fluid">
+          <div class="ui-g-10 ui-sm-12  ui-fluid">
             <p-calendar id="next" [(ngModel)]="schedule.next" name="next"   showTime="true" hourFormat="24"
                         [showIcon]="true" showButtonBar="true">
             </p-calendar>
@@ -161,11 +162,11 @@
 
         </div>
 
-        <div class="ui-g-12">
-          <div class="ui-g-2">
+        <div class="ui-g-12 ui-sm-12 ">
+          <div class="ui-g-2 ui-sm-12">
             <label for="start">Stop</label>
           </div>
-          <div class="ui-g-10 ui-fluid">
+          <div class="ui-g-10 ui-sm-12  ui-fluid">
             <p-calendar id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
                         [showIcon]="true" showButtonBar="true">
             </p-calendar>
@@ -177,9 +178,11 @@
       </div>
       </div>
       <p-footer>
+        <div class="ui-g-12 ui-sm-12 ">
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
           <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
           <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
         </div>
       </p-footer>
   </p-dialog>

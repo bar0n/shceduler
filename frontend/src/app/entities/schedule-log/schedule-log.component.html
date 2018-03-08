@@ -6,7 +6,7 @@
 
   <notifications></notifications>
 
-  <p-table [value]="scheduleLogs"
+  <p-table [value]="scheduleLogs"  [responsive]="true"
            [resizableColumns]="true"
            dataKey="id"
            [rows]="10"
@@ -66,5 +66,4 @@
     </ng-template>
 
   </p-table>
-  {{y|json}}
 </div>

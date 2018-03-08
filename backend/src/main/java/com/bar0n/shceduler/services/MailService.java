@@ -51,7 +51,7 @@ public class MailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
-            message.setTo(to);
+            message.setTo(to.split("[\\,,\\;]"));
             message.setFrom("berkbach@gmail.com");
             message.setSubject(subject);
             message.setText(content, isHtml);
