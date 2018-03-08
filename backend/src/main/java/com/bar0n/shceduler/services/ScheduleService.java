@@ -15,6 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by dbaron
@@ -56,8 +57,9 @@ public class ScheduleService {
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
 
             allByNextLessThan.forEach(this::handle);
-
-        }
+ /*           List<ScheduleLog> allNotCompleted = scheduleLogRepository.findAllNotCompletedAndByNextLessThan(ZonedDateTime.now());
+            Stream<Schedule> scheduleStream = allNotCompleted.stream().map(ScheduleLog::getSchedule);
+*/        }
         catch (Exception e){
             logger.error("fire_job exception",e);
         }
@@ -65,6 +67,9 @@ public class ScheduleService {
 
     @Transactional
     public void handle(Schedule schedule) {
+        if(!schedule.getActive()){
+            return;
+        }
         logger.debug("handle schedule : {}", schedule);
         ZonedDateTime next = schedule.getNext();
         ZonedDateTime nextTime = getNextTime(schedule);

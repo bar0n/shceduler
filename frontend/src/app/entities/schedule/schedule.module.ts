@@ -17,6 +17,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import { CronJobsModule } from 'ngx-cron-jobs';
 
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {ScheduleEditComponent} from "./schedule-edit.component";
 @NgModule({
   imports: [NotificationsModule,
     CommonModule,
@@ -39,13 +40,14 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 
   ],
   declarations: [
-    ScheduleComponent
+    ScheduleComponent,
+    ScheduleEditComponent
   ],
 
   providers: [
     ScheduleService,
   ],
-  exports: [ScheduleComponent]
+  exports: [ScheduleComponent,ScheduleEditComponent]
 })
 export class SchedulerScheduleModule {
 }

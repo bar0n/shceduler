@@ -400,6 +400,18 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.displayDialog = false;
   }
 
+
+  onItemClick(data) {
+    this.newSchedule = false;
+    this.schedule = this.cloneSchedule(data);
+    this.displayDialog = true;
+    const crone = this.schedule.cron;
+    setTimeout(() => {
+      this.schedule.cron = crone;
+    }, 1000);
+
+  }
+
   onRowSelect(event) {
     this.newSchedule = false;
     this.schedule = this.cloneSchedule(event.data);
@@ -420,6 +432,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return schedule;
   }
 
+  showDialogToAdd2() {
+    console.log("showDialogToAdd");
+    this.router.navigate(['/scheduleAdd']);
+  }
   showDialogToAdd() {
     this.newSchedule = true;
     this.schedule = new Schedule();

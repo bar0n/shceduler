@@ -15,6 +15,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scheduleService.getAllSchedules().subscribe(x => this.schedules = x);
+
   }
 }

@@ -12,8 +12,8 @@ import java.util.Objects;
 @Entity
 public class ScheduleLog {
     @Id
-    @SequenceGenerator(name = "schedule_generator", sequenceName = "schedule_log_sequence", initialValue = 1)
-    @GeneratedValue(generator = "schedule_generator")
+    @SequenceGenerator(name = "schedule_log_sequence", sequenceName = "schedule_log_sequence", initialValue = 1)
+    @GeneratedValue(generator = "schedule_log_sequence")
     private Long id;
     @Column
     private ZonedDateTime created;

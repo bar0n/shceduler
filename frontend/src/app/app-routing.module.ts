@@ -2,11 +2,17 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ScheduleComponent} from './entities/schedule/schedule.component';
 import {ScheduleLogComponent} from './entities/schedule-log';
+import {MyPathRouterComponent} from "./entities/my-path-router";
+import {ScheduleEditComponent} from "./entities/schedule/schedule-edit.component";
 
 const routes: Routes = [
-  {path : '', pathMatch: 'full' , redirectTo: '/schedule'},
+ // {path : '', pathMatch: 'full' , redirectTo: '/schedule'},
+  {path: '', component: MyPathRouterComponent},
   {path: 'schedule', component: ScheduleComponent},
-  {path: 'scheduleLog', component: ScheduleLogComponent}
+  {path: 'scheduleEdit/:id', component: ScheduleEditComponent},
+  {path: 'scheduleAdd', component: ScheduleEditComponent},
+  {path: 'scheduleLog', component: ScheduleLogComponent},
+  {path: ':path', component: MyPathRouterComponent}
 ];
 
 @NgModule({
