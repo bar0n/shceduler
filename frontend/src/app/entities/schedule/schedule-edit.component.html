@@ -1,27 +1,27 @@
 <!--<pre> {{schedule|json}}</pre>-->
 
 <div class="ui-g  ui-sm ui-fluid">
-  <div class="ui-g-6 ui-sm-6 ">
-    <div class="ui-g-6 ui-sm-6">
+  <div class="ui-g-6 ui-sm-12 ">
+    <div class="ui-g-6 ui-sm-12">
       <label style ='width:100px' for="active">Active</label>
 
       <input id="active" type="checkbox" [(ngModel)]="schedule.active">
     </div>
 
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="name">Name</label>
       </div>
-      <div class="ui-g-6 ui-sm-6 ">
+      <div class="ui-g-6 ui-sm-12 ">
         <input pInputText  style ='width:150px' id="name" [(ngModel)]="schedule.name"/>
       </div>
     </div>
 
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6 ">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12 ">
         <label style ='width:100px'  for="Period">Period</label>
       </div>
-      <div class="ui-g-6 ui-sm-6 ">
+      <div class="ui-g-6 ui-sm-12 ">
         <select style ='width:150px'  id="Period" [(ngModel)]="schedule.cron">
           <option *ngFor="let name of periods " [value]="name.code">{{name.name}}</option>
         </select>
@@ -36,23 +36,23 @@
     </div>
     <!---->
 
-    <div class="ui-g-6 ui-sm-6 ">
+    <div class="ui-g-6 ui-sm-12 ">
       <cron-jobs style ='width:150px' [(ngModel)]="schedule.cron" [ngModelOptions]="{standalone: true}"></cron-jobs>
     </div>
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="cron">Cron</label>
       </div>
-      <div class="ui-g-6 ui-sm-6 ">
+      <div class="ui-g-6 ui-sm-12 ">
         <input pInputText  style ='width:150px' id="cron" [(ngModel)]="schedule.cron"/>
         {{periodTxt}}
       </div>
     </div>
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="person">Person</label>
       </div>
-      <div class="ui-g-6 ui-sm-6 ">
+      <div class="ui-g-6 ui-sm-12 ">
 
         <select  style ='width:150px' id="person" [(ngModel)]="schedule.person">
           <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
@@ -64,15 +64,15 @@
                          optionLabel="name"></p-dropdown>-->
       </div>
     </div>
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px' for="email">Email</label>
       </div>
-      <div class="ui-g-6 ui-sm-6 ">
+      <div class="ui-g-6 ui-sm-12 ">
         <input pInputText  style ='width:150px' id="email" [(ngModel)]="schedule.email"/>
       </div>
     </div>
-    <div class="ui-g-6 ui-sm-6 ">
+    <div class="ui-g-6 ui-sm-12 ">
       <div class="ui-g-3">
         <label style ='width:100px'  for="desc">Description</label>
       </div>
@@ -81,11 +81,11 @@
       </div>
     </div>
 
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="start">Start</label>
       </div>
-      <div class="ui-g-6 ui-sm-6   ui-fluid">
+      <div class="ui-g-6 ui-sm-12   ui-fluid">
         <p-calendar id="start" [(ngModel)]="schedule.start" name="start" showTime="true" hourFormat="24"
                     [showIcon]="true" showButtonBar="true">
         </p-calendar>
@@ -93,11 +93,11 @@
 
 
     </div>
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="next">Next</label>
       </div>
-      <div class="ui-g-6 ui-sm-6  ui-fluid">
+      <div class="ui-g-6 ui-sm-12  ui-fluid">
         <p-calendar id="next" [(ngModel)]="schedule.next" name="next" showTime="true" hourFormat="24"
                     [showIcon]="true" showButtonBar="true">
         </p-calendar>
@@ -106,11 +106,11 @@
 
     </div>
 
-    <div class="ui-g-6 ui-sm-6 ">
-      <div class="ui-g-6 ui-sm-6">
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-6 ui-sm-12">
         <label style ='width:100px'  for="start">Stop</label>
       </div>
-      <div class="ui-g-6 ui-sm-6  ui-fluid">
+      <div class="ui-g-6 ui-sm-12  ui-fluid">
         <p-calendar id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
                     [showIcon]="true" showButtonBar="true">
         </p-calendar>
@@ -122,7 +122,7 @@
   </div>
 </div>
 <p-footer>
-  <div class="ui-g-6 ui-sm-6 ">
+  <div class="ui-g-6 ui-sm-12 ">
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
       <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
