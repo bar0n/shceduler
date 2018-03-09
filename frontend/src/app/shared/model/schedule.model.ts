@@ -4,6 +4,7 @@ export class Schedule {
   constructor(id?: number,
               name?: string,
               cron?: string,
+              cronLog?: string,
               cronReminder?: string,
               start?: Date,
               stop?: Date,
@@ -19,6 +20,7 @@ export class Schedule {
     this.id = id ? id : null;
     this.name = name ? name : null;
     this.cron = cron ? cron : null;
+    this.cronLog = cronLog ? cronLog : null;
     this.cronReminder = cronReminder ? cronReminder : null;
     this.start = start ? start : new Date();
     this.stop = stop ? stop : null;
@@ -35,6 +37,7 @@ export class Schedule {
   public id?: number;
   public name?: string;
   public cron?: string;
+  public cronLog?: string;
   public cronReminder?: string;
   public start?: Date;
   public stop?: Date;

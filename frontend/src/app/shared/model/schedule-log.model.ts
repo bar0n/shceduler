@@ -6,6 +6,7 @@ export class ScheduleLog  {
         public created?: any,
         public schedule?: Schedule,
         public completed?: boolean,
+        public next?: Date
     ) {
     }
 }

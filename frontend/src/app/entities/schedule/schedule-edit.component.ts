@@ -45,6 +45,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   previousState() {
     window.history.back();
   }
+
   loadAll(id) {
 
     if (id) {
@@ -108,6 +109,13 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     }
 
     return schedule;
+  }
+
+  cronKeyUp(event) {
+    let splitted = this.schedule.cron.split(" ", 3);
+    if (splitted.length==3){
+      this.schedule.cronLog = splitted.join(" ")+ " 1/1 * ? *";
+    }
   }
 
   us = [

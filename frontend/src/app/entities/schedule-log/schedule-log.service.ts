@@ -66,6 +66,8 @@ export class ScheduleLogService {
     const copy: ScheduleLog = Object.assign({}, scheduleLog);
     copy.created = this.dateUtils
       .convertDateTimeFromServer(scheduleLog.created);
+    copy.next = this.dateUtils
+      .convertDateTimeFromServer(scheduleLog.next);
     return copy;
   }
 
@@ -76,6 +78,7 @@ export class ScheduleLogService {
     const copy: ScheduleLog = Object.assign({}, scheduleLog);
 
     copy.created = this.dateUtils.toDate(scheduleLog.created);
+    copy.next = this.dateUtils.toDate(scheduleLog.next);
     return copy;
   }
 }

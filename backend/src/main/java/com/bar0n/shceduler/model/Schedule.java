@@ -26,6 +26,8 @@ public class Schedule implements Serializable {
     @Column
     private String cron;
     @Column
+    private String cronLog;
+    @Column
     private String cronReminder;
     @Column
     private String periodTxt;
@@ -213,6 +215,14 @@ public class Schedule implements Serializable {
 
     public ZonedDateTime getCreatedDate() {
         return createdDate;
+    }
+
+    public String getCronLog() {
+        return cronLog;
+    }
+
+    public void setCronLog(String cronLog) {
+        this.cronLog = cronLog;
     }
 
     public void setCreatedDate(ZonedDateTime createdDate) {

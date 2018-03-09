@@ -57,6 +57,7 @@ public class ScheduleResource {
         }
 
         ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
+        ZonedDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
         schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))

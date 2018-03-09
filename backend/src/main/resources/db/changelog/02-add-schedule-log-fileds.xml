@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="01" author="dbaron">
+        <sql splitStatements="false">
+            alter table schedule add column cron_log varchar(100);
+            alter table schedule_log add column next timestamp;
+        </sql>
+        <rollback>
+            alter table schedule drop column cron_log cascade;
+            alter table schedule_log drop column next cascade;
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

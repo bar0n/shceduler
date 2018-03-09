@@ -51,8 +51,8 @@
         </td>
         <td>{{item.schedule.person}}</td>
         <td>{{item.created | date:'dd/MMM/yyyy HH:mm'}}</td>
-        <td>{{item.schedule?.next | date:'dd/MMM/yyyy HH:mm'}}</td>
-        <td>{{item.schedule.cron}}</td>
+        <td>{{item.next | date:'dd/MMM/yyyy HH:mm'}}</td>
+        <td>{{item.schedule.cronLog}}</td>
       </tr>
     </ng-template>
 

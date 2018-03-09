@@ -23,6 +23,8 @@ public class ScheduleLog {
     private Schedule schedule;
     @Column
     private Boolean completed = false;
+    @Column
+    private ZonedDateTime next;
 
     public ScheduleLog(ZonedDateTime created, Schedule schedule) {
         this.created = created;
@@ -79,6 +81,14 @@ public class ScheduleLog {
     public int hashCode() {
 
         return Objects.hash(id, created, schedule, completed);
+    }
+
+    public ZonedDateTime getNext() {
+        return next;
+    }
+
+    public void setNext(ZonedDateTime next) {
+        this.next = next;
     }
 
     @Override
