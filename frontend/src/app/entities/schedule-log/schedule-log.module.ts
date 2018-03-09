@@ -16,6 +16,7 @@ import {NotificationsModule} from '../notifications/notification.module';
 import {ScheduleLogComponent} from './schedule-log.component';
 import {ScheduleLogService} from './schedule-log.service';
 import {NgModule} from '@angular/core';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import {NgModule} from '@angular/core';
     InputTextareaModule,
     DropdownModule,
     CronJobsModule,
-
+    ConfirmDialogModule
   ],
   declarations: [
     ScheduleLogComponent,

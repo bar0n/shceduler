@@ -6,76 +6,78 @@ import {Subscription} from 'rxjs/Subscription';
 import {ScheduleLog} from '../../shared/model/schedule-log.model';
 import {ScheduleLogService} from './schedule-log.service';
 import {NotificationsService} from '../notifications';
+import {ConfirmationService} from "primeng/api";
+import {Schedule} from "../../shared/model/schedule.model";
 
 @Component({
   selector: 'jhi-schedule-log',
   styles: [`
-        /* Column Priorities */
-        @media only all {
-            th.ui-p-6,
-            td.ui-p-6,
-            th.ui-p-5,
-            td.ui-p-5,
-            th.ui-p-4,
-            td.ui-p-4,
-            th.ui-p-3,
-            td.ui-p-3,
-            th.ui-p-2,
-            td.ui-p-2,
-            th.ui-p-1,
-            td.ui-p-1 {
-                display: none;
-            }
-        }
-        
-        /* Show priority 1 at 320px (20em x 16px) */
-        @media screen and (min-width: 20em) {
-            th.ui-p-1,
-            td.ui-p-1 {
-                display: table-cell;
-            }
-        }
-        
-        /* Show priority 2 at 480px (30em x 16px) */
-        @media screen and (min-width: 30em) {
-            th.ui-p-2,
-            td.ui-p-2 {
-                display: table-cell;
-            }
-        }
-        
-        /* Show priority 3 at 640px (40em x 16px) */
-        @media screen and (min-width: 40em) {
-            th.ui-p-3,
-            td.ui-p-3 {
-                display: table-cell;
-            }
-        }
-        
-        /* Show priority 4 at 800px (50em x 16px) */
-        @media screen and (min-width: 50em) {
-            th.ui-p-4,
-            td.ui-p-4 {
-                display: table-cell;
-            }
-        }
-        
-        /* Show priority 5 at 960px (60em x 16px) */
-        @media screen and (min-width: 60em) {
-            th.ui-p-5,
-            td.ui-p-5 {
-                display: table-cell;
-            }
-        }
-        
-        /* Show priority 6 at 1,120px (70em x 16px) */
-        @media screen and (min-width: 70em) {
-            th.ui-p-6,
-            td.ui-p-6 {
-                display: table-cell;
-            }
-        }
-    `],
+    /* Column Priorities */
+    @media only all {
+      th.ui-p-6,
+      td.ui-p-6,
+      th.ui-p-5,
+      td.ui-p-5,
+      th.ui-p-4,
+      td.ui-p-4,
+      th.ui-p-3,
+      td.ui-p-3,
+      th.ui-p-2,
+      td.ui-p-2,
+      th.ui-p-1,
+      td.ui-p-1 {
+        display: none;
+      }
+    }
+
+    /* Show priority 1 at 320px (20em x 16px) */
+    @media screen and (min-width: 20em) {
+      th.ui-p-1,
+      td.ui-p-1 {
+        display: table-cell;
+      }
+    }
+
+    /* Show priority 2 at 480px (30em x 16px) */
+    @media screen and (min-width: 30em) {
+      th.ui-p-2,
+      td.ui-p-2 {
+        display: table-cell;
+      }
+    }
+
+    /* Show priority 3 at 640px (40em x 16px) */
+    @media screen and (min-width: 40em) {
+      th.ui-p-3,
+      td.ui-p-3 {
+        display: table-cell;
+      }
+    }
+
+    /* Show priority 4 at 800px (50em x 16px) */
+    @media screen and (min-width: 50em) {
+      th.ui-p-4,
+      td.ui-p-4 {
+        display: table-cell;
+      }
+    }
+
+    /* Show priority 5 at 960px (60em x 16px) */
+    @media screen and (min-width: 60em) {
+      th.ui-p-5,
+      td.ui-p-5 {
+        display: table-cell;
+      }
+    }
+
+    /* Show priority 6 at 1,120px (70em x 16px) */
+    @media screen and (min-width: 70em) {
+      th.ui-p-6,
+      td.ui-p-6 {
+        display: table-cell;
+      }
+    }
+  `],
   templateUrl: './schedule-log.component.html'
 })
 export class ScheduleLogComponent implements OnInit, OnDestroy {
@@ -97,7 +99,8 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
     private scheduleLogService: ScheduleLogService,
     private notificationsService: NotificationsService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public confirmationService: ConfirmationService,
   ) {
     this.itemsPerPage = 20;
     /*  this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -170,21 +173,28 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
   private onSuccess(data, headers) {
     this.totalItems = headers.get('X-Total-Count');
     this.queryCount = this.totalItems;
-    // this.page = pagingParams.page;
-    console.log('onSuccess',data);
+
     this.scheduleLogs = data;
   }
 
   private onError(error) {
     this.notificationsService.notify('error', error.message, null);
   }
-  y:any;
 
-  onChangeCompleted(log) {
-    this.scheduleLogService.update(log).subscribe(x => this.notificationsService.notify('success', null, null),
-      y => {
-      this.y = y;
-        this.notificationsService.notify('error', JSON.stringify(y), null)
-      });
+
+  onChangeCompleted(log: ScheduleLog) {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to change completion?',
+      accept: () => {
+        log.completed = !log.completed;
+        this.scheduleLogService.update(log).subscribe(x =>
+            this.notificationsService.notify('success', null, "Completed"),
+          y => {
+
+            this.notificationsService.notify('error', JSON.stringify(y), null)
+          });
+      }
+    });
+
   }
 }

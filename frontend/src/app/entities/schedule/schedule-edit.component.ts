@@ -98,8 +98,6 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
       }
     });
 
-
-  //  this.schedule = new Schedule();
   }
 
 
