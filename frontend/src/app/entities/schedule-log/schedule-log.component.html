@@ -1,9 +1,9 @@
-<div>
+
   <h2>
     <span>Schedule Logs</span>
   </h2>
 
-
+  <notifications></notifications>
 
   <p-table [value]="scheduleLogs"  [responsive]="true"
            [resizableColumns]="true"
@@ -50,11 +50,11 @@
         </td>
         <td>{{item.schedule.person}}</td>
         <td>{{item.created | date:'dd/MMM/yyyy HH:mm'}}</td>
-        <td>{{item.schedule.next | date:'dd/MMM/yyyy HH:mm'}}</td>
+        <td>{{item.schedule?.next | date:'dd/MMM/yyyy HH:mm'}}</td>
         <td>{{item.schedule.cron}}</td>
       </tr>
     </ng-template>
 
   </p-table>
-  <notifications></notifications>
-</div>
+
+
