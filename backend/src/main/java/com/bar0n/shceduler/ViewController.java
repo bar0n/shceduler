@@ -13,20 +13,13 @@ public class ViewController {
 
     private UrlPathHelper urlPathHelper = new UrlPathHelper();;
 
-    /* @RequestMapping({ "/schedule3", "/scheduleLog" })
-            public String index() {
-                return "forward:/index.html";
-            }*/
-   @RequestMapping(value = "/{[path:[^(api)]*}*")
-   public void redirect(HttpServletResponse response, HttpServletRequest httpServletRequest) throws IOException {
-       String originatingRequestUri = urlPathHelper.getOriginatingRequestUri(httpServletRequest);
-       String s = "/#" + originatingRequestUri;
-       response.sendRedirect(s);
-   }
-    @RequestMapping(value = "/**")
-    public void redirect2(HttpServletResponse response, HttpServletRequest httpServletRequest) throws IOException {
+
+    @RequestMapping({ "/scheduleLog", "/scheduleAdd", "/scheduleEdit/{id:[\\d|-]+}", "/schedule"})
+
+    public String redirect(HttpServletResponse response, HttpServletRequest httpServletRequest) throws IOException {
         String originatingRequestUri = urlPathHelper.getOriginatingRequestUri(httpServletRequest);
         String s = "/#" + originatingRequestUri;
         response.sendRedirect(s);
+        return null;
     }
 }
