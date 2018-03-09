@@ -41,6 +41,9 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
 
   }
 
+  previousState() {
+    window.history.back();
+  }
   loadAll(id) {
 
     if (id) {

@@ -2,7 +2,6 @@
   <h2>
     <span>Schedules</span>
   </h2>
-  <notifications></notifications>
  <!-- (onRowSelect)="onRowSelect($event)-->
   <p-table [value]="schedules" [responsive]="true"
            [resizableColumns]="true"
@@ -183,10 +182,12 @@
       <p-footer>
         <div class="ui-g-12 ui-sm-12 ">
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
           <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+
+          <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right" label="Delete"></button>
         </div>
         </div>
       </p-footer>
   </p-dialog>
+  <notifications></notifications>
 </div>

@@ -4,7 +4,6 @@
   </h2>
 
 
-  <notifications></notifications>
 
   <p-table [value]="scheduleLogs"  [responsive]="true"
            [resizableColumns]="true"
@@ -46,15 +45,6 @@
         <td>{{item.id}}</td>
         <td>{{item.schedule.name}}</td>
         <td>
-          <!--<p-cellEditor>
-           &lt;!&ndash; <input id="active" type="checkbox" [(ngModel)]="item.completed">&ndash;&gt;
-            <ng-template pTemplate="input">
-              <input id="active" type="checkbox" [(ngModel)]="item.completed">
-            </ng-template>
-            <ng-template pTemplate="output">
-              <p-tableCheckbox [value]="item"></p-tableCheckbox>
-            </ng-template>
-          </p-cellEditor>-->
 
           <input id="active" type="checkbox" [(ngModel)]="item.completed" (change)="onChangeCompleted(item)">
         </td>
@@ -66,4 +56,5 @@
     </ng-template>
 
   </p-table>
+  <notifications></notifications>
 </div>

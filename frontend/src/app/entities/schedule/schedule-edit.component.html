@@ -1,5 +1,4 @@
 <!--<pre> {{schedule|json}}</pre>-->
-
 <div class="ui-g  ui-sm ui-fluid">
   <div class="ui-g-6 ui-sm-12 ">
     <div class="ui-g-6 ui-sm-12">
@@ -121,11 +120,12 @@
 
   </div>
 </div>
-<p-footer>
   <div class="ui-g-6 ui-sm-12 ">
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+
+      <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
       <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+      <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right" label="Delete"></button>
     </div>
   </div>
-</p-footer>
+<notifications></notifications>
