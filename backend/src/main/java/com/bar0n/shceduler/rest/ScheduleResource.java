@@ -98,7 +98,7 @@ public class ScheduleResource {
     @GetMapping("/schedules")
     public ResponseEntity<List<Schedule>> getAllSchedules(Pageable pageable) {
         log.debug("REST request to get a page of Schedules");
-        Page<Schedule> page = scheduleRepository.findAll(pageable);
+        Page<Schedule> page = scheduleRepository.findAllByOrderByIdDesc(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/schedules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
