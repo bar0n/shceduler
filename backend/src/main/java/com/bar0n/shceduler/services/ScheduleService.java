@@ -53,21 +53,32 @@ public class ScheduleService {
     @Transactional
     public void fireJob() {
         try {
-            List<Schedule> allByNextLessThan = scheduleRepository.findAllByNextLessThan(ZonedDateTime.now());
+            List<Schedule> allByNextLessThan = scheduleRepository.findByNextLessThanAndActiveTrue(ZonedDateTime.now());
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
 
             allByNextLessThan.forEach(this::handle);
- /*           List<ScheduleLog> allNotCompleted = scheduleLogRepository.findAllNotCompletedAndByNextLessThan(ZonedDateTime.now());
-            Stream<Schedule> scheduleStream = allNotCompleted.stream().map(ScheduleLog::getSchedule);
-*/        }
-        catch (Exception e){
-            logger.error("fire_job exception",e);
+            List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(ZonedDateTime.now());
+            allNotCompleted.forEach(this::handleLog);
+        } catch (Exception e) {
+            logger.error("fire_job exception", e);
         }
     }
 
     @Transactional
+    public void handleLog(ScheduleLog scheduleLog) {
+        logger.debug("handle scheduleLog : {}", scheduleLog);
+        String cronLog = scheduleLog.getSchedule().getCronLog();
+        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog);
+        ZonedDateTime next = scheduleLog.getNext();
+        logger.debug("scheduleLog current next : {} new next time:{}", next, nextTimeLog);
+        scheduleLog.setNext(nextTimeLog);
+        scheduleLogRepository.save(scheduleLog);
+        mailService.sendNotificationEmail(scheduleLog.getSchedule());
+    }
+
+    @Transactional
     public void handle(Schedule schedule) {
-        if(!schedule.getActive()){
+        if (!schedule.getActive()) {
             return;
         }
         logger.debug("handle schedule : {}", schedule);
@@ -77,6 +88,9 @@ public class ScheduleService {
         schedule.setNext(nextTime);
         scheduleRepository.save(schedule);
         ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
+        String cronLog = scheduleLog.getSchedule().getCronLog();
+        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog);
+        scheduleLog.setNext(nextTimeLog);
         scheduleLogRepository.save(scheduleLog);
         mailService.sendNotificationEmail(schedule);
 

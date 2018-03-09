@@ -13,5 +13,5 @@ import java.util.List;
 //@RepositoryRestResource(collectionResourceRel = "schedule", path = "schedule")
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-     List<Schedule> findAllByNextLessThan(ZonedDateTime time);
+     List<Schedule> findByNextLessThanAndActiveTrue(ZonedDateTime time);
 }

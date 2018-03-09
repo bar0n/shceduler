@@ -26,5 +26,5 @@ public interface ScheduleLogRepository extends JpaRepository<ScheduleLog, Long> 
     @Transactional
     @Query("delete from ScheduleLog u where u.schedule.id = ?1")
     void deleteScheduleLogsByscheduleId(Long id);
-   // List<ScheduleLog> findAllNotCompletedAndByNextLessThan(ZonedDateTime time);
+    List<ScheduleLog> findByNextLessThanAndCompletedFalse(ZonedDateTime time);
 }
