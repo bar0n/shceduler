@@ -6,7 +6,7 @@ import {Schedule} from '../../shared/model/schedule.model';
 import {NotificationsService} from '../notifications';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
-
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'schedule-edit',
@@ -37,6 +37,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     private notificationsService: NotificationsService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
+    public confirmationService: ConfirmationService,
   ) {
 
   }
@@ -80,15 +81,25 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    if (this.schedule && this.schedule.id) {
-      this.scheduleService.delete(this.schedule.id).subscribe(() => {
-          this.notificationsService.notify('success', '', ' deleted ');
-          this.schedule = new Schedule();
-        }
-      );
-    }
 
-    this.schedule = new Schedule();
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        console.log("accept");
+        console.log(JSON.stringify(this.schedule));
+        if (this.schedule && this.schedule.id) {
+          this.scheduleService.delete(this.schedule.id).subscribe(() => {
+              this.notificationsService.notify('success', '', ' deleted ');
+              this.schedule = new Schedule();
+              this.router.navigate(["schedule"]);
+            }
+          );
+        }
+      }
+    });
+
+
+  //  this.schedule = new Schedule();
   }
 
 

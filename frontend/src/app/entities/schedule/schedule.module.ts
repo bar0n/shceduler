@@ -18,6 +18,9 @@ import { CronJobsModule } from 'ngx-cron-jobs';
 
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {ScheduleEditComponent} from "./schedule-edit.component";
+
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 @NgModule({
   imports: [NotificationsModule,
     CommonModule,
@@ -37,6 +40,7 @@ import {ScheduleEditComponent} from "./schedule-edit.component";
     InputTextareaModule,
     DropdownModule,
     CronJobsModule,
+    ConfirmDialogModule
 
   ],
   declarations: [
@@ -45,7 +49,7 @@ import {ScheduleEditComponent} from "./schedule-edit.component";
   ],
 
   providers: [
-    ScheduleService,
+    ScheduleService,ConfirmationService
   ],
   exports: [ScheduleComponent,ScheduleEditComponent]
 })
