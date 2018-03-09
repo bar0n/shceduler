@@ -36,6 +36,7 @@ public class ServiceIntegrationTests {
     public void manyToOneTest() {
         ZonedDateTime now = ZonedDateTime.now().minusDays(1);
         Schedule schedule = new Schedule("name1", "0 */10 * ? * *", now, now);
+        schedule.setCronLog("0 */10 * ? * *");
         scheduleRepository.save(schedule);
         scheduleService.handle(schedule);
         scheduleService.handle(schedule);
