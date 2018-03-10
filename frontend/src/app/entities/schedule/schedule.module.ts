@@ -10,7 +10,7 @@ import {DialogModule} from 'primeng/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {CalendarModule, DropdownModule, InputTextModule} from 'primeng/primeng';
+import {CalendarModule, DropdownModule, InputTextModule, MultiSelectModule} from 'primeng/primeng';
 import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
@@ -45,7 +45,8 @@ import {EventService} from "./event.service";
     DropdownModule,
     CronJobsModule,
     ConfirmDialogModule,
-    ScheduleModule
+    ScheduleModule,
+    MultiSelectModule
 
   ],
   declarations: [

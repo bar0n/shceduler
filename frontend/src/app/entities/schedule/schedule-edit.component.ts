@@ -26,7 +26,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   events: any[];
   cron: string;
   cronVisible = false;
-  uk:any;
+  uk: any;
   private subscription: Subscription;
   title = "New Schedule";
 
@@ -34,9 +34,10 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     this.subscription = this.activatedRoute.params.subscribe((params) => {
       this.loadAll(params['id']);
     });
-    this.uk ='ru';/*{
-      locale: 'en'
-    };*/
+    this.uk = 'ru';
+    /*{
+          locale: 'en'
+        };*/
 
   }
 
@@ -95,6 +96,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
       this.scheduleService.find(id).subscribe(x => {
         this.schedule = x.body;
         this.title = "Edit Schedule";
+        this.selectedPerson = x.body.person.split(",").map(x => x.trim());
       });
     }
 
@@ -161,6 +163,21 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     if (splitted.length == 3) {
       this.schedule.cronLog = splitted.join(" ") + " 1/1 * ? *";
     }
+  }
+
+  selectedPerson = [];
+  usItem = [
+    {label: 'Dima', code: "Dima", value: {id: 'Dima', name: 'Dima', email: 'berkbach@gmail.com'}},
+    {label: 'Tania', code: "Tania", value: {id: 'Tania', name: 'Tania', email: 'buxauto888@gmail.com'}},
+
+  ];
+
+  onChangePerson(event) {
+    /* console.log(JSON.stringify(event.value));*/
+    let email = event.value.map(x => x.email);
+    let names = event.value.map(x => x.name);
+    this.schedule.email = email.join(",")
+    this.schedule.person = names.join(",")
   }
 
   us = [
