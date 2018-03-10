@@ -14,13 +14,17 @@ import {CalendarModule, DropdownModule, InputTextModule} from 'primeng/primeng';
 import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
-import { CronJobsModule } from 'ngx-cron-jobs';
+import {CronJobsModule} from 'ngx-cron-jobs';
 
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {ScheduleEditComponent} from "./schedule-edit.component";
 
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+
+import {ScheduleModule} from 'primeng/schedule';
+import {EventService} from "./event.service";
+
 @NgModule({
   imports: [NotificationsModule,
     CommonModule,
@@ -40,7 +44,8 @@ import {ConfirmationService} from 'primeng/api';
     InputTextareaModule,
     DropdownModule,
     CronJobsModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ScheduleModule
 
   ],
   declarations: [
@@ -49,9 +54,9 @@ import {ConfirmationService} from 'primeng/api';
   ],
 
   providers: [
-    ScheduleService,ConfirmationService
+    ScheduleService, ConfirmationService,EventService
   ],
-  exports: [ScheduleComponent,ScheduleEditComponent]
+  exports: [ScheduleComponent, ScheduleEditComponent ]
 })
 export class SchedulerScheduleModule {
 }

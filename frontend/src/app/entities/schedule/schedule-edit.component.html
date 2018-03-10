@@ -1,5 +1,14 @@
 <h3>{{title}} <span *ngIf="schedule.id"> {{schedule.id}}</span></h3>
-<div class="ui-g  ui-sm ui-fluid">
+
+
+<p-schedule *ngIf="cronVisible"
+            [weekends]="true"
+            weekNumbers ="true"
+            [locale]="uk"
+            [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
+
+<button *ngIf="cronVisible" type="button" pButton  (click)="closeCron()" label="Close"></button>
+<div *ngIf="!cronVisible" class="ui-g  ui-sm ui-fluid">
   <div class="ui-g-8 ui-sm-12">
 
     <div class="ui-g-6 ui-sm-12 ">
@@ -80,7 +89,7 @@
         <label style='width:100px' for="start">Stop</label>
       </div>
       <div class="ui-g-4 ui-sm-12 ">
-        <p-calendar id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
+        <p-calendar id="end" [(ngModel)]="schedule.stop" name="end" showTime="true" hourFormat="24"
                     dateFormat="dd-MM-yy"
                     [showIcon]="true" showButtonBar="true">
         </p-calendar>
@@ -94,10 +103,12 @@
 
   </div>
 </div>
-<div class="ui-g-7 ui-sm-12 ">
+<div *ngIf="!cronVisible" class="ui-g-7 ui-sm-12 ">
   <div class="ui-dialog-buttonpane ui-helper-clearfix">
 
     <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
+    <button type="button" pButton icon="fa-calendar" (click)="showCron()" label="Show Cron"></button>
+    <button type="button" pButton icon="fa-calendar" (click)="showCronLog()" label="Show Cron Log"></button>
     <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
     <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right"
             label="Delete"></button>

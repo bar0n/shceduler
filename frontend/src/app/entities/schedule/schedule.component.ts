@@ -433,7 +433,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   showDialogToAdd2() {
-    console.log("showDialogToAdd");
     this.router.navigate(['/scheduleAdd']);
   }
   showDialogToAdd() {

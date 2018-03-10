@@ -7,6 +7,7 @@ import {NotificationsService} from '../notifications';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
 import {ConfirmationService} from 'primeng/api';
+import {EventService} from "./event.service";
 
 @Component({
   selector: 'schedule-edit',
@@ -22,6 +23,10 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
 
   periodTxt;
 
+  events: any[];
+  cron: string;
+  cronVisible = false;
+  uk:any;
   private subscription: Subscription;
   title = "New Schedule";
 
@@ -29,6 +34,10 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     this.subscription = this.activatedRoute.params.subscribe((params) => {
       this.loadAll(params['id']);
     });
+    this.uk ='ru';/*{
+      locale: 'en'
+    };*/
+
   }
 
   ngOnDestroy() {
@@ -41,8 +50,39 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public confirmationService: ConfirmationService,
+    public eventService: EventService,
   ) {
 
+  }
+
+  loadEvents(event) {
+    let start = event.view.start;
+    let end = event.view.end;
+    this.eventService.getEvents(start, end, this.cron).subscribe(events => {
+
+      this.events = events.map(x => this.eventObj(x));
+    });
+  }
+
+  private eventObj(x: any) {
+    return {
+      "title": this.schedule.name,
+      "start": x
+    }
+  }
+
+  showCron() {
+    this.cron = this.schedule.cron;
+    this.cronVisible = true;
+  }
+
+  showCronLog() {
+    this.cron = this.schedule.cronLog;
+    this.cronVisible = true;
+  }
+
+  closeCron() {
+    this.cronVisible = false;
   }
 
   previousState() {
@@ -93,8 +133,6 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        console.log("accept");
-        console.log(JSON.stringify(this.schedule));
         if (this.schedule && this.schedule.id) {
           this.scheduleService.delete(this.schedule.id).subscribe(() => {
               this.notificationsService.notify('success', '', ' deleted ');

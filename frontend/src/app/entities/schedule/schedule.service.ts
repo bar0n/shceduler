@@ -23,7 +23,6 @@ export class ScheduleService {
   }
 
   create(schedule: Schedule): Observable<EntityResponseType> {
-    console.log('create',JSON.stringify(schedule));
     const copy = this.convert(schedule);
     let observable = this.http.post<Schedule>(this.resourceUrl, copy, { observe: 'response' });
     return observable.map((res: EntityResponseType) => this.convertResponse(res));

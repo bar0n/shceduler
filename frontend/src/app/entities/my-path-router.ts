@@ -16,13 +16,11 @@ export class MyPathRouterComponent implements OnInit {
 
   ngOnInit() {
     const url = this.router.url;
-    console.log(url);
     if (url  === "/") {
       this.router.navigate(["schedule"]);
     }
     if (url.indexOf('#') !== -1) {
       const newUrl = url.replace('/#', '');
-      console.log(newUrl);
       this.router.navigate([newUrl]);
     }
   }

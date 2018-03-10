@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,6 +32,25 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
         this.scheduleLogRepository = scheduleLogRepository;
         this.mailService = mailService;
+    }
+
+    public List<ZonedDateTime> getDatesBetween(ZonedDateTime start, ZonedDateTime stop, String cronExpressionTxt) {
+        CronExpression cronExpression = null;
+        try {
+            cronExpression = new CronExpression(cronExpressionTxt);
+        } catch (ParseException e) {
+            throw new RuntimeException("parse error", e);
+        }
+        List<ZonedDateTime> result = new ArrayList<>();
+        while (start.compareTo(stop) < 0) {
+            Date from = Date.from(start.toInstant());
+            Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from);
+            ZoneId zone = start.getZone();
+            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nextValidTimeAfter.toInstant(), zone);
+            start = zonedDateTime;
+            result.add(zonedDateTime);
+        }
+        return result;
     }
 
     public ZonedDateTime getNextTime(ZonedDateTime time, String cronExpressionTxt) {
