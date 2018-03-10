@@ -2,29 +2,45 @@
   <h2>
     <span>Schedules</span>
   </h2>
-  <p-schedule *ngIf="cronVisible"
-              [weekends]="true"
-              weekNumbers="true"
-              locale="uk"
-              [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
-  <button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
-  <p-table *ngIf="!cronVisible" [value]="schedules" [responsive]="true"
-           [resizableColumns]="true"
-           selectionMode="single" [(selection)]="selectedSchedule"
-           dataKey="id"
-           [rows]="10"
+  <div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
+    <div class="ui-g-1 ui-sm-12"></div>
+    <div class="ui-g-8 ui-sm-12">
+      <p-schedule *ngIf="cronVisible"
+                  [weekends]="true"
+                  weekNumbers="true"
+                  locale="uk"
+                  [header]="headerConfig"
+                  [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
+    </div>
+    <div class="ui-g-1 ui-sm-12"></div>
+  </div>
+  <div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
+    <div class="ui-g-1 ui-sm-12"></div>
+    <div class="ui-g-1 ui-sm-12">
+      <button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
+    </div>
+
+  </div>
+
+
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+
+  <p-table *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
+           [rows]="10" responsive="true"
            [paginator]="true"
            [rowsPerPageOptions]="[10,20,30]"
   >
-    <ng-template pTemplate="header">
+    <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 30px">
+        <th style="width: 2.25em">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="id" style="width: 30px" ><span>ID</span>
+
+        <th pSortableColumn="id" style="width: 30px"><span>ID</span>
           <p-sortIcon field="id"></p-sortIcon>
         </th>
-        <th pSortableColumn="active" style="width: 30px" ><span>A</span>
+        <th pSortableColumn="active" style="width: 30px"><span>A</span>
           <p-sortIcon field="active"></p-sortIcon>
         </th>
         <th pSortableColumn="name"><span>Name</span>
@@ -43,36 +59,34 @@
         <th pSortableColumn="cronLog"><span>Cron Log</span>
           <p-sortIcon field="cronLog"></p-sortIcon>
         </th>
-       <!-- <th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+      <tr [pSelectableRow]="rowData">
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
 
-        </th>-->
+        <td><a [routerLink]="['/scheduleEdit', rowData.id]">{{rowData.id}}</a></td>
+        <td>
+          <input id="active" disabled readonly="true" type="checkbox" [(ngModel)]="rowData.active">
+        </td>
+        <td>{{rowData.name}}</td>
+        <td>{{rowData.person}}</td>
+        <td>{{rowData.next | date:'dd-MMMM-yyyy HH:mm'}}</td>
+        <td>{{rowData.cron}}</td>
+        <td>{{rowData.cronLog}}</td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-schedule>
-      <tr [pSelectableRow]="schedule" style="height: 20px">
-        <td>
-          <p-tableCheckbox [value]="schedule"></p-tableCheckbox>
-        </td>
-        <td> <a [routerLink]="['/scheduleEdit', schedule.id]">{{schedule.id}}</a> </td>
-        <td>
-          <input id="active" disabled readonly="true" type="checkbox" [(ngModel)]="schedule.active" >
-        </td>
-        <td>{{schedule.name}}</td>
-        <td>{{schedule.person}}</td>
-        <td>{{schedule.next | date:'dd-MMMM-yyyy HH:mm'}}</td>
-        <td>{{schedule.cron}}</td>
-        <td>{{schedule.cronLog}}</td>
-        <!--<td><button pButton (click)="onItemClick(schedule)" type="button" icon="fa-plus"> </button>  </td>-->
-      </tr>
-    </ng-template>
+
     <ng-template pTemplate="summary" let-rowData>
       <div style="text-align:left">
-       <!-- <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add in Dialog"></button>-->
+        <!-- <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add in Dialog"></button>-->
         <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd2()" label="Add"></button>
+        <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
         <button type="button" pButton icon="fa-calendar" (click)="showCron()" label="Show Cron"></button>
       </div>
     </ng-template>
-
   </p-table>
 
 

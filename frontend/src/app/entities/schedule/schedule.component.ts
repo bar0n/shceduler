@@ -6,6 +6,7 @@ import {Schedule} from '../../shared/model/schedule.model';
 import {NotificationsService} from '../notifications/notifications.service';
 import {Observable} from 'rxjs/Observable';
 import {EventService} from "./event.service";
+import {ConfirmationService} from "primeng/api";
 
 
 @Component({
@@ -35,21 +36,26 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   newSchedule: boolean;
   us;
   periods;
+  headerConfig: any;
 
   constructor(
     private scheduleService: ScheduleService,
-    // private parseLinks: JhiParseLinks,
     private notificationsService: NotificationsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
+    private confirmationService: ConfirmationService,
   ) {
     this.itemsPerPage = 20;
     this.us = [
       {name: 'Dima', code: 'Dima'},
       {name: 'Tania', code: 'Tania'},
     ];
-
+    this.headerConfig = {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    };
     this.periods = [
 
       {
@@ -378,7 +384,17 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
 
   showCron() {
-    this.cronVisible = true;
+    if (this.selectedSchedule.length == 0) {
+      this.confirmationService.confirm({
+        message: 'Items was not selected?',
+        accept: () => {
+          this.cronVisible = true;
+        }
+      });
+    } else {
+      this.cronVisible = true;
+    }
+
   }
 
   closeCron() {

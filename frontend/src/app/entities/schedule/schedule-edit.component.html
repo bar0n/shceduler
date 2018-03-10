@@ -1,13 +1,23 @@
 <h3>{{title}} <span *ngIf="schedule.id"> {{schedule.id}}</span></h3>
 
+<div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
+  <div class="ui-g-1 ui-sm-12"></div>
+  <div class="ui-g-8 ui-sm-12">
+    <p-schedule *ngIf="cronVisible"
+                [weekends]="true"
+                weekNumbers="true"
+                [locale]="uk"
+                [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
+  </div>
+  <div class="ui-g-1 ui-sm-12"></div>
+</div>
+<div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
+  <div class="ui-g-1 ui-sm-12"></div>
+  <div class="ui-g-1 ui-sm-12">
+    <button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
+  </div>
 
-<p-schedule *ngIf="cronVisible"
-            [weekends]="true"
-            weekNumbers="true"
-            [locale]="uk"
-            [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
-
-<button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
+</div>
 <div *ngIf="!cronVisible" class="ui-g  ui-sm ui-fluid">
   <div class="ui-g-8 ui-sm-12">
 
@@ -49,7 +59,7 @@
 
     <div class="ui-g-6 ui-sm-12 ">
       <div class="ui-g-2 ui-sm-12 ">
-      <label style='width:100px' for="person">Person</label>
+        <label style='width:100px' for="person">Person</label>
       </div>
       <!-- <select style='width:250px' id="person" [(ngModel)]="schedule.person">
          <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
@@ -59,7 +69,7 @@
                        (onChange)="onChangePerson($event)"></p-multiSelect>
       </div>
 
-    <!--  {{schedule.person}}-->
+      <!--  {{schedule.person}}-->
     </div>
 
     <div class="ui-g-6 ui-sm-12 ">
