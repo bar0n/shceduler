@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByNextLessThanAndActiveTrue(ZonedDateTime time);
+    List<Schedule> findByIdIn(List<Long> ids);
 
     Page<Schedule> findAllByOrderByIdDesc(Pageable pageable);
 }

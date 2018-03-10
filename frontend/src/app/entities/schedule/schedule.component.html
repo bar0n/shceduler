@@ -2,8 +2,13 @@
   <h2>
     <span>Schedules</span>
   </h2>
- <!-- (onRowSelect)="onRowSelect($event)-->
-  <p-table [value]="schedules" [responsive]="true"
+  <p-schedule *ngIf="cronVisible"
+              [weekends]="true"
+              weekNumbers="true"
+              locale="uk"
+              [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
+  <button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
+  <p-table *ngIf="!cronVisible" [value]="schedules" [responsive]="true"
            [resizableColumns]="true"
            selectionMode="single" [(selection)]="selectedSchedule"
            dataKey="id"
@@ -13,6 +18,9 @@
   >
     <ng-template pTemplate="header">
       <tr>
+        <th style="width: 30px">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
         <th pSortableColumn="id" style="width: 30px" ><span>ID</span>
           <p-sortIcon field="id"></p-sortIcon>
         </th>
@@ -42,6 +50,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-schedule>
       <tr [pSelectableRow]="schedule" style="height: 20px">
+        <td>
+          <p-tableCheckbox [value]="schedule"></p-tableCheckbox>
+        </td>
         <td> <a [routerLink]="['/scheduleEdit', schedule.id]">{{schedule.id}}</a> </td>
         <td>
           <input id="active" disabled readonly="true" type="checkbox" [(ngModel)]="schedule.active" >
@@ -58,96 +69,12 @@
       <div style="text-align:left">
        <!-- <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add in Dialog"></button>-->
         <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd2()" label="Add"></button>
+        <button type="button" pButton icon="fa-calendar" (click)="showCron()" label="Show Cron"></button>
       </div>
     </ng-template>
 
   </p-table>
 
-  <p-dialog id="dialog" header="Schedule Details" [(visible)]="displayDialog"
-            [responsive]="true" showEffect="fade"
-            [modal]="true"
-         [width]="500"    >
-    <div class="ui-g  ui-sm ui-fluid">
-      <div class="ui-g-8 ui-sm-12">
 
-        <div class="ui-g-6 ui-sm-12 ">
-          <label style ='width:100px'  for="name">Name</label>
-          <input pInputText  style ='width:250px' id="name" [(ngModel)]="schedule.name"/>
-        </div>
-        <div class="ui-g-6 ui-sm-12 ">
-          <label style ='width:100px' for="email">Email</label>
-          <input pInputText  style ='width:250px' id="email" [(ngModel)]="schedule.email"/>
-        </div>
-        <div class="ui-g-6 ui-sm-12 ">
-          <label style ='width:100px'  for="cron">Cron</label>
-          <input  pInputText style ='width:250px' id="cron" [(ngModel)]="schedule.cron"/>
-
-        </div>
-        <div class="ui-g-6 ui-sm-12 ">
-          <label  style = 'width:100px'  for="Period">Period</label>
-          <select style = 'width:250px'  id="Period" [(ngModel)]="schedule.cron">
-            <option *ngFor="let name of periods " [value]="name.code">{{name.name}}</option>
-          </select>
-        </div>
-        <!---->
-
-        <!-- <div class="ui-g-6 ui-sm-12 ">
-           <cron-jobs style ='width:150px' [(ngModel)]="schedule.cron" [ngModelOptions]="{standalone: true}"></cron-jobs>
-         </div>-->
-
-        <div class="ui-g-6 ui-sm-12 ">
-          <label style ='width:100px'  for="person">Person</label>
-          <select  style ='width:250px' id="person" [(ngModel)]="schedule.person">
-            <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
-          </select>
-        </div>
-
-        <div class="ui-g-6 ui-sm-12 ">
-          <label style ='width:100px'  for="desc">Description</label>
-          <textarea id="desc"  style ='width:250px' pInputTextarea [(ngModel)]="schedule.description" [rows]="2"></textarea>
-        </div>
-
-        <div class="ui-g-12 ui-sm-12 ">
-          <div class="ui-g-2 ui-sm-12 ">
-            <label style ='width:100px'  for="start">Start</label>
-            <p-calendar   id="start" [(ngModel)]="schedule.start" name="start" showTime="true" hourFormat="24"
-                          [showIcon]="true" showButtonBar="true">
-            </p-calendar>
-          </div>
-
-        </div>
-        <div class="ui-g-12 ui-sm-12 ">
-          <div class="ui-g-2 ui-sm-12 ">
-            <label style ='width:100px'  for="next">Next</label>
-            <p-calendar   id="next" [(ngModel)]="schedule.next" name="next" showTime="true" hourFormat="24"
-                          [showIcon]="true" showButtonBar="true">
-            </p-calendar>
-          </div>
-
-        </div>
-
-        <div class="ui-g-12 ui-sm-12 ">
-          <div class="ui-g-2 ui-sm-12 ">
-            <label style ='width:100px'  for="start">Stop</label>
-            <p-calendar    id="end" [(ngModel)]="schedule.stop" name="end" showTime="true" hourFormat="24"
-                           [showIcon]="true" showButtonBar="true">
-            </p-calendar>
-
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-      <!--<p-footer>
-        <div class="ui-g-12 ui-sm-12 ">
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
-
-          <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right" label="Delete"></button>
-        </div>
-        </div>
-      </p-footer>-->
-  </p-dialog>
   <notifications></notifications>
 </div>

@@ -28,4 +28,13 @@ export class EventService {
     };
     return this.http.post<any[]>(this.resourceUrl, req).map(x => x.map(y => this.dateUtils.convertDateTimeFromServer(y)));
   }
+
+  getAllEvents(start, end, list: Schedule[]): Observable<any[]> {
+    let req = {
+      start: start,
+      end: end,
+      ids: list.map(x => x.id)
+    };
+    return this.http.post<any[]>(this.resourceUrl+'/all', req);
+  }
 }
