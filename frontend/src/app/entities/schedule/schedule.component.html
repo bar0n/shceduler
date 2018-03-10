@@ -16,6 +16,9 @@
         <th pSortableColumn="id" style="width: 30px" ><span>ID</span>
           <p-sortIcon field="id"></p-sortIcon>
         </th>
+        <th pSortableColumn="active" style="width: 30px" ><span>A</span>
+          <p-sortIcon field="active"></p-sortIcon>
+        </th>
         <th pSortableColumn="name"><span>Name</span>
           <p-sortIcon field="name"></p-sortIcon>
         </th>
@@ -29,24 +32,31 @@
         <th pSortableColumn="cron"><span>Cron</span>
           <p-sortIcon field="cron"></p-sortIcon>
         </th>
-        <th>
-
+        <th pSortableColumn="cronLog"><span>Cron Log</span>
+          <p-sortIcon field="cronLog"></p-sortIcon>
         </th>
+       <!-- <th>
+
+        </th>-->
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-schedule>
       <tr [pSelectableRow]="schedule" style="height: 20px">
         <td> <a [routerLink]="['/scheduleEdit', schedule.id]">{{schedule.id}}</a> </td>
+        <td>
+          <input id="active" disabled readonly="true" type="checkbox" [(ngModel)]="schedule.active" >
+        </td>
         <td>{{schedule.name}}</td>
         <td>{{schedule.person}}</td>
-        <td>{{schedule.next | date:'dd/MMM/yyyy HH:mm'}}</td>
+        <td>{{schedule.next | date:'dd-MMMM-yyyy HH:mm'}}</td>
         <td>{{schedule.cron}}</td>
-        <td><button pButton (click)="onItemClick(schedule)" type="button" icon="fa-plus"> </button>  </td>
+        <td>{{schedule.cronLog}}</td>
+        <!--<td><button pButton (click)="onItemClick(schedule)" type="button" icon="fa-plus"> </button>  </td>-->
       </tr>
     </ng-template>
     <ng-template pTemplate="summary" let-rowData>
       <div style="text-align:left">
-        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add in Dialog"></button>
+       <!-- <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add in Dialog"></button>-->
         <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd2()" label="Add"></button>
       </div>
     </ng-template>

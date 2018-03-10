@@ -1,99 +1,108 @@
-<!--<pre> {{schedule|json}}</pre>-->
+<h3>{{title}} <span *ngIf="schedule.id"> {{schedule.id}}</span></h3>
 <div class="ui-g  ui-sm ui-fluid">
   <div class="ui-g-8 ui-sm-12">
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="name">Name</label>
-      <input pInputText  style ='width:250px' id="name" [(ngModel)]="schedule.name"/>
+      <label style='width:100px' for="name">Name</label>
+      <input pInputText style='width:250px' id="name" [(ngModel)]="schedule.name"/>
     </div>
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px' for="email">Email</label>
-      <input pInputText  style ='width:250px' id="email" [(ngModel)]="schedule.email"/>
+      <label style='width:100px' for="email">Email</label>
+      <input pInputText style='width:250px' id="email" [(ngModel)]="schedule.email"/>
     </div>
     <div class="ui-g-6 ui-sm-12 ">
-    <label style ='width:100px'  for="cron">Cron</label>
-    <input pInputText (keyup)="cronKeyUp($event)" style ='width:250px' id="cron" [(ngModel)]="schedule.cron"/>
+      <label style='width:100px' for="cron">Cron</label>
+      <input pInputText (keyup)="cronKeyUp($event)" (blur)="cronKeyUp($event)" style='width:250px' id="cron"
+             [(ngModel)]="schedule.cron"/>
 
-  </div>
+    </div>
 
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="Period">Period</label>
-      <select (change)="cronKeyUp($event)" style ='width:250px'  id="Period" [(ngModel)]="schedule.cron">
+      <label style='width:100px' for="Period">Period</label>
+      <select (change)="cronKeyUp($event)" style='width:250px' id="Period" [(ngModel)]="schedule.cron">
         <option *ngFor="let name of periods " [value]="name.code">{{name.name}}</option>
       </select>
     </div>
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="cronLog">Cron Log</label>
-      <input pInputText  style ='width:250px' id="cronLog" [(ngModel)]="schedule.cronLog"/>
+      <label style='width:100px' for="cronLog">Cron Log</label>
+      <input pInputText style='width:250px' id="cronLog" [(ngModel)]="schedule.cronLog"/>
     </div>
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="Period2">Period For confirmation</label>
-      <select style ='width:250px'  id="Period2" [(ngModel)]="schedule.cronLog">
+      <label style='width:100px' for="Period2">Period For confirmation</label>
+      <select style='width:250px' id="Period2" [(ngModel)]="schedule.cronLog">
         <option *ngFor="let name of periods " [value]="name.code">{{name.name}}</option>
       </select>
     </div>
-    <!---->
 
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="person">Person</label>
-      <select  style ='width:250px' id="person" [(ngModel)]="schedule.person">
+      <label style='width:100px' for="person">Person</label>
+      <select style='width:250px' id="person" [(ngModel)]="schedule.person">
         <option *ngFor="let name of us " [value]="name.code">{{name.name}}</option>
       </select>
     </div>
 
     <div class="ui-g-6 ui-sm-12 ">
-      <label style ='width:100px'  for="desc">Description</label>
-      <textarea id="desc"  style ='width:250px' pInputTextarea [(ngModel)]="schedule.description" [rows]="2"></textarea>
+      <label style='width:100px' for="desc">Description</label>
+      <textarea id="desc" style='width:250px' pInputTextarea [(ngModel)]="schedule.description" [rows]="2"></textarea>
     </div>
 
-    <div class="ui-g-12 ui-sm-12 ">
+    <div class="ui-g-6 ui-sm-12 ">
       <div class="ui-g-2 ui-sm-12 ">
-      <label style ='width:100px'  for="start">Start</label>
-      <p-calendar   id="start" [(ngModel)]="schedule.start" name="start" showTime="true" hourFormat="24"
-                  [showIcon]="true" showButtonBar="true">
-      </p-calendar>
+        <label style='width:100px' for="start">Start</label>
       </div>
-
-    </div>
-    <div class="ui-g-12 ui-sm-12 ">
-      <div class="ui-g-2 ui-sm-12 ">
-        <label style ='width:100px'  for="next">Next</label>
-        <p-calendar   id="next" [(ngModel)]="schedule.next" name="next" showTime="true" hourFormat="24"
-                      [showIcon]="true" showButtonBar="true">
+      <div class="ui-g-4 ui-sm-12 ">
+        <p-calendar id="start" [(ngModel)]="schedule.start" name="start" showTime="true" hourFormat="24"
+                    dateFormat="dd-MM-yy"
+                    [showIcon]="true" showButtonBar="true">
         </p-calendar>
       </div>
 
     </div>
-
-    <div class="ui-g-12 ui-sm-12 ">
+    <div class="ui-g-6 ui-sm-12 ">
       <div class="ui-g-2 ui-sm-12 ">
-      <label style ='width:100px'  for="start">Stop</label>
-      <p-calendar    id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
-                  [showIcon]="true" showButtonBar="true">
-      </p-calendar>
+        <label style='width:100px' for="next">Next</label>
+      </div>
+      <div class="ui-g-4 ui-sm-12 ">
+        <p-calendar id="next" [(ngModel)]="schedule.next" name="next" showTime="true" hourFormat="24"
 
+                    dateFormat="dd-MM-yy"
+                    [showIcon]="true" showButtonBar="true">
+        </p-calendar>
+      </div>
+    </div>
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-2 ui-sm-12 ">
+        <label style='width:100px' for="start">Stop</label>
+      </div>
+      <div class="ui-g-4 ui-sm-12 ">
+        <p-calendar id="stop" [(ngModel)]="schedule.stop" name="stop" showTime="true" hourFormat="24"
+                    dateFormat="dd-MM-yy"
+                    [showIcon]="true" showButtonBar="true">
+        </p-calendar>
       </div>
     </div>
     <div class="ui-g-6 ui-sm-12">
-      <label style ='width:100px' for="active">Active</label>
+      <label style='width:100px' for="active">Active</label>
 
       <input id="active" type="checkbox" [(ngModel)]="schedule.active">
     </div>
 
   </div>
 </div>
-  <div class="ui-g-6 ui-sm-12 ">
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+<div class="ui-g-7 ui-sm-12 ">
+  <div class="ui-dialog-buttonpane ui-helper-clearfix">
 
-      <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
-      <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
-      <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right" label="Delete"></button>
-    </div>
+    <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
+    <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+    <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right"
+            label="Delete"></button>
   </div>
+</div>
 <notifications></notifications>
 
 

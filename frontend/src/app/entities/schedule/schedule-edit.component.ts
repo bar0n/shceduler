@@ -10,6 +10,10 @@ import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'schedule-edit',
+  styles: [` .wid150 {
+    width: 150px;
+  }`],
+
   templateUrl: './schedule-edit.component.html'
 })
 export class ScheduleEditComponent implements OnInit, OnDestroy {
@@ -19,9 +23,9 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   periodTxt;
 
   private subscription: Subscription;
+  title = "New Schedule";
 
   ngOnInit(): void {
-    console.log("ngOnInit");
     this.subscription = this.activatedRoute.params.subscribe((params) => {
       this.loadAll(params['id']);
     });
@@ -33,7 +37,6 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private scheduleService: ScheduleService,
-    // private parseLinks: JhiParseLinks,
     private notificationsService: NotificationsService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -49,14 +52,18 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   loadAll(id) {
 
     if (id) {
-      this.scheduleService.find(id).subscribe(x =>
-        this.schedule = x.body
-      );
+      this.scheduleService.find(id).subscribe(x => {
+        this.schedule = x.body;
+        this.title = "Edit Schedule";
+      });
     }
 
   }
 
   save() {
+    if (this.schedule.cronLog == null || this.schedule.cronLog == '' || this.schedule.cronLog) {
+      this.cronKeyUp({});
+    }
     if (this.schedule.id !== undefined) {
       this.notificationsService.notify('success', '', ' saved');
       this.scheduleService.update(this.schedule).subscribe(x => this.router.navigate(['/scheduleEdit', x.body.id]));
@@ -113,8 +120,8 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
 
   cronKeyUp(event) {
     let splitted = this.schedule.cron.split(" ", 3);
-    if (splitted.length==3){
-      this.schedule.cronLog = splitted.join(" ")+ " 1/1 * ? *";
+    if (splitted.length == 3) {
+      this.schedule.cronLog = splitted.join(" ") + " 1/1 * ? *";
     }
   }
 
