@@ -1,6 +1,5 @@
 package com.bar0n.shceduler.services;
 
-import javafx.util.Pair;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
@@ -43,13 +42,13 @@ public class MyCronExpression {
                 .limit(10);
         System.out.println();
         iterate.forEach(x -> System.out.println(x));*/
-        return Stream.iterate(pair, p -> new Pair<>(p.getKey() + 1, cronExpression.getNextValidTimeAfter(p.getValue())))
-                .filter(x -> x.getKey() % i == 0)
-                .filter(x -> x.getValue().after(date))
+        return Stream.iterate(pair, p -> new Pair<>(p.getFirst() + 1, cronExpression.getNextValidTimeAfter(p.getSecond())))
+                .filter(x -> x.getFirst() % i == 0)
+                .filter(x -> x.getSecond().after(date))
                // .skip(1)
                 .limit(1)
                 .reduce((p1, p2) -> p1)
-                .map(Pair::getValue).get();
+                .map(Pair::getSecond).get();
 
     }
 
