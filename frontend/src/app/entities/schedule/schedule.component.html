@@ -9,7 +9,8 @@
                   [weekends]="true"
                   weekNumbers="true"
                   locale="uk"
-                  [header]="headerConfig"
+                  (onEventClick)="onEventClick($event)"
+                  [header]="headerConfig" [editable]="true"
                   [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
     </div>
     <div class="ui-g-1 ui-sm-12"></div>

@@ -382,6 +382,11 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     });
   }
 
+  onEventClick(event){
+    console.log(event);
+    console.log(JSON.stringify(event.calEvent));
+  }
+
 
   showCron() {
     if (this.selectedSchedule.length == 0) {

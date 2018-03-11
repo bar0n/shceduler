@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#app { /* body - or any parent wrapper */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header{
+  font: 14px Tahoma, Arial, Helvetica, sans-serif !important;
+
+}
+main {
+  flex: 1;
+}
+.navbar{
+  padding: 0;
+}
+
+footer{
+  font: 10px Tahoma, Arial, Helvetica, sans-serif !important;
+  background-color: #e3f2fd;
+}
