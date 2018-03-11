@@ -19,7 +19,7 @@ export class EventService {
   constructor(private http: HttpClient) {
   }
 
-  getEvents(start, end, cron): Observable<any[]> {
+ /* getEvents(start, end, cron): Observable<any[]> {
     let req = {
       start: start,
       end: end,
@@ -27,7 +27,7 @@ export class EventService {
 
     };
     return this.http.post<any[]>(this.resourceUrl, req).map(x => x.map(y => this.dateUtils.convertDateTimeFromServer(y)));
-  }
+  }*/
 
   getAllEvents(start, end, list: Schedule[]): Observable<any[]> {
     let req = {

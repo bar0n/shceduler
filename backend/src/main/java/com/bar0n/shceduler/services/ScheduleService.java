@@ -4,7 +4,6 @@ import com.bar0n.shceduler.data.ScheduleLogRepository;
 import com.bar0n.shceduler.data.ScheduleRepository;
 import com.bar0n.shceduler.model.Schedule;
 import com.bar0n.shceduler.model.ScheduleLog;
-import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by dbaron
@@ -35,17 +32,18 @@ public class ScheduleService {
         this.mailService = mailService;
     }
 
-    public List<ZonedDateTime> getDatesBetween(ZonedDateTime start, ZonedDateTime stop, String cronExpressionTxt) {
-        CronExpression cronExpression = null;
+    public List<ZonedDateTime> getDatesBetween(ZonedDateTime start, ZonedDateTime stop, String cronExpressionTxt, ZonedDateTime fromDate) {
+        MyCronExpression cronExpression = null;
+        fromDate = start.compareTo(fromDate) < 0 ? start : fromDate;
         try {
-            cronExpression = new CronExpression(cronExpressionTxt);
+            cronExpression = new MyCronExpression(cronExpressionTxt);
         } catch (ParseException e) {
             throw new RuntimeException("parse error", e);
         }
         List<ZonedDateTime> result = new ArrayList<>();
         while (start.compareTo(stop) < 0) {
             Date from = Date.from(start.toInstant());
-            Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from);
+            Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, fromDate);
             ZoneId zone = start.getZone();
             ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nextValidTimeAfter.toInstant(), zone);
             start = zonedDateTime;
@@ -54,17 +52,17 @@ public class ScheduleService {
         return result;
     }
 
-    public ZonedDateTime getNextTime(ZonedDateTime time, String cronExpressionTxt) {
-        CronExpression cronExpression = null;
+    public ZonedDateTime getNextTime(ZonedDateTime time, String cronExpressionTxt, ZonedDateTime start) {
+        MyCronExpression cronExpression = null;
         try {
-            cronExpression = new CronExpression(cronExpressionTxt);
+            cronExpression = new MyCronExpression(cronExpressionTxt);
         } catch (ParseException e) {
             throw new RuntimeException("parse error", e);
         }
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime t = (now.compareTo(time) > 0) ? now : time;
         Date from = Date.from(t.toInstant());
-        Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from);
+        Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, start);
         ZoneId zone = time.getZone();
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nextValidTimeAfter.toInstant(), zone);
         logger.debug("getNextTime time: {}, now:{}, max(time,now):{}, nextTime:{}", time, now, t, zonedDateTime);
@@ -89,7 +87,7 @@ public class ScheduleService {
     public void handleLog(ScheduleLog scheduleLog) {
         logger.debug("handle scheduleLog : {}", scheduleLog);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog);
+        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog, scheduleLog.getCreated());
         ZonedDateTime next = scheduleLog.getNext();
         logger.debug("scheduleLog current next : {} new next time:{}", next, nextTimeLog);
         scheduleLog.setNext(nextTimeLog);
@@ -110,7 +108,7 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
         ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog);
+        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog, schedule.getStart());
         scheduleLog.setNext(nextTimeLog);
         scheduleLogRepository.save(scheduleLog);
         mailService.sendNotificationEmail(schedule);
@@ -118,6 +116,6 @@ public class ScheduleService {
     }
 
     private ZonedDateTime getNextTime(Schedule schedule) {
-        return getNextTime(schedule.getNext(), schedule.getCron());
+        return getNextTime(schedule.getNext(), schedule.getCron(), schedule.getStart());
     }
 }

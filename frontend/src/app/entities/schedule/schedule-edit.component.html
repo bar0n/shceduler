@@ -1,12 +1,19 @@
 <h3>{{title}} <span *ngIf="schedule.id"> {{schedule.id}}</span></h3>
-
+<div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
+  <div class="ui-g-1 ui-sm-12"></div>
+  <div class="ui-g-1 ui-sm-12">
+    <button *ngIf="cronVisible" type="button" pButton (click)="closeCron()" label="Close"></button>
+  </div>
+</div>
 <div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
   <div class="ui-g-1 ui-sm-12"></div>
   <div class="ui-g-8 ui-sm-12">
     <p-schedule *ngIf="cronVisible"
                 [weekends]="true"
                 weekNumbers="true"
-                [locale]="uk"
+                locale="uk"
+
+                [header]="headerConfig" [editable]="true"
                 [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
   </div>
   <div class="ui-g-1 ui-sm-12"></div>
@@ -19,6 +26,10 @@
 
 </div>
 <div *ngIf="!cronVisible" class="ui-g  ui-sm ui-fluid">
+  <div class="ui-g-6 ui-sm-12 ">
+    <label style='width:100px' for="name">Id</label>
+    <input pInputText style='width:60px' id="id" readonly [(ngModel)]="schedule.id"/>
+  </div>
   <div class="ui-g-8 ui-sm-12">
 
     <div class="ui-g-6 ui-sm-12 ">
@@ -127,6 +138,7 @@
     <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
     <button type="button" pButton icon="fa-calendar" (click)="showCron()" label="Show Cron"></button>
     <button type="button" pButton icon="fa-calendar" (click)="showCronLog()" label="Show Cron Log"></button>
+    <button type="button" pButton icon="fa-copy" (click)="copy()" label="Copy"></button>
     <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
     <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right"
             label="Delete"></button>

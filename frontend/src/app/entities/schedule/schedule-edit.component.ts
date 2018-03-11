@@ -8,6 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
 import {ConfirmationService} from 'primeng/api';
 import {EventService} from "./event.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'schedule-edit',
@@ -29,6 +30,13 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   uk: any;
   private subscription: Subscription;
   title = "New Schedule";
+
+  headerConfig = {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'month,agendaWeek,agendaDay'
+  };
+
 
   ngOnInit(): void {
     this.subscription = this.activatedRoute.params.subscribe((params) => {
@@ -52,6 +60,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     public router: Router,
     public confirmationService: ConfirmationService,
     public eventService: EventService,
+    private location: Location
   ) {
 
   }
@@ -59,9 +68,8 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   loadEvents(event) {
     let start = event.view.start;
     let end = event.view.end;
-    this.eventService.getEvents(start, end, this.cron).subscribe(events => {
-
-      this.events = events.map(x => this.eventObj(x));
+    this.eventService.getAllEvents(start, end, [this.schedule]).subscribe(events => {
+      this.events = events;
     });
   }
 
@@ -99,8 +107,17 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
         this.selectedPerson = x.body.person.split(",").map(x => x.trim());
       });
     }
-
   }
+
+  copy() {
+    let schedule1 = Object.assign({}, this.schedule);
+    schedule1.id = null;
+    schedule1.scheduleLogs = [];
+    schedule1.name = schedule1.name + " (Copy)";
+    this.schedule = schedule1;
+    this.location.replaceState("/scheduleAdd");
+  }
+
 
   save() {
     if (this.schedule.cronLog == null || this.schedule.cronLog == '' || this.schedule.cronLog) {
@@ -176,7 +193,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     /* console.log(JSON.stringify(event.value));*/
     let email = event.value.map(x => x.email);
     let names = event.value.map(x => x.name);
-    this.schedule.email = email.join(",")
+    this.schedule.email = email.join(",");
     this.schedule.person = names.join(",")
   }
 

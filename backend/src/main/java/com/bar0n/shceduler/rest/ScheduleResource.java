@@ -56,8 +56,8 @@ public class ScheduleResource {
             throw new BadRequestAlertException("A new schedule cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
-        ZonedDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
+        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
+        ZonedDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
         schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
@@ -77,11 +77,11 @@ public class ScheduleResource {
     @PutMapping("/schedules")
     public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to update Schedule : {}", schedule);
+
+        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(),schedule.getStart());
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }
-
-        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron());
         schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.ok()

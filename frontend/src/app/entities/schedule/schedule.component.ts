@@ -382,9 +382,14 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEventClick(event){
+  onEventClick(event) {
     console.log(event);
-    console.log(JSON.stringify(event.calEvent));
+    let id = event.calEvent.id;
+    let split = id.split("$");
+    console.log(event.calEvent);
+    if (split.length > 0) {
+      this.router.navigate(['/scheduleEdit', split[0]]);
+    }
   }
 
 
