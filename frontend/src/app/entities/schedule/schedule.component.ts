@@ -385,7 +385,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     let end = event.view.end;
 
     this.blockService.emit(true);
-    this.eventService.getAllEvents(start, end, [this.schedule]).subscribe(events => {
+    this.eventService.getAllEvents(start, end, this.selectedSchedule).subscribe(events => {
         this.events = events;
         this.blockService.emit(false);
       },
