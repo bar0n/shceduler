@@ -34,38 +34,49 @@
   <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
 
-  <p-table *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
+  <p-table #dt *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
            [rows]="10" responsive="true"
            [paginator]="true"
            [rowsPerPageOptions]="[10,20,30]"
   >
+    <!--<ng-template pTemplate="caption">
+      <div style="text-align: right">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
+    </ng-template>-->
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 2.25em">
+        <th rowspan="2" style="width: 2.25em">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
 
-        <th pSortableColumn="id" style="width: 30px"><span>ID</span>
+        <th rowspan="2" pSortableColumn="id" style="width: 30px"><span>ID</span>
           <p-sortIcon field="id"></p-sortIcon>
         </th>
-        <th pSortableColumn="active" style="width: 30px"><span>A</span>
+        <th rowspan="2" pSortableColumn="active" style="width: 30px"><span>A</span>
           <p-sortIcon field="active"></p-sortIcon>
         </th>
-        <th pSortableColumn="name"><span>Name</span>
+        <th rowspan="2" pSortableColumn="name"><span>Name</span>
           <p-sortIcon field="name"></p-sortIcon>
         </th>
         <th pSortableColumn="person"><span>Person</span>
           <p-sortIcon field="person"></p-sortIcon>
         </th>
 
-        <th pSortableColumn="next"><span>Next</span>
+        <th rowspan="2" pSortableColumn="next"><span>Next</span>
           <p-sortIcon field="next"></p-sortIcon>
         </th>
-        <th pSortableColumn="cron"><span>Cron</span>
+        <th rowspan="2" pSortableColumn="cron"><span>Cron</span>
           <p-sortIcon field="cron"></p-sortIcon>
         </th>
-        <th pSortableColumn="cronLog"><span>Cron Log</span>
+        <th rowspan="2" pSortableColumn="cronLog"><span>Cron Log</span>
           <p-sortIcon field="cronLog"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <p-multiSelect [panelStyle]="{minWidth:'12em'}" [options]="usItem" defaultLabel="All Person" (onChange)="dt.filter($event.value, 'person', 'in')"></p-multiSelect>
         </th>
       </tr>
     </ng-template>

@@ -37,7 +37,11 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   us;
   periods;
   headerConfig: any;
+  usItem = [
+    {label: 'Dima', value: "Dima"},
+    {label: 'Tania', value: "Tania"},
 
+  ];
   constructor(
     private scheduleService: ScheduleService,
     private notificationsService: NotificationsService,
