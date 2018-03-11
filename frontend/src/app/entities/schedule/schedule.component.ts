@@ -7,6 +7,7 @@ import {NotificationsService} from '../notifications/notifications.service';
 import {Observable} from 'rxjs/Observable';
 import {EventService} from "./event.service";
 import {ConfirmationService} from "primeng/api";
+import {BlockService} from "../../block/block.service";
 
 
 @Component({
@@ -49,6 +50,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private router: Router,
     private eventService: EventService,
     private confirmationService: ConfirmationService,
+    private blockService: BlockService,
   ) {
     this.itemsPerPage = 20;
     this.us = [
@@ -381,9 +383,15 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   loadEvents(event) {
     let start = event.view.start;
     let end = event.view.end;
-    this.eventService.getAllEvents(start, end, this.selectedSchedule).subscribe(events => {
-      this.events = events;
-    });
+
+    this.blockService.emit(true);
+    this.eventService.getAllEvents(start, end, [this.schedule]).subscribe(events => {
+        this.events = events;
+        this.blockService.emit(false);
+      },
+      (e) => this.blockService.emit(false)
+    );
+
   }
 
   onEventClick(event) {

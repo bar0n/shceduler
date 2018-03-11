@@ -66,7 +66,7 @@ public class EventsResource {
     private Function<ZonedDateTime, EventResult> getZonedDateTimeEventResultFunction(Schedule x) {
         return y -> {
             EventResult eventResult = new EventResult(y, x.getName());
-            eventResult.end = y.plusHours(1);
+            eventResult.end = y.plusMinutes(30);
             eventResult.allDay = false;
             eventResult.id = "" + x.getId() + "$" + x.getStart();
             int abs = Math.abs(x.getId().intValue() % 256);

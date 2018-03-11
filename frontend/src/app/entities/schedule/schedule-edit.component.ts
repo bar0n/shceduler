@@ -9,12 +9,11 @@ import {Subscription} from "rxjs/Subscription";
 import {ConfirmationService} from 'primeng/api';
 import {EventService} from "./event.service";
 import {Location} from '@angular/common';
+import {BlockService} from "../../block/block.service";
 
 @Component({
   selector: 'schedule-edit',
-  styles: [` .wid150 {
-    width: 150px;
-  }`],
+  styles: [],
 
   templateUrl: './schedule-edit.component.html'
 })
@@ -60,6 +59,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     public router: Router,
     public confirmationService: ConfirmationService,
     public eventService: EventService,
+    public blockService: BlockService,
     private location: Location
   ) {
 
@@ -68,17 +68,15 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   loadEvents(event) {
     let start = event.view.start;
     let end = event.view.end;
+    this.blockService.emit(true);
     this.eventService.getAllEvents(start, end, [this.schedule]).subscribe(events => {
-      this.events = events;
-    });
+        this.events = events;
+        this.blockService.emit(false);
+      },
+      (e) => this.blockService.emit(false)
+    );
   }
 
-  private eventObj(x: any) {
-    return {
-      "title": this.schedule.name,
-      "start": x
-    }
-  }
 
   showCron() {
     this.cron = this.schedule.cron;
@@ -104,7 +102,8 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
       this.scheduleService.find(id).subscribe(x => {
         this.schedule = x.body;
         this.title = "Edit Schedule";
-        this.selectedPerson = x.body.person.split(",").map(x => x.trim());
+        let strings = x.body.person.split(",");
+        this.selectedPerson = this.usItem.filter(x => strings.includes(x.code)).map(x=>x.value);
       });
     }
   }
@@ -190,11 +189,10 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   ];
 
   onChangePerson(event) {
-    /* console.log(JSON.stringify(event.value));*/
-    let email = event.value.map(x => x.email);
-    let names = event.value.map(x => x.name);
+    let email = event.value.map(x => x.email).filter(x => x != '' && x != null && x != undefined);
+    let names = event.value.map(x => x.name).filter(x => x != '' && x != null && x != undefined);
     this.schedule.email = email.join(",");
-    this.schedule.person = names.join(",")
+    this.schedule.person = names.join(",");
   }
 
   us = [
