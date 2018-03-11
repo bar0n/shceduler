@@ -395,10 +395,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   onEventClick(event) {
-    console.log(event);
     let id = event.calEvent.id;
     let split = id.split("$");
-    console.log(event.calEvent);
     if (split.length > 0) {
       this.router.navigate(['/scheduleEdit', split[0]]);
     }
@@ -408,7 +406,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   showCron() {
     if (this.selectedSchedule.length == 0) {
       this.confirmationService.confirm({
-        message: 'Items was not selected?',
+        message: 'Items was not selected.',
         accept: () => {
           this.cronVisible = true;
         }

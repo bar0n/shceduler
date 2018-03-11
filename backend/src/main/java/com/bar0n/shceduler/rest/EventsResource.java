@@ -65,7 +65,9 @@ public class EventsResource {
 
     private Function<ZonedDateTime, EventResult> getZonedDateTimeEventResultFunction(Schedule x) {
         return y -> {
-            EventResult eventResult = new EventResult(y, x.getName());
+            EventResult eventResult = new EventResult();
+            eventResult.title = x.getName();
+            eventResult.start = y.withZoneSameInstant(ZoneId.of("EET"));
             eventResult.end = y.plusMinutes(30);
             eventResult.allDay = false;
             eventResult.id = "" + x.getId() + "$" + x.getStart();
@@ -131,6 +133,9 @@ class EventResult {
     public String[] backgroundColor;//	Sets an event's background color just like the calendar-wide eventBackgroundColor option.
     public String[] borderColor;//	Sets an event's border color just like the the calendar-wide eventBorderColor option.
     public String[] textColor;
+
+    public EventResult() {
+    }
 
     public EventResult(ZonedDateTime start, String title) {
         this.start = start;
