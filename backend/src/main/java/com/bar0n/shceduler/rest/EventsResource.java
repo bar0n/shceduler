@@ -3,6 +3,7 @@ package com.bar0n.shceduler.rest;
 
 import com.bar0n.shceduler.data.ScheduleRepository;
 import com.bar0n.shceduler.model.Schedule;
+import com.bar0n.shceduler.services.DateUtils;
 import com.bar0n.shceduler.services.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,38 +37,25 @@ public class EventsResource {
         this.scheduleRepository = scheduleRepository;
     }
 
-
-    /**
-     * GET  /schedules : get all the schedules.
-     *
-     * @param param the param
-     * @return the ResponseEntity with status 200 (OK) and the list of schedules in body
-     */
-/*    @PostMapping("/events")
-    public List<ZonedDateTime> getEvents(@RequestBody Param param) {
-        log.debug("REST request to get  Events");
-        List<ZonedDateTime> datesBetween = scheduleService.getDatesBetween(param.getStart()
-                .atStartOfDay(ZoneId.of("Europe/Helsinki")), param.getEnd().atStartOfDay(ZoneId.of("Europe/Helsinki")), param.getCron());
-        return datesBetween;
-    }*/
     @PostMapping("/events/all")
     public List<EventResult> getAllEvents(@RequestBody Param param) {
         log.debug("REST request to get  Events");
         List<Schedule> byfindByIdIn = scheduleRepository.findByIdIn(param.getIds());
-        List<EventResult> collect1 = byfindByIdIn.stream().flatMap(x -> {
-            List<ZonedDateTime> datesBetween = scheduleService.getDatesBetween(param.getStart()
-                    .atStartOfDay(ZoneId.of("Europe/Helsinki")), param.getEnd().atStartOfDay(ZoneId.of("Europe/Helsinki")), x.getCron(), x.getStart());
+        return byfindByIdIn.stream().flatMap(x -> {
+            List<ZonedDateTime> datesBetween = scheduleService.getDatesBetween(
+                    DateUtils.asDateZoned(param.getStart()),
+                    DateUtils.asDateZoned(param.getEnd()),
+                    x.getCron(), x.getStart());
             return datesBetween.stream().map(getZonedDateTimeEventResultFunction(x));
 
         }).collect(Collectors.toList());
-        return collect1;
     }
 
     private Function<ZonedDateTime, EventResult> getZonedDateTimeEventResultFunction(Schedule x) {
         return y -> {
             EventResult eventResult = new EventResult();
             eventResult.title = x.getName();
-            eventResult.start = y.withZoneSameInstant(ZoneId.of("EET"));
+            eventResult.start = y;
             eventResult.end = y.plusMinutes(30);
             eventResult.allDay = false;
             eventResult.id = "" + x.getId() + "$" + x.getStart();

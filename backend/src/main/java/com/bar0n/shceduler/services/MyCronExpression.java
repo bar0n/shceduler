@@ -32,9 +32,13 @@ public class MyCronExpression {
 
     }
 
+/*    public ZonedDateTime getNextValidTimeAfter(ZonedDateTime date, ZonedDateTime start) {
+
+    }*/
+
     public Date getNextValidTimeAfter(Date date, ZonedDateTime start) {
 
-        Pair<Integer, Date> pair = new Pair<>(0, asDate(start));
+        Pair<Integer, Date> pair = new Pair<>(0, DateUtils.asDate(start));
        /* Stream<Pair<Integer, Date>> iterate = Stream.iterate(pair,
                 p -> new Pair<>(p.getKey() + 1, cronExpression.getNextValidTimeAfter(p.getValue())))
                 .filter(x -> x.getKey() % i == 0)
@@ -52,15 +56,5 @@ public class MyCronExpression {
 
     }
 
-    public static Date asDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.of("Europe/Helsinki")).toInstant());
-    }
 
-    public static Date asDate(ZonedDateTime zonedDateTime) {
-        return Date.from(zonedDateTime.toInstant());
-    }
-
-    public static LocalDate asLocalDate(Date date) {
-        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.of("Europe/Helsinki")).toLocalDate();
-    }
 }

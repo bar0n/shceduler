@@ -46,8 +46,7 @@ public class ScheduleService {
         while (start.compareTo(stop) < 0) {
             Date from = Date.from(start.toInstant());
             Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, fromDate);
-            ZoneId zone = start.getZone();
-            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nextValidTimeAfter.toInstant(), zone);
+            ZonedDateTime zonedDateTime = DateUtils.asZonedDateTime(nextValidTimeAfter);
             start = zonedDateTime;
             result.add(zonedDateTime);
         }
@@ -65,8 +64,7 @@ public class ScheduleService {
         ZonedDateTime t = (now.compareTo(time) > 0) ? now : time;
         Date from = Date.from(t.toInstant());
         Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, start);
-        ZoneId zone = time.getZone();
-        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(nextValidTimeAfter.toInstant(), zone);
+        ZonedDateTime zonedDateTime =  DateUtils.asZonedDateTime(nextValidTimeAfter);
         logger.debug("getNextTime time: {}, now:{}, max(time,now):{}, nextTime:{}", time, now, t, zonedDateTime);
         return zonedDateTime;
     }
