@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ServiceIntegrationTests {
     @Test
     //@Rollback(true)
     public void manyToOneTest() {
-        ZonedDateTime now = ZonedDateTime.now().minusDays(1);
+        LocalDateTime now = LocalDateTime.now().minusDays(1);
         Schedule schedule = new Schedule("name1", "0 */10 * ? * *", now, now);
         schedule.setCronLog("0 */10 * ? * *");
         scheduleRepository.save(schedule);

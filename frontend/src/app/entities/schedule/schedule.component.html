@@ -34,16 +34,24 @@
   <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
 
-  <p-table #dt *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
+  <p-table  [columns]="cols" #dataTable *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
            [rows]="10" responsive="true"
            [paginator]="true"
            [rowsPerPageOptions]="[10,20,30]"
   >
-    <!--<ng-template pTemplate="caption">
+
+    <ng-template pTemplate="caption">
+      <div class="ui-helper-clearfix">
+        <button type="button" pButton icon="fa-file-o" iconPos="left" label="All Data" (click)="exportCSV(dataTable)" style="float:left"></button>
+        <button type="button" pButton icon="fa-file" iconPos="left" label="Selection Only" (click)="dataTable.exportCSV({selectionOnly:true})" style="float:right"></button>
+      </div>
       <div style="text-align: right">
         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dataTable.filterGlobal($event.target.value, 'contains')" style="width:auto">
       </div>
+    </ng-template>
+    <!--<ng-template pTemplate="caption">
+
     </ng-template>-->
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -73,6 +81,11 @@
         <th rowspan="2" pSortableColumn="cronLog"><span>Cron Log</span>
           <p-sortIcon field="cronLog"></p-sortIcon>
         </th>
+        <th rowspan="2" pSortableColumn="email"><span>Email</span>
+          <p-sortIcon field="email"></p-sortIcon>
+        </th> <th rowspan="2" pSortableColumn="createdDate"><span>Created Date</span>
+          <p-sortIcon field="createdDate"></p-sortIcon>
+        </th>
       </tr>
       <tr>
         <th>
@@ -92,9 +105,11 @@
         </td>
         <td>{{rowData.name}}</td>
         <td>{{rowData.person}}</td>
-        <td>{{rowData.next | date:'dd-MMMM-yyyy HH:mm'}}</td>
+        <td>{{rowData.next | date:'dd-MM-yyyy HH:mm'}}</td>
         <td>{{rowData.cron}}</td>
         <td>{{rowData.cronLog}}</td>
+        <td>{{rowData.email}}</td>
+        <td>{{rowData.createdDate  | date:'dd-MM-yyyy HH:mm'}}</td>
       </tr>
     </ng-template>
 

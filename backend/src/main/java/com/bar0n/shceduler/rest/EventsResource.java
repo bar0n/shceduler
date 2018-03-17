@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -41,17 +42,18 @@ public class EventsResource {
     public List<EventResult> getAllEvents(@RequestBody Param param) {
         log.debug("REST request to get  Events");
         List<Schedule> byfindByIdIn = scheduleRepository.findByIdIn(param.getIds());
-        return byfindByIdIn.stream().flatMap(x -> {
-            List<ZonedDateTime> datesBetween = scheduleService.getDatesBetween(
-                    DateUtils.asDateZoned(param.getStart()),
-                    DateUtils.asDateZoned(param.getEnd()),
+        List<EventResult> collect = byfindByIdIn.stream().flatMap(x -> {
+            List<LocalDateTime> datesBetween = scheduleService.getDatesBetween(
+                    param.getStart().atStartOfDay(),
+                    param.getEnd().atTime(23, 59),
                     x.getCron(), x.getStart());
             return datesBetween.stream().map(getZonedDateTimeEventResultFunction(x));
 
         }).collect(Collectors.toList());
+        return collect;
     }
 
-    private Function<ZonedDateTime, EventResult> getZonedDateTimeEventResultFunction(Schedule x) {
+    private Function<LocalDateTime, EventResult> getZonedDateTimeEventResultFunction(Schedule x) {
         return y -> {
             EventResult eventResult = new EventResult();
             eventResult.title = x.getName();
@@ -105,8 +107,8 @@ class EventResult {
     public String id; //	 String/Integer. Optional Uniquely identifies the given event. Different instances of repeating events should all have the same id.
     public String title;//. Required. The text on an event's element
     public Boolean allDay;//		true or false. Optional. Whether an event occurs at a specific time-of-day. This property affects whether an event's time is shown. Also, in the agenda views, determines if it is displayed in the "all-day" section. If this value is not explicitly specified, allDayDefault will be used if it is defined. If all else fails, FullCalendar will try to guess. If either the start or end value has a "T" as part of the ISO8601 date  String, allDay will become false. Otherwise, it will be true. Don't include quotes around your true/false. This value is a  Boolean, not a  String!
-    public ZonedDateTime start;//		The date/time an event begins. Required. A Moment-ish input, like an ISO8601  String. Throughout the API this will become a real Moment object.
-    public ZonedDateTime end;//	The exclusive date/time an event ends. Optional. A Moment-ish input, like an ISO8601  String. Throughout the API this will become a real Moment object. It is the moment immediately after the event has ended. For example, if the last full day of an event is Thursday, the exclusive end of the event will be 00 00 00 on Friday!
+    public LocalDateTime start;//		The date/time an event begins. Required. A Moment-ish input, like an ISO8601  String. Throughout the API this will become a real Moment object.
+    public LocalDateTime end;//	The exclusive date/time an event ends. Optional. A Moment-ish input, like an ISO8601  String. Throughout the API this will become a real Moment object. It is the moment immediately after the event has ended. For example, if the last full day of an event is Thursday, the exclusive end of the event will be 00 00 00 on Friday!
     public String url;//. Optional. A URL that will be visited when this event is clicked by the user. For more information on controlling this behavior, see the eventClick callback.
     public String[] className;//		 String/Array. Optional. A CSS class (or array of classes) that will be attached to this event's element.
     public Boolean editable;//		true or false. Optional. Overrides the master editable option for this single event.
@@ -125,16 +127,16 @@ class EventResult {
     public EventResult() {
     }
 
-    public EventResult(ZonedDateTime start, String title) {
+    public EventResult(LocalDateTime start, String title) {
         this.start = start;
         this.title = title;
     }
 
-    public ZonedDateTime getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(ZonedDateTime start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 

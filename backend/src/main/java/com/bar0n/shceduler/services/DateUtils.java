@@ -22,11 +22,6 @@ public class DateUtils {
         return localDate.atStartOfDay(zone);
     }
 
-    public static ZonedDateTime asDateZoned(ZonedDateTime date) {
-        ZonedDateTime zonedDateTime1 = date.withZoneSameInstant(zone);
-        ZonedDateTime zonedDateTime = date.withZoneSameLocal(zone);
-        return zonedDateTime;
-    }
 
     public static Date asDate(ZonedDateTime zonedDateTime) {
         return Date.from(zonedDateTime.toInstant());
@@ -36,12 +31,26 @@ public class DateUtils {
         return Instant.ofEpochMilli(date.getTime()).atZone(zone).toLocalDate();
     }
 
+    public static LocalDateTime now() {
+        return ZonedDateTime.now().withZoneSameInstant(DateUtils.zone).toLocalDateTime();
+    }
 
-    public static LocalDateTime asLocalDateTime(Date date) {
+    public static Date asDateSameTime(LocalDateTime localDateTime) {
+        return new GregorianCalendar(
+                localDateTime.getYear(),
+                localDateTime.getMonth().getValue() - 1,
+                localDateTime.getDayOfMonth(),
+                localDateTime.getHour(),
+                localDateTime.getMinute(),
+                localDateTime.getSecond()
+        ).getTime();
+    }
+
+    public static LocalDateTime asLocalDateTimeSameTime(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
 
-        int hour = cal.get(Calendar.HOUR);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
         int second = cal.get(Calendar.SECOND);
 
@@ -49,12 +58,19 @@ public class DateUtils {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        LocalDate of = LocalDate.of(year, month, dayOfMonth);
+        LocalDate of = LocalDate.of(year, month + 1, dayOfMonth);
 
-        return LocalDateTime.of(of,localTime);
+        return LocalDateTime.of(of, localTime);
     }
+
+    public static LocalDateTime asLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), zone);
+    }
+
     public static ZonedDateTime asZonedDateTime(Date date) {
-        return asLocalDateTime(date).atZone(zone);
+        Instant instant = Instant.ofEpochMilli(date.getTime());
+
+        return instant.atZone(zone);
     }
 
 

@@ -6,7 +6,8 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Proxy(lazy = false)
 public class Schedule implements Serializable {
     @Id
-    @SequenceGenerator(name = "schedule_generator", sequenceName = "schedule_sequence", initialValue = 1)
+    @SequenceGenerator(name = "schedule_generator", sequenceName = "schedule_sequence", initialValue = 1,allocationSize =1)
     @GeneratedValue(generator = "schedule_generator")
     private Long id;
     @Column(nullable = false)
@@ -40,13 +41,13 @@ public class Schedule implements Serializable {
     @Column
     private String person;
     @Column
-    private ZonedDateTime start;
+    private LocalDateTime start;
     @Column
-    private ZonedDateTime next;
+    private LocalDateTime next;
     @Column
-    private ZonedDateTime stop;
+    private LocalDateTime stop;
     @Column
-    private ZonedDateTime createdDate;
+    private LocalDateTime createdDate;
     @Column
     private Boolean active = true;
     @OneToMany(fetch = FetchType.EAGER, targetEntity = ScheduleLog.class
@@ -59,7 +60,7 @@ public class Schedule implements Serializable {
     public Schedule() {
     }
 
-    public Schedule(Long id, String name, String cron, ZonedDateTime start, ZonedDateTime next) {
+    public Schedule(Long id, String name, String cron, LocalDateTime start, LocalDateTime next) {
         this.id = id;
         this.name = name;
         this.cron = cron;
@@ -67,7 +68,7 @@ public class Schedule implements Serializable {
         this.next = next;
     }
 
-    public Schedule(String name, String cron, ZonedDateTime start, ZonedDateTime next) {
+    public Schedule(String name, String cron, LocalDateTime start, LocalDateTime next) {
         this.name = name;
         this.cron = cron;
         this.start = start;
@@ -98,27 +99,27 @@ public class Schedule implements Serializable {
         this.cron = cron;
     }
 
-    public ZonedDateTime getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(ZonedDateTime start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public ZonedDateTime getNext() {
+    public LocalDateTime getNext() {
         return next;
     }
 
-    public void setNext(ZonedDateTime next) {
+    public void setNext(LocalDateTime next) {
         this.next = next;
     }
 
-    public ZonedDateTime getStop() {
+    public LocalDateTime getStop() {
         return stop;
     }
 
-    public void setStop(ZonedDateTime stop) {
+    public void setStop(LocalDateTime stop) {
         this.stop = stop;
     }
 
@@ -213,7 +214,7 @@ public class Schedule implements Serializable {
         this.person = person;
     }
 
-    public ZonedDateTime getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
@@ -225,7 +226,7 @@ public class Schedule implements Serializable {
         this.cronLog = cronLog;
     }
 
-    public void setCreatedDate(ZonedDateTime createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 

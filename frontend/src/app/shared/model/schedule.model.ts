@@ -14,6 +14,7 @@ export class Schedule {
               person?: string,
               author?: string,
               email?: string,
+              createdDate?: Date,
               periodTxt?: string,
               scheduleLogs?: ScheduleLog[],
   ) {

@@ -137,8 +137,8 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   }
 
   private onSaveSuccess(result: Schedule) {
-    this.notificationsService.notify('success', '', ' saved');
     this.schedule = result;
+    this.notificationsService.notify('success', '', ' saved');
 
   }
 

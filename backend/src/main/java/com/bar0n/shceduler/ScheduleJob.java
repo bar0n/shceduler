@@ -1,12 +1,12 @@
 package com.bar0n.shceduler;
 
+import com.bar0n.shceduler.services.DateUtils;
 import com.bar0n.shceduler.services.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -24,7 +24,7 @@ public class ScheduleJob {
 
     @Scheduled(fixedRate = 2 * 60 * 1000)
     public void scheduleTaskWithFixedRate() {
-        logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+        logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(DateUtils.now()));
         scheduleService.fireJob();
     }
 

@@ -8,6 +8,7 @@ import com.bar0n.shceduler.rest.errors.BadRequestAlertException;
 import com.bar0n.shceduler.rest.util.HeaderUtil;
 import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
+import com.bar0n.shceduler.services.DateUtils;
 import com.bar0n.shceduler.services.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +57,9 @@ public class ScheduleResource {
         if (schedule.getId() != null) {
             throw new BadRequestAlertException("A new schedule cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
-        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
-        ZonedDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
+        schedule.setCreatedDate(DateUtils.now());
+        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
+        LocalDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
         schedule.setNext(nextTime);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
@@ -78,7 +80,7 @@ public class ScheduleResource {
     public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to update Schedule : {}", schedule);
 
-        ZonedDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(),schedule.getStart());
+        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }

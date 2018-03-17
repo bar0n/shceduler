@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 //@RepositoryRestResource(collectionResourceRel = "schedule", path = "schedule")
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findByNextLessThanAndActiveTrue(ZonedDateTime time);
+    List<Schedule> findByNextLessThanAndActiveTrue(LocalDateTime time);
     List<Schedule> findByIdIn(List<Long> ids);
 
     Page<Schedule> findAllByOrderByIdDesc(Pageable pageable);

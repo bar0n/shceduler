@@ -4,10 +4,12 @@ import org.quartz.CronExpression;
 
 import java.text.ParseException;
 import java.time.*;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class MyCronExpression {
     private String expression;
@@ -32,27 +34,36 @@ public class MyCronExpression {
 
     }
 
-/*    public ZonedDateTime getNextValidTimeAfter(ZonedDateTime date, ZonedDateTime start) {
-
-    }*/
-
-    public Date getNextValidTimeAfter(Date date, ZonedDateTime start) {
-
+    public LocalDateTime getNextValidTimeAfter(LocalDateTime date, LocalDateTime start) {
         Pair<Integer, Date> pair = new Pair<>(0, DateUtils.asDate(start));
-       /* Stream<Pair<Integer, Date>> iterate = Stream.iterate(pair,
-                p -> new Pair<>(p.getKey() + 1, cronExpression.getNextValidTimeAfter(p.getValue())))
-                .filter(x -> x.getKey() % i == 0)
-                .filter(x -> x.getValue().after(date))
-                .limit(10);
-        System.out.println();
-        iterate.forEach(x -> System.out.println(x));*/
-        return Stream.iterate(pair, p -> new Pair<>(p.getFirst() + 1, cronExpression.getNextValidTimeAfter(p.getSecond())))
+        Date date1 = Stream.iterate(pair, p -> new Pair<>(p.getFirst() + 1, cronExpression.getNextValidTimeAfter(p.getSecond())))
                 .filter(x -> x.getFirst() % i == 0)
-                .filter(x -> x.getSecond().after(date))
-               // .skip(1)
+                .filter(x -> x.getSecond().after(DateUtils.asDate(date)))
+                // .skip(1)
                 .limit(1)
                 .reduce((p1, p2) -> p1)
                 .map(Pair::getSecond).get();
+        return DateUtils.asLocalDateTimeSameTime(date1);
+    }
+
+    public List<LocalDateTime> getDatesBetween(LocalDateTime fromLocal, LocalDateTime stopLocal,
+                                               LocalDateTime startLocal) {
+        Date start = DateUtils.asDateSameTime(startLocal);
+        Date stop = DateUtils.asDateSameTime(stopLocal);
+        Date from = DateUtils.asDateSameTime(fromLocal);
+        List<LocalDateTime> result = new ArrayList<>();
+        int iter = 0;
+        while (start.before(stop)) {
+            iter++;
+            Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(start);
+            if (start.after(from) && start.before(stop) && iter % i == 0) {
+                result.add(DateUtils.asLocalDateTimeSameTime(start));
+            }
+
+            start = nextValidTimeAfter;
+        }
+
+        return result;
 
     }
 

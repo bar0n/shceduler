@@ -12,6 +12,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface ScheduleLogRepository extends JpaRepository<ScheduleLog, Long> 
     @Transactional
     @Query("delete from ScheduleLog u where u.schedule.id = ?1")
     void deleteScheduleLogsByscheduleId(Long id);
-    List<ScheduleLog> findByNextLessThanAndCompletedFalse(ZonedDateTime time);
+    List<ScheduleLog> findByNextLessThanAndCompletedFalse(LocalDateTime time);
 }

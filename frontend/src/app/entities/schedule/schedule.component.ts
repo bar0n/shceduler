@@ -43,6 +43,23 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     {label: 'Tania', value: "Tania"},
 
   ];
+  cols = [
+    {field: 'id', header: 'id', link: true},
+    {field: 'active', header: 'A'},
+    {field: 'name', header: 'name'},
+    {field: 'person', header: 'person'},
+    {field: 'next', header: 'next', date: true},
+    {field: 'cron', header: 'cron'},
+    {field: 'cronLog', header: 'cronLog'},
+    {field: 'email', header: 'email'},
+    {field: 'createdDate', header: 'createdDate'}
+  ];
+
+
+  exportCSV(dataTable) {
+    dataTable.exportCSV();
+  }
+
   constructor(
     private scheduleService: ScheduleService,
     private notificationsService: NotificationsService,
@@ -383,11 +400,12 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   loadEvents(event) {
     let start = event.view.start;
     let end = event.view.end;
-
+    // console.log(start.toLocaleString(), "  ", end.toLocaleString());
     this.blockService.emit(true);
     this.eventService.getAllEvents(start, end, this.selectedSchedule).subscribe(events => {
-        this.events = events;
         this.blockService.emit(false);
+        //   console.log(JSON.stringify(events));
+        this.events = events;
       },
       (e) => this.blockService.emit(false)
     );

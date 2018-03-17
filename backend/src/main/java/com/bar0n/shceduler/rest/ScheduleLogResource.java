@@ -7,6 +7,7 @@ import com.bar0n.shceduler.rest.errors.BadRequestAlertException;
 import com.bar0n.shceduler.rest.util.HeaderUtil;
 import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
+import com.bar0n.shceduler.services.DateUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class ScheduleLogResource {
         if (scheduleLog.getId() != null) {
             throw new BadRequestAlertException("A new scheduleLog cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
+        scheduleLog.setCreated(DateUtils.now());
         ScheduleLog result = scheduleLogRepository.save(scheduleLog);
         return ResponseEntity.created(new URI("/api/scheduleLog/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -63,7 +64,7 @@ public class ScheduleLogResource {
      * or with status 500 (Internal Server Error) if the scheduleLog couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping(value = "/scheduleLogs",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/scheduleLogs", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleLog> updateScheduleLog(@RequestBody ScheduleLog scheduleLog) throws URISyntaxException {
         log.debug("REST request to update ScheduleLog : {}", scheduleLog);
         if (scheduleLog.getId() == null) {

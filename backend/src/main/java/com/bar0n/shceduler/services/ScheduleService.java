@@ -11,11 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,49 +30,40 @@ public class ScheduleService {
         this.mailService = mailService;
     }
 
-    public List<ZonedDateTime> getDatesBetween(ZonedDateTime start, ZonedDateTime stop, String cronExpressionTxt, ZonedDateTime fromDate) {
-        MyCronExpression cronExpression = null;
+    synchronized public List<LocalDateTime> getDatesBetween(LocalDateTime start, LocalDateTime stop, String cronExpressionTxt, LocalDateTime fromDate) {
+        MyCronExpression cronExpression;
         fromDate = start.compareTo(fromDate) < 0 ? start : fromDate;
         try {
             cronExpression = new MyCronExpression(cronExpressionTxt);
         } catch (ParseException e) {
             throw new RuntimeException("parse error", e);
         }
-        List<ZonedDateTime> result = new ArrayList<>();
-        while (start.compareTo(stop) < 0) {
-            Date from = Date.from(start.toInstant());
-            Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, fromDate);
-            ZonedDateTime zonedDateTime = DateUtils.asZonedDateTime(nextValidTimeAfter);
-            start = zonedDateTime;
-            result.add(zonedDateTime);
-        }
-        return result;
+        return cronExpression.getDatesBetween(start, stop, fromDate);
+
     }
 
-    public ZonedDateTime getNextTime(ZonedDateTime time, String cronExpressionTxt, ZonedDateTime start) {
+    public LocalDateTime getNextTime(LocalDateTime time, String cronExpressionTxt, LocalDateTime start) {
         MyCronExpression cronExpression = null;
         try {
             cronExpression = new MyCronExpression(cronExpressionTxt);
         } catch (ParseException e) {
             throw new RuntimeException("parse error", e);
         }
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime t = (now.compareTo(time) > 0) ? now : time;
-        Date from = Date.from(t.toInstant());
-        Date nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, start);
-        ZonedDateTime zonedDateTime =  DateUtils.asZonedDateTime(nextValidTimeAfter);
-        logger.debug("getNextTime time: {}, now:{}, max(time,now):{}, nextTime:{}", time, now, t, zonedDateTime);
-        return zonedDateTime;
+        LocalDateTime now = DateUtils.now();
+        LocalDateTime from = (now.compareTo(time) > 0) ? now : time;
+        LocalDateTime nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, start);
+        logger.debug("getNextTime time: {}, now:{}, max(time,now):{}, nextTime:{}", time, now, from, nextValidTimeAfter);
+        return nextValidTimeAfter;
     }
 
     @Transactional
     public void fireJob() {
         try {
-            List<Schedule> allByNextLessThan = scheduleRepository.findByNextLessThanAndActiveTrue(ZonedDateTime.now());
+            List<Schedule> allByNextLessThan = scheduleRepository.findByNextLessThanAndActiveTrue(DateUtils.now());
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
 
             allByNextLessThan.forEach(this::handle);
-            List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(ZonedDateTime.now());
+            List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(DateUtils.now());
             allNotCompleted.forEach(this::handleLog);
         } catch (Exception e) {
             logger.error("fire_job exception", e);
@@ -87,8 +74,8 @@ public class ScheduleService {
     public void handleLog(ScheduleLog scheduleLog) {
         logger.debug("handle scheduleLog : {}", scheduleLog);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog, scheduleLog.getCreated());
-        ZonedDateTime next = scheduleLog.getNext();
+        LocalDateTime nextTimeLog = getNextTime(DateUtils.now(), cronLog, scheduleLog.getCreated());
+        LocalDateTime next = scheduleLog.getNext();
         logger.debug("scheduleLog current next : {} new next time:{}", next, nextTimeLog);
         scheduleLog.setNext(nextTimeLog);
         scheduleLogRepository.save(scheduleLog);
@@ -101,21 +88,21 @@ public class ScheduleService {
             return;
         }
         logger.debug("handle schedule : {}", schedule);
-        ZonedDateTime next = schedule.getNext();
-        ZonedDateTime nextTime = getNextTime(schedule);
+        LocalDateTime next = schedule.getNext();
+        LocalDateTime nextTime = getNextTime(schedule);
         logger.debug("handle current next : {} new next time:{}", next, nextTime);
         schedule.setNext(nextTime);
         scheduleRepository.save(schedule);
-        ScheduleLog scheduleLog = new ScheduleLog(ZonedDateTime.now(), schedule);
+        ScheduleLog scheduleLog = new ScheduleLog(DateUtils.now(), schedule);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        ZonedDateTime nextTimeLog = getNextTime(ZonedDateTime.now(), cronLog, schedule.getStart());
+        LocalDateTime nextTimeLog = getNextTime(DateUtils.now(), cronLog, schedule.getStart());
         scheduleLog.setNext(nextTimeLog);
         scheduleLogRepository.save(scheduleLog);
         mailService.sendNotificationEmail(schedule);
 
     }
 
-    private ZonedDateTime getNextTime(Schedule schedule) {
+    private LocalDateTime getNextTime(Schedule schedule) {
         return getNextTime(schedule.getNext(), schedule.getCron(), schedule.getStart());
     }
 }

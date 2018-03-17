@@ -3,7 +3,8 @@ package com.bar0n.shceduler.model;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -12,11 +13,11 @@ import java.util.Objects;
 @Entity
 public class ScheduleLog {
     @Id
-    @SequenceGenerator(name = "schedule_log_sequence", sequenceName = "schedule_log_sequence", initialValue = 1)
+    @SequenceGenerator(name = "schedule_log_sequence", sequenceName = "schedule_log_sequence", initialValue = 1,allocationSize =1)
     @GeneratedValue(generator = "schedule_log_sequence")
     private Long id;
     @Column
-    private ZonedDateTime created;
+    private LocalDateTime created;
 
     @ManyToOne(optional = false)
     @NaturalId
@@ -24,9 +25,9 @@ public class ScheduleLog {
     @Column
     private Boolean completed = false;
     @Column
-    private ZonedDateTime next;
+    private LocalDateTime next;
 
-    public ScheduleLog(ZonedDateTime created, Schedule schedule) {
+    public ScheduleLog(LocalDateTime created, Schedule schedule) {
         this.created = created;
         this.schedule = schedule;
     }
@@ -50,11 +51,11 @@ public class ScheduleLog {
         this.completed = completed;
     }
 
-    public ZonedDateTime getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(ZonedDateTime created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
@@ -83,11 +84,11 @@ public class ScheduleLog {
         return Objects.hash(id, created, schedule, completed);
     }
 
-    public ZonedDateTime getNext() {
+    public LocalDateTime getNext() {
         return next;
     }
 
-    public void setNext(ZonedDateTime next) {
+    public void setNext(LocalDateTime next) {
         this.next = next;
     }
 
