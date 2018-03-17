@@ -79,7 +79,7 @@ public class ScheduleService {
         logger.debug("scheduleLog current next : {} new next time:{}", next, nextTimeLog);
         scheduleLog.setNext(nextTimeLog);
         scheduleLogRepository.save(scheduleLog);
-        mailService.sendNotificationEmail(scheduleLog.getSchedule());
+        mailService.sendNotificationReminderEmail(scheduleLog.getSchedule());
     }
 
     @Transactional

@@ -35,7 +35,7 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService( JavaMailSender javaMailSender,
+    public MailService(JavaMailSender javaMailSender,
                        SpringTemplateEngine templateEngine) {
 
         this.javaMailSender = javaMailSender;
@@ -45,7 +45,7 @@ public class MailService {
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart, isHtml, to, subject, content);
+                isMultipart, isHtml, to, subject, content);
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -67,7 +67,7 @@ public class MailService {
     }
 
     @Async
-    public void sendEmailFromTemplate( Schedule schedule, String templateName, String subject) {
+    public void sendEmailFromTemplate(Schedule schedule, String templateName, String subject) {
         Locale locale = Locale.forLanguageTag("en");
         Context context = new Context(locale);
         context.setVariable("schedule", schedule);
@@ -80,6 +80,12 @@ public class MailService {
     public void sendNotificationEmail(Schedule schedule) {
         log.debug("Sending Notification email to '{}'", schedule.getEmail());
         sendEmailFromTemplate(schedule, "notificationEmail", schedule.getName());
+    }
+
+    @Async
+    public void sendNotificationReminderEmail(Schedule schedule) {
+        log.debug("Sending Notification email to '{}'", schedule.getEmail());
+        sendEmailFromTemplate(schedule, "notificationEmail", "Reminder " + schedule.getName());
     }
 
 }
