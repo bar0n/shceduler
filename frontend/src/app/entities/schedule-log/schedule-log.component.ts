@@ -197,4 +197,13 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  onDelete(log: ScheduleLog) {
+    this.scheduleLogService.delete(log.id).subscribe(x =>
+        this.notificationsService.notify('success', null, "Deleted"),
+      y => {
+
+        this.notificationsService.notify('error', JSON.stringify(y), null)
+      });
+  }
 }

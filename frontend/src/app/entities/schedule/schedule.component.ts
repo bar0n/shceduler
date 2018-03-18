@@ -69,7 +69,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private blockService: BlockService,
   ) {
-    this.itemsPerPage = 20;
+    this.itemsPerPage = 80;
     this.us = [
       {name: 'Dima', code: 'Dima'},
       {name: 'Tania', code: 'Tania'},
@@ -256,6 +256,23 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     );
   }
 
+  paginate(event) {
+    this.page = event.first;
+    this.itemsPerPage = event.rows;
+    this.loadAll();
+  }
+  handleSort(event) {
+    if (event.field) {
+      let reverse1 = event.order === 1;
+      if (this.reverse !== reverse1 || this.predicate !== event.field){
+        this.reverse = reverse1;
+        this.predicate = event.field;
+        this.loadAll();
+      }
+
+    }
+  }
+
   loadPage(page: number) {
     if (page !== this.previousPage) {
       this.previousPage = page;
@@ -296,9 +313,9 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   sort() {
-    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
+    let result = [this.predicate+','+  (this.reverse ? 'asc' : 'desc')  ];
+    if (this.predicate === undefined) {
+      result = [ 'id'+ ',' +(this.reverse ? 'asc' : 'desc') ];
     }
     return result;
   }

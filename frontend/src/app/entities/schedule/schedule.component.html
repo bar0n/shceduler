@@ -10,8 +10,8 @@
 
   </div>
   <div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
-    <div class="ui-g-1 ui-sm-12"></div>
-    <div class="ui-g-8 ui-sm-12">
+    <div class="ui-g-2 ui-sm-12"></div>
+    <div class="ui-g-7 ui-sm-12">
       <p-schedule *ngIf="cronVisible"
                   [weekends]="true"
                   weekNumbers="true"
@@ -20,7 +20,7 @@
                   [header]="headerConfig" [editable]="true"
                   [events]="events" (onViewRender)="loadEvents($event)"></p-schedule>
     </div>
-    <div class="ui-g-1 ui-sm-12"></div>
+    <div class="ui-g-3 ui-sm-12"></div>
   </div>
   <div *ngIf="cronVisible" class="ui-g  ui-sm ui-fluid">
     <div class="ui-g-1 ui-sm-12"></div>
@@ -35,9 +35,8 @@
 
 
   <p-table  [columns]="cols" #dataTable *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
-           [rows]="10" responsive="true"
-           [paginator]="true"
-           [rowsPerPageOptions]="[10,20,30]"
+             responsive="true"
+            (sortFunction)="handleSort($event)" [customSort]="true"
   >
 
     <ng-template pTemplate="caption">
@@ -81,15 +80,16 @@
         <th rowspan="2" pSortableColumn="cronLog"><span>Cron Log</span>
           <p-sortIcon field="cronLog"></p-sortIcon>
         </th>
+        <th rowspan="2" pSortableColumn="createdDate"><span>Created Date</span>
+           <p-sortIcon field="createdDate"></p-sortIcon>
+         </th>
         <th rowspan="2" pSortableColumn="email"><span>Email</span>
           <p-sortIcon field="email"></p-sortIcon>
-        </th> <th rowspan="2" pSortableColumn="createdDate"><span>Created Date</span>
-          <p-sortIcon field="createdDate"></p-sortIcon>
         </th>
       </tr>
       <tr>
         <th>
-          <p-multiSelect [panelStyle]="{minWidth:'12em'}" [options]="usItem" defaultLabel="All People" (onChange)="dt.filter($event.value, 'person', 'in')"></p-multiSelect>
+          <p-multiSelect [panelStyle]="{minWidth:'12em'}" [options]="usItem" defaultLabel="All People" (onChange)="dataTable.filter($event.value, 'person', 'in')"></p-multiSelect>
         </th>
       </tr>
     </ng-template>
@@ -108,8 +108,8 @@
         <td>{{rowData.next | date:'dd-MM-yyyy HH:mm'}}</td>
         <td>{{rowData.cron}}</td>
         <td>{{rowData.cronLog}}</td>
-        <td>{{rowData.email}}</td>
         <td>{{rowData.createdDate  | date:'dd-MM-yyyy HH:mm'}}</td>
+        <td>{{rowData.email}}</td>
       </tr>
     </ng-template>
 
@@ -122,7 +122,8 @@
       </div>
     </ng-template>
   </p-table>
-
+  <p-paginator [rows]="page" [totalRecords]="totalItems" [rowsPerPageOptions]="[40,80,120]"
+               (onPageChange)="paginate($event)">{{totalItems}}</p-paginator>
 
   <notifications></notifications>
 </div>

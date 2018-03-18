@@ -61,7 +61,6 @@ public class ScheduleService {
         try {
             List<Schedule> allByNextLessThan = scheduleRepository.findByNextLessThanAndActiveTrue(DateUtils.now());
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
-
             allByNextLessThan.forEach(this::handle);
             List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(DateUtils.now());
             allNotCompleted.forEach(this::handleLog);

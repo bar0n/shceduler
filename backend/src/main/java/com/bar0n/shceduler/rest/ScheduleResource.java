@@ -10,10 +10,14 @@ import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
 import com.bar0n.shceduler.services.DateUtils;
 import com.bar0n.shceduler.services.ScheduleService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,7 +104,7 @@ public class ScheduleResource {
     @GetMapping("/schedules")
     public ResponseEntity<List<Schedule>> getAllSchedules(Pageable pageable) {
         log.debug("REST request to get a page of Schedules");
-        Page<Schedule> page = scheduleRepository.findAllByOrderByIdDesc(pageable);
+        Page<Schedule> page = scheduleRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/schedules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -133,5 +137,14 @@ public class ScheduleResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    public static void main(String[] args) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        //objectMapper.registerModule()
+        PageRequest id = PageRequest.of(1, 20, Sort.by(Sort.Order.asc("id")));
+        String s = objectMapper.writeValueAsString(id);
+        System.out.println(s);
+
+
+    }
 
 }
