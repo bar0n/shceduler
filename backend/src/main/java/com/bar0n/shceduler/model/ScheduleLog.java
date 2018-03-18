@@ -4,7 +4,6 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**

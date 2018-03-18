@@ -163,9 +163,9 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
   }
 
   sort() {
-    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
+    let result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.predicate === undefined) {
+      result = ['id' + ',' + (this.reverse ? 'asc' : 'desc')];
     }
     return result;
   }
@@ -199,11 +199,31 @@ export class ScheduleLogComponent implements OnInit, OnDestroy {
   }
 
   onDelete(log: ScheduleLog) {
-    this.scheduleLogService.delete(log.id).subscribe(x =>
-        this.notificationsService.notify('success', null, "Deleted"),
+    this.scheduleLogService.delete(log.id).subscribe(x => {
+        this.loadAll();
+        this.notificationsService.notify('success', null, "Deleted");
+      }
+      ,
       y => {
 
         this.notificationsService.notify('error', JSON.stringify(y), null)
       });
+  }
+
+  paginate(event) {
+    this.page = event.first;
+    this.itemsPerPage = event.rows;
+    this.loadAll();
+  }
+  handleSort(event) {
+    if (event.field) {
+      let reverse1 = event.order === 1;
+      if (this.reverse !== reverse1 || this.predicate !== event.field){
+        this.reverse = reverse1;
+        this.predicate = event.field;
+        this.loadAll();
+      }
+
+    }
   }
 }

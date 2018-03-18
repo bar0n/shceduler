@@ -137,7 +137,7 @@ public class ScheduleResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    public static void main(String[] args) throws JsonProcessingException {
+ /*   public static void main(String[] args) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         //objectMapper.registerModule()
         PageRequest id = PageRequest.of(1, 20, Sort.by(Sort.Order.asc("id")));
@@ -145,6 +145,6 @@ public class ScheduleResource {
         System.out.println(s);
 
 
-    }
+    }*/
 
 }

@@ -34,7 +34,10 @@
   <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
 
-  <p-table  [columns]="cols" #dataTable *ngIf="!cronVisible" [value]="schedules" [(selection)]="selectedSchedule" dataKey="id"
+  <p-table  [columns]="cols" #dataTable *ngIf="!cronVisible"
+            [value]="schedules"
+            [(selection)]="selectedSchedule"
+            dataKey="id"
              responsive="true"
             (sortFunction)="handleSort($event)" [customSort]="true"
   >
@@ -122,7 +125,7 @@
       </div>
     </ng-template>
   </p-table>
-  <p-paginator [rows]="page" [totalRecords]="totalItems" [rowsPerPageOptions]="[40,80,120]"
+  <p-paginator [rows]="page" [totalRecords]="totalItems" [rowsPerPageOptions]="[20,40,80]"
                (onPageChange)="paginate($event)">{{totalItems}}</p-paginator>
 
   <notifications></notifications>

@@ -5,7 +5,7 @@ import {DialogModule} from 'primeng/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {CalendarModule, DropdownModule, InputTextModule} from 'primeng/primeng';
+import {CalendarModule, DropdownModule, InputTextModule, PaginatorModule} from 'primeng/primeng';
 import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
@@ -38,7 +38,9 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     InputTextareaModule,
     DropdownModule,
     CronJobsModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    PaginatorModule,
+
   ],
   declarations: [
     ScheduleLogComponent,

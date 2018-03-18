@@ -7,9 +7,7 @@
 <p-table [value]="scheduleLogs" [responsive]="true"
          [resizableColumns]="true"
          dataKey="id"
-         [rows]="10"
-         [paginator]="true"
-         [rowsPerPageOptions]="[10,20,30]"
+         (sortFunction)="handleSort($event)" [customSort]="true"
 >
   <ng-template pTemplate="header">
     <tr>
@@ -63,7 +61,8 @@
   </ng-template>
 
 </p-table>
-
+<p-paginator [rows]="page" [totalRecords]="totalItems" [rowsPerPageOptions]="[20,40,80]"
+             (onPageChange)="paginate($event)">{{totalItems}}</p-paginator>
 <p-confirmDialog header="Confirmation"
                  icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
