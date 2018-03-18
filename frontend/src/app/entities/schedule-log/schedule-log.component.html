@@ -61,7 +61,7 @@
   </ng-template>
 
 </p-table>
-<p-paginator [rows]="page" [totalRecords]="totalItems" [rowsPerPageOptions]="[20,40,80]"
+<p-paginator [rows]="itemsPerPage" [totalRecords]="totalItems" [rowsPerPageOptions]="[20,40,80]"
              (onPageChange)="paginate($event)">{{totalItems}}</p-paginator>
 <p-confirmDialog header="Confirmation"
                  icon="fa fa-question-circle" width="425"></p-confirmDialog>

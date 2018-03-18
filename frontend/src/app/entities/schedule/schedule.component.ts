@@ -247,7 +247,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   loadAll() {
     this.scheduleService.query({
-      page: this.page - 1,
+      page: this.page,
       size: this.itemsPerPage,
       sort: this.sort()
     }).subscribe(
@@ -257,7 +257,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   paginate(event) {
-    this.page = event.first;
+    this.page = event.page;
     this.itemsPerPage = event.rows;
     this.loadAll();
   }
