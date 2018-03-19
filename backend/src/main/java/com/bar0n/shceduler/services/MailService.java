@@ -87,6 +87,8 @@ public class MailService {
         String templateName = "notificationEmail";
         String content = templateEngine.process(templateName, context);
         String subject = schedule.getName();
+        log.debug("Send email to '{}' with subject '{}' and content={}",
+                schedule.getEmail(), subject, content);
         sendEmail(schedule.getEmail(), subject, content, false, true);
     }
 
@@ -99,6 +101,8 @@ public class MailService {
         String templateName = "notificationReminderEmail";
         String content = templateEngine.process(templateName, context);
         String subject = schedule.getName();
+        log.debug("Send Reminder email to '{}' with subject '{}' and content={}",
+                schedule.getEmail(), subject, content);
         sendEmail(schedule.getEmail(), subject, content, false, true);
     }
 }

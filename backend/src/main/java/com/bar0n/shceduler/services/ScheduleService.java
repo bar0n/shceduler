@@ -81,6 +81,7 @@ public class ScheduleService {
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
             allByNextLessThan.forEach(this::handle);
             List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(DateUtils.now());
+            logger.debug("fireJob ScheduleLog size: {}", allNotCompleted.size());
             handleLogs(allNotCompleted);
 
         } catch (Exception e) {
@@ -90,6 +91,7 @@ public class ScheduleService {
 
     private void handleLogs(List<ScheduleLog> allNotCompleted) {
         Set<Long> scheduleIds = allNotCompleted.stream().map(x -> x.getSchedule().getId()).collect(Collectors.toSet());
+        logger.debug("set scheduleIds size: {}", scheduleIds.size());
         List<Schedule> byIdIn = scheduleRepository.findByIdIn(new ArrayList<>(scheduleIds));
         byIdIn.forEach(s -> {
                     List<ScheduleLog> collect = allNotCompleted.stream().filter(x -> Objects.equals(x.getSchedule().getId(), s.getId())).collect(Collectors.toList());

@@ -1,5 +1,7 @@
 package com.bar0n.shceduler.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.util.calendar.BaseCalendar;
 
 import java.time.*;
@@ -8,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateUtils {
+    private final static Logger log = LoggerFactory.getLogger(MailService.class);
     static public ZoneId zone = ZoneId.of("Europe/Helsinki");
 
     public static Date asDate(LocalDateTime localDateTime) {
@@ -32,7 +35,9 @@ public class DateUtils {
     }
 
     public static LocalDateTime now() {
-        return ZonedDateTime.now().withZoneSameInstant(DateUtils.zone).toLocalDateTime();
+        LocalDateTime localDateTime = ZonedDateTime.now().withZoneSameInstant(DateUtils.zone).toLocalDateTime();
+        log.info("DateUtils.now()={}", localDateTime);
+        return localDateTime;
     }
 
     public static Date asDateSameTime(LocalDateTime localDateTime) {
