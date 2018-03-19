@@ -8,6 +8,7 @@
 
     <include file="changelog/01-create-schedule-schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/02-add-schedule-log-fileds.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/03-add-modified-fileds.xml" relativeToChangelogFile="true"/>
 <!--    <include file="changelog/02-insert-data-authors.xml" relativeToChangelogFile="true"/>
     <include file="changelog/02-insert-data-books.xml" relativeToChangelogFile="true"/>-->
 </databaseChangeLog>

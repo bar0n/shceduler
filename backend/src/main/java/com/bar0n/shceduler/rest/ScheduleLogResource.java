@@ -8,6 +8,7 @@ import com.bar0n.shceduler.rest.util.HeaderUtil;
 import com.bar0n.shceduler.rest.util.PaginationUtil;
 import com.bar0n.shceduler.rest.util.ResponseUtil;
 import com.bar0n.shceduler.services.DateUtils;
+import com.bar0n.shceduler.services.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,11 @@ public class ScheduleLogResource {
     private static final String ENTITY_NAME = "scheduleLog";
 
     private final ScheduleLogRepository scheduleLogRepository;
+    private final ScheduleService scheduleService;
 
-    public ScheduleLogResource(ScheduleLogRepository scheduleLogRepository) {
+    public ScheduleLogResource(ScheduleLogRepository scheduleLogRepository, ScheduleService scheduleService) {
         this.scheduleLogRepository = scheduleLogRepository;
+        this.scheduleService = scheduleService;
     }
 
     /**
@@ -49,7 +52,7 @@ public class ScheduleLogResource {
             throw new BadRequestAlertException("A new scheduleLog cannot already have an ID", ENTITY_NAME, "idexists");
         }
         scheduleLog.setCreated(DateUtils.now());
-        ScheduleLog result = scheduleLogRepository.save(scheduleLog);
+        ScheduleLog result = scheduleService.save(scheduleLog);
         return ResponseEntity.created(new URI("/api/scheduleLog/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
@@ -71,7 +74,7 @@ public class ScheduleLogResource {
             return createScheduleLog(scheduleLog);
         }
 
-        ScheduleLog result = scheduleLogRepository.save(scheduleLog);
+        ScheduleLog result = scheduleService.save(scheduleLog);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, scheduleLog.getId().toString()))
                 .body(result);

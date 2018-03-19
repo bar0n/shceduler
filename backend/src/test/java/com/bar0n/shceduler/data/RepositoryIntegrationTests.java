@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +34,21 @@ public class RepositoryIntegrationTests {
     @Autowired
     ScheduleLogRepository scheduleLogRepository;
 
+
+    @Test
+    @Rollback(false)
+    public void lessThanNow() throws JsonProcessingException {
+        /*Optional<Schedule> byId = scheduleRepository.findById(24L);
+        System.out.println( byId);
+        LocalDateTime now = DateUtils.now();
+        List<ScheduleLog> list = scheduleLogRepository.findByNextLessThanAndCompletedFalse(now);
+        System.out.println(now);
+        */
+        List<ScheduleLog> byScheduleId = scheduleLogRepository.findByScheduleId(24L);
+        System.out.println(byScheduleId);
+
+    }
+
     @Test
     @Rollback(false)
     public void findsFirstPageOf() throws JsonProcessingException {
@@ -40,7 +56,7 @@ public class RepositoryIntegrationTests {
 
         Page<Schedule> schedules = this.scheduleRepository.findAll(PageRequest.of(0, 10));
         assertThat(schedules.getTotalElements()).isEqualTo(0L);
-       // ZonedDateTime zonedDateTime = now.atZone(now.zone);
+        // ZonedDateTime zonedDateTime = now.atZone(now.zone);
         LocalDateTime now = ZonedDateTime.now().withZoneSameInstant(DateUtils.zone).toLocalDateTime();
 
         ZoneId zoneId = ZoneId.systemDefault();

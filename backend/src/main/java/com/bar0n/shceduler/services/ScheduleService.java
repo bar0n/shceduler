@@ -13,6 +13,9 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by dbaron
@@ -42,18 +45,33 @@ public class ScheduleService {
 
     }
 
-    public LocalDateTime getNextTime(LocalDateTime time, String cronExpressionTxt, LocalDateTime start) {
+
+    public LocalDateTime getNextTime(LocalDateTime from, String cronExpressionTxt, LocalDateTime start) {
         MyCronExpression cronExpression = null;
         try {
             cronExpression = new MyCronExpression(cronExpressionTxt);
         } catch (ParseException e) {
             throw new RuntimeException("parse error", e);
         }
+
+        return cronExpression.getNextValidTimeAfter(from, start);
+    }
+
+    public Schedule save(Schedule schedule) {
+        schedule.setModified(DateUtils.now());
+        return scheduleRepository.save(schedule);
+    }
+
+    public ScheduleLog save(ScheduleLog scheduleLog) {
+        scheduleLog.setModified(DateUtils.now());
+        return scheduleLogRepository.save(scheduleLog);
+    }
+
+    public LocalDateTime getNextTime(String cron, LocalDateTime start) {
         LocalDateTime now = DateUtils.now();
-        LocalDateTime from = (now.compareTo(time) > 0) ? now : time;
-        LocalDateTime nextValidTimeAfter = cronExpression.getNextValidTimeAfter(from, start);
-        logger.debug("getNextTime time: {}, now:{}, max(time,now):{}, nextTime:{}", time, now, from, nextValidTimeAfter);
-        return nextValidTimeAfter;
+        LocalDateTime nextTime = getNextTime(now, cron, start);
+        logger.debug("getNextTime now:{}  cron:{} start:{} = result:{}", now, cron, start, nextTime);
+        return nextTime;
     }
 
     @Transactional
@@ -63,22 +81,38 @@ public class ScheduleService {
             logger.debug("fireJob Schedule size: {}", allByNextLessThan.size());
             allByNextLessThan.forEach(this::handle);
             List<ScheduleLog> allNotCompleted = scheduleLogRepository.findByNextLessThanAndCompletedFalse(DateUtils.now());
-            allNotCompleted.forEach(this::handleLog);
+            handleLogs(allNotCompleted);
+
         } catch (Exception e) {
             logger.error("fire_job exception", e);
         }
     }
 
-    @Transactional
-    public void handleLog(ScheduleLog scheduleLog) {
+    private void handleLogs(List<ScheduleLog> allNotCompleted) {
+        Set<Long> scheduleIds = allNotCompleted.stream().map(x -> x.getSchedule().getId()).collect(Collectors.toSet());
+        List<Schedule> byIdIn = scheduleRepository.findByIdIn(new ArrayList<>(scheduleIds));
+        byIdIn.forEach(s -> {
+                    List<ScheduleLog> collect = allNotCompleted.stream().filter(x -> Objects.equals(x.getSchedule().getId(), s.getId())).collect(Collectors.toList());
+                    collect.forEach(this::updateNextTime);
+                    collect.stream().findFirst().ifPresent(this::sendLogEmail);
+                }
+        );
+
+    }
+
+
+    private void sendLogEmail(ScheduleLog scheduleLog) {
+        mailService.sendNotificationReminderEmail(scheduleLog.getSchedule());
+    }
+
+    private void updateNextTime(ScheduleLog scheduleLog) {
         logger.debug("handle scheduleLog : {}", scheduleLog);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        LocalDateTime nextTimeLog = getNextTime(DateUtils.now(), cronLog, scheduleLog.getCreated());
+        LocalDateTime nextTimeLog = getNextTime(cronLog, scheduleLog.getCreated());
         LocalDateTime next = scheduleLog.getNext();
         logger.debug("scheduleLog current next : {} new next time:{}", next, nextTimeLog);
         scheduleLog.setNext(nextTimeLog);
-        scheduleLogRepository.save(scheduleLog);
-        mailService.sendNotificationReminderEmail(scheduleLog.getSchedule());
+        save(scheduleLog);
     }
 
     @Transactional
@@ -88,20 +122,15 @@ public class ScheduleService {
         }
         logger.debug("handle schedule : {}", schedule);
         LocalDateTime next = schedule.getNext();
-        LocalDateTime nextTime = getNextTime(schedule);
+        LocalDateTime nextTime = getNextTime(schedule.getCron(), schedule.getStart());
         logger.debug("handle current next : {} new next time:{}", next, nextTime);
         schedule.setNext(nextTime);
-        scheduleRepository.save(schedule);
+        save(schedule);
         ScheduleLog scheduleLog = new ScheduleLog(DateUtils.now(), schedule);
         String cronLog = scheduleLog.getSchedule().getCronLog();
-        LocalDateTime nextTimeLog = getNextTime(DateUtils.now(), cronLog, schedule.getStart());
+        LocalDateTime nextTimeLog = getNextTime(cronLog, schedule.getStart());
         scheduleLog.setNext(nextTimeLog);
-        scheduleLogRepository.save(scheduleLog);
+        save(scheduleLog);
         mailService.sendNotificationEmail(schedule);
-
-    }
-
-    private LocalDateTime getNextTime(Schedule schedule) {
-        return getNextTime(schedule.getNext(), schedule.getCron(), schedule.getStart());
     }
 }

@@ -25,6 +25,8 @@ public class ScheduleLog {
     private Boolean completed = false;
     @Column
     private LocalDateTime next;
+    @Column
+    private LocalDateTime modified;
 
     public ScheduleLog(LocalDateTime created, Schedule schedule) {
         this.created = created;
@@ -98,5 +100,13 @@ public class ScheduleLog {
                 ", created=" + created +
                 ", schedule=" + schedule +
                 '}';
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
     }
 }

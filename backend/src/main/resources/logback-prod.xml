@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="10 minutes">
+    <contextName>bar0n</contextName>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss,SSS} [%contextName] %-5p &lt;%t&gt; -- [%c] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- put your appenders -->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        &lt;!&ndash; encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default &ndash;&gt;
+        <encoder>
+            <pattern>%d{ISO8601} %p %t %c{0}.%M - %m%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>-->
+    <logger name="com.bar0n.shceduler.services.ScheduleService" additivity="false" level="DEBUG">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="com.bar0n.shceduler.ScheduleJob" additivity="false" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <!-- put your loggers here -->
+    <logger name="org.springframework" additivity="false" level="ERROR">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+   <!-- <logger name="com.bar0n.shceduler.rest.ScheduleResource" additivity="false" level="e">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="com.bar0n.shceduler.services.ScheduleService" additivity="false" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+
+    <logger name="org.springframework.web.method.support" additivity="false" level="trace">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="org.springframework.web.servlet.handler" additivity="false" level="">
+        <appender-ref ref="CONSOLE" />
+    </logger>-->
+
+    <!-- put your root here -->
+    <root level="error">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

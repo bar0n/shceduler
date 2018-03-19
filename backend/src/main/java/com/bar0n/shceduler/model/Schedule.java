@@ -49,6 +49,8 @@ public class Schedule implements Serializable {
     @Column
     private LocalDateTime createdDate;
     @Column
+    private LocalDateTime modified;
+    @Column
     private Boolean active = true;
     @OneToMany(fetch = FetchType.EAGER, targetEntity = ScheduleLog.class
             , mappedBy = "schedule") //
@@ -230,6 +232,12 @@ public class Schedule implements Serializable {
         this.createdDate = createdDate;
     }
 
+    public LocalDateTime getModified() {
+        return modified;
+    }
 
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
 }
 

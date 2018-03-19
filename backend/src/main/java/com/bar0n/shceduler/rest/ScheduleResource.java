@@ -62,10 +62,10 @@ public class ScheduleResource {
             throw new BadRequestAlertException("A new schedule cannot already have an ID", ENTITY_NAME, "idexists");
         }
         schedule.setCreatedDate(DateUtils.now());
-        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
-        LocalDateTime nextLog = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
+        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getCron(), schedule.getStart());
+        LocalDateTime nextLog = scheduleService.getNextTime(schedule.getCron(), schedule.getStart());
         schedule.setNext(nextTime);
-        Schedule result = scheduleRepository.save(schedule);
+        Schedule result = scheduleService.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
@@ -84,12 +84,12 @@ public class ScheduleResource {
     public ResponseEntity<Schedule> updateSchedule(@RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to update Schedule : {}", schedule);
 
-        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getStart(), schedule.getCron(), schedule.getStart());
+        LocalDateTime nextTime = scheduleService.getNextTime(schedule.getCron(), schedule.getStart());
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }
         schedule.setNext(nextTime);
-        Schedule result = scheduleRepository.save(schedule);
+        Schedule result = scheduleService.save(schedule);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, schedule.getId().toString()))
                 .body(result);
