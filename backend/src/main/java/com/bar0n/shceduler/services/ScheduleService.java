@@ -102,7 +102,7 @@ public class ScheduleService {
 
 
     private void sendLogEmail(ScheduleLog scheduleLog) {
-        mailService.sendNotificationReminderEmail(scheduleLog.getSchedule());
+        mailService.sendNotificationReminderEmail(scheduleLog.getSchedule(),scheduleLog);
     }
 
     private void updateNextTime(ScheduleLog scheduleLog) {
@@ -131,6 +131,6 @@ public class ScheduleService {
         LocalDateTime nextTimeLog = getNextTime(cronLog, schedule.getStart());
         scheduleLog.setNext(nextTimeLog);
         save(scheduleLog);
-        mailService.sendNotificationEmail(schedule);
+        mailService.sendNotificationEmail(schedule,scheduleLog);
     }
 }

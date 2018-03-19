@@ -44,7 +44,7 @@
       <td>
         <button type="button" icon="fa-check-circle" pButton (click)="onChangeCompleted(item)"></button>
       </td>
-      <td>{{item.id}}</td>
+      <td><a [routerLink]="['/scheduleLogEdit', item.id]">{{item.id}}</a></td>
       <td align="center" valign="middle">
         <input id="active" disabled readonly="true" type="checkbox" [(ngModel)]="item.completed">
       </td>

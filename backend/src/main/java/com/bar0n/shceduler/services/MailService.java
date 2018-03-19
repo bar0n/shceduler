@@ -1,6 +1,7 @@
 package com.bar0n.shceduler.services;
 
 import com.bar0n.shceduler.model.Schedule;
+import com.bar0n.shceduler.model.ScheduleLog;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,16 +77,28 @@ public class MailService {
 
     }
 
+
     @Async
-    public void sendNotificationEmail(Schedule schedule) {
-        log.debug("Sending Notification email to '{}'", schedule.getEmail());
-        sendEmailFromTemplate(schedule, "notificationEmail", schedule.getName());
+    public void sendNotificationEmail(Schedule schedule, ScheduleLog scheduleLog) {
+        Locale locale = Locale.forLanguageTag("en");
+        Context context = new Context(locale);
+        context.setVariable("schedule", schedule);
+        context.setVariable("scheduleLog", scheduleLog);
+        String templateName = "notificationEmail";
+        String content = templateEngine.process(templateName, context);
+        String subject = schedule.getName();
+        sendEmail(schedule.getEmail(), subject, content, false, true);
     }
 
     @Async
-    public void sendNotificationReminderEmail(Schedule schedule) {
-        log.debug("Sending Notification email to '{}'", schedule.getEmail());
-        sendEmailFromTemplate(schedule, "notificationEmail", "Reminder " + schedule.getName());
+    public void sendNotificationReminderEmail(Schedule schedule, ScheduleLog scheduleLog) {
+        Locale locale = Locale.forLanguageTag("en");
+        Context context = new Context(locale);
+        context.setVariable("schedule", schedule);
+        context.setVariable("scheduleLog", scheduleLog);
+        String templateName = "notificationReminderEmail";
+        String content = templateEngine.process(templateName, context);
+        String subject = schedule.getName();
+        sendEmail(schedule.getEmail(), subject, content, false, true);
     }
-
 }

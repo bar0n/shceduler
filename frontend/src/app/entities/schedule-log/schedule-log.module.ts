@@ -17,6 +17,7 @@ import {ScheduleLogComponent} from './schedule-log.component';
 import {ScheduleLogService} from './schedule-log.service';
 import {NgModule} from '@angular/core';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ScheduleLogEditComponent} from "./schedule-log-edit.component";
 
 @NgModule({
   imports: [
@@ -43,13 +44,13 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 
   ],
   declarations: [
-    ScheduleLogComponent,
+    ScheduleLogComponent, ScheduleLogEditComponent
   ],
 
   providers: [
     ScheduleLogService,
   ],
-  exports: [ScheduleLogComponent,]
+  exports: [ScheduleLogComponent, ScheduleLogEditComponent]
 })
 export class SchedulerScheduleLogModule {
 }

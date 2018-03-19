@@ -15,6 +15,7 @@ export class Schedule {
               author?: string,
               email?: string,
               createdDate?: Date,
+              modified?: Date,
               periodTxt?: string,
               scheduleLogs?: ScheduleLog[],
   ) {
@@ -49,6 +50,7 @@ export class Schedule {
   public author?: string;
   public email?: string;
   public periodTxt?: string;
+  public modified?: Date;
   public scheduleLogs?: ScheduleLog[]=[];
 
 }

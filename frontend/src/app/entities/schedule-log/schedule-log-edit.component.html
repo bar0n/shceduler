@@ -1,0 +1,105 @@
+<h3>{{title}} <span *ngIf="scheduleLog.id"> {{scheduleLog.id}}</span></h3>
+
+<div class="ui-g  ui-sm ui-fluid">
+  <div class="ui-g-6 ui-sm-12 ">
+    <label style='width:100px' for="name">Id</label>
+    <input pInputText style='width:60px' id="id" readonly [(ngModel)]="scheduleLog.id"/>
+  </div>
+
+  <div class="ui-g-6 ui-sm-12">
+    <label style='width:100px' for="active">Completed</label>
+
+    <input id="active" type="checkbox" [(ngModel)]="scheduleLog.completed">
+  </div>
+  <div class="ui-g-6 ui-sm-12 ">
+    <div class="ui-g-2 ui-sm-12 ">
+      <label style='width:100px' for="start">Next</label>
+    </div>
+    <div class="ui-g-5 ui-sm-12 ">
+      <p-calendar id="end" [(ngModel)]="scheduleLog.next" name="end" showTime="true" hourFormat="24"
+                  dateFormat="dd-mm-yy"
+                  [showIcon]="true" showButtonBar="true">
+      </p-calendar>
+    </div>
+  </div>
+  <div class="ui-g-8 ui-sm-12">
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <label style='width:100px' for="name">Name</label>
+      <input pInputText style='width:250px' id="name" readonly [(ngModel)]="schedule.name"/>
+    </div>
+    <div class="ui-g-6 ui-sm-12 ">
+      <label style='width:100px' for="email">Email</label>
+      <input pInputText style='width:250px' id="email" readonly [(ngModel)]="schedule.email"/>
+    </div>
+
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <label style='width:100px' for="cronLog">Cron Log</label>
+      <input pInputText style='width:250px' id="cronLog" readonly [(ngModel)]="schedule.cronLog"/>
+    </div>
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-2 ui-sm-12 ">
+        <label style='width:100px'>Schedule</label>
+      </div>
+
+      <div class="ui-g-4 ui-sm-12 ">
+        <a *ngIf="schedule" [routerLink]="[ '/scheduleEdit', schedule?.id || 'schedule' ]"> {{schedule?.name}}</a>
+        <!--<a *ngIf="schedule" [routerLink]="['/scheduleEdit', schedule?.id]">{{schedule?.name}}</a>-->
+        <a *ngIf="!schedule">{{schedule?.name}}</a>
+      </div>
+    </div>
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <label style='width:100px' for="desc">Description</label>
+      <textarea id="desc" style='width:250px' readonly pInputTextarea [(ngModel)]="schedule.description"
+                [rows]="2"></textarea>
+    </div>
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-2 ui-sm-12 ">
+        <label style='width:100px' for="start">Created</label>
+      </div>
+      <div class="ui-g-5 ui-sm-12 ">
+        <p-calendar id="start" [(ngModel)]="scheduleLog.created" name="start" showTime="true" hourFormat="24"
+                    dateFormat="dd-mm-yy" readonly
+                    [showIcon]="true" showButtonBar="true">
+        </p-calendar>
+      </div>
+
+    </div>
+
+    <div class="ui-g-6 ui-sm-12 ">
+      <div class="ui-g-2 ui-sm-12 ">
+        <label style='width:100px' for="modified">Modified</label>
+      </div>
+      <div class="ui-g-5 ui-sm-12 ">
+        <p-calendar id="modified" [(ngModel)]="scheduleLog.modified" name="modified" showTime="true" hourFormat="24"
+                    dateFormat="dd-mm-yy" readonly
+                    [showIcon]="true" showButtonBar="true">
+        </p-calendar>
+      </div>
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
+<div class="ui-g-7 ui-sm-12 ">
+  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+    <button type="button" pButton icon="fa-arrow-left" (click)="previousState()" label="Back"></button>
+    <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+    <button type="button" pButton icon="fa-close" (click)="delete()" style="background-color: red;float: right"
+            label="Delete"></button>
+  </div>
+</div>
+<notifications></notifications>
+
+
+<p-confirmDialog header="Confirmation"
+                 icon="fa fa-question-circle" width="425"></p-confirmDialog>

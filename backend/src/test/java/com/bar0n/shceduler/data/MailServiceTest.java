@@ -24,8 +24,10 @@ public class MailServiceTest {
         schedule.setPerson("DIma");
         schedule.setDescription("Description");
         schedule.setName("name");
-
-        mailService.sendNotificationEmail(schedule);
+        ScheduleLog scheduleLog = new ScheduleLog();
+        scheduleLog.setId(1L);
+        mailService.sendNotificationEmail(schedule,scheduleLog);
+        mailService.sendNotificationReminderEmail(schedule,scheduleLog);
     }
 
     @Test

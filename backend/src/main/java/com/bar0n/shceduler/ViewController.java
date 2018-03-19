@@ -14,7 +14,7 @@ public class ViewController {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();;
 
 
-    @RequestMapping({ "/scheduleLog", "/scheduleAdd", "/scheduleEdit/{id:[\\d|-]+}", "/schedule"})
+    @RequestMapping({ "/scheduleLog", "/scheduleAdd", "/scheduleEdit/{id:[\\d|-]+}","/scheduleLogEdit/{id:[\\d|-]+}", "/schedule"})
 
     public String redirect(HttpServletResponse response, HttpServletRequest httpServletRequest) throws IOException {
         String originatingRequestUri = urlPathHelper.getOriginatingRequestUri(httpServletRequest);
