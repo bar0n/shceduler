@@ -10,7 +10,7 @@
 <p th:text="${schedule.name}"></p>
 <p th:text="${schedule.description}"></p>
 <p>You can mark job as completed following  url bellow</p>
-<a th:href="@{|https://shceduler.herokuapp.com/scheduleLog/${scheduleLog.id}|}"
-   th:text="'https://shceduler.herokuapp.com/scheduleLog/' + ${scheduleLog.id}"></a>
+<a th:href="@{|https://shceduler.herokuapp.com/scheduleLogEdit/${scheduleLog.id}|}"
+   th:text="'https://shceduler.herokuapp.com/scheduleLogEdit/' + ${scheduleLog.id}"></a>
 </body>
 </html>
